@@ -1,4 +1,4 @@
-import { ROUTES, ROUTES_PATH } from "../constants/routes.js";
+  import { ROUTES, ROUTES_PATH } from "../constants/routes.js";
 import Bills from "../containers/Bills.js";
 import Dashboard from "../containers/Dashboard.js";
 import Login, { PREVIOUS_LOCATION } from "../containers/Login.js";
@@ -12,8 +12,7 @@ const LAYOUT_ICON_1_ID = "layout-icon1";
 const LAYOUT_ICON_2_ID = "layout-icon2";
 const ACTIVE_ICON_CLASS = "active-icon";
 
-
-export default () => {
+export default async () => {
   const rootDiv = document.getElementById("root");
   rootDiv.innerHTML = ROUTES({ pathname: window.location.pathname });
 
@@ -36,9 +35,8 @@ export default () => {
       divIcon1.classList.add(ACTIVE_ICON_CLASS);
       divIcon2.classList.remove(ACTIVE_ICON_CLASS);
       const bills = new Bills({ document, onNavigate, store, localStorage });
-      bills
-        .getBills()
-        .then((data) => {
+      bills.getBills()
+        .then(data => {
           rootDiv.innerHTML = BillsUI({ data });
           const divIcon1 = document.getElementById(LAYOUT_ICON_1_ID);
           const divIcon2 = document.getElementById(LAYOUT_ICON_2_ID);
@@ -56,6 +54,7 @@ export default () => {
       const divIcon2 = document.getElementById(LAYOUT_ICON_2_ID);
       divIcon1.classList.remove(ACTIVE_ICON_CLASS);
       divIcon2.classList.add(ACTIVE_ICON_CLASS);
+
     } else if (pathname === ROUTES_PATH["Dashboard"]) {
       rootDiv.innerHTML = ROUTES({ pathname, loading: true });
       const bills = new Dashboard({
@@ -65,13 +64,12 @@ export default () => {
         bills: [],
         localStorage,
       });
-      bills
-        .getBillsAllUsers()
-        .then((bills) => {
+      bills.getBillsAllUsers()
+        .then(bills => {
           rootDiv.innerHTML = DashboardUI({ data: { bills } });
           new Dashboard({ document, onNavigate, store, bills, localStorage });
         })
-        .catch((error) => {
+        .catch(error => {
           rootDiv.innerHTML = ROUTES({ pathname, error });
         });
     }
@@ -101,9 +99,8 @@ export default () => {
       divIcon1.classList.add(ACTIVE_ICON_CLASS);
       divIcon2.classList.remove(ACTIVE_ICON_CLASS);
       const bills = new Bills({ document, onNavigate, store, localStorage });
-      bills
-        .getBills()
-        .then((data) => {
+      bills.getBills()
+        .then(data => {
           rootDiv.innerHTML = BillsUI({ data });
           const divIcon1 = document.getElementById(LAYOUT_ICON_1_ID);
           const divIcon2 = document.getElementById(LAYOUT_ICON_2_ID);
@@ -136,13 +133,11 @@ export default () => {
         bills: [],
         localStorage,
       });
-      bills
-        .getBillsAllUsers()
-        .then((bills) => {
-          rootDiv.innerHTML = DashboardUI({ data: { bills } });
+      bills.getBillsAllUsers()
+        .then(bills => {rootDiv.innerHTML = DashboardUI({ data: { bills } });
           new Dashboard({ document, onNavigate, store, bills, localStorage });
         })
-        .catch((error) => {
+        .catch(error => {
           rootDiv.innerHTML = ROUTES({ pathname: window.location.hash, error });
         });
     }
