@@ -9,7 +9,9 @@
     "test": "NODE_ENV=test sequelize-cli db:migrate && jest test -i tests/user.test.js --watch",
     "dev": "NODE_ENV=development sequelize-cli db:migrate && node server.js",
     "dev:all": "concurrently \"npm run dev\" \"cd ../Frontend && npm run dev\"",
-    "lint": "eslint ./"
+    "lint": "eslint ./",
+    "seed": "NODE_ENV=development sequelize-cli db:migrate && node seed.js",
+    "seed:reset": "NODE_ENV=development sequelize-cli db:migrate && node seed.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
