@@ -46,6 +46,14 @@ export default ({ data: bills, loading, error }) => {
   } else if (error) {
     return ErrorPage(error);
   }
+  // Bug 1 - Bills : Corriger l'ordre des notes de frais
+  const sortedBills = bills
+  ? [...bills].sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return dateB - dateA;
+    })
+  : bills;
 
   return `
     <div class='layout'>
@@ -68,7 +76,7 @@ export default ({ data: bills, loading, error }) => {
               </tr>
           </thead>
           <tbody data-testid="tbody">
-            ${rows(bills)}
+            ${rows(sortedBills)}
           </tbody>
           </table>
         </div>
