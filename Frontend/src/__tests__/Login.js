@@ -1,29 +1,32 @@
-/**
- * @jest-environment jsdom
- */
-
-import LoginUI from "../views/LoginUI";
-import Login from "../containers/Login.js";
-import { ROUTES } from "../constants/routes";
 import { fireEvent, screen } from "@testing-library/dom";
+import { ROUTES } from "../constants/routes.js";
+import Login from "../containers/Login.js";
+import LoginUI from "../views/LoginUI.js";
+
+const FORM_EMPLOYEE_TEST_ID = "form-employee";
+const FORM_ADMIN_TEST_ID = "form-admin";
+const EMPLOYEE_EMAIL_INPUT_TEST_ID = "employee-email-input";
+const EMPLOYEE_PASSWORD_INPUT_TEST_ID = "employee-password-input";
+const ADMIN_EMAIL_INPUT_TEST_ID = "admin-email-input";
+const ADMIN_PASSWORD_INPUT_TEST_ID = "admin-password-input";
 
 describe("Given that I am a user on login page", () => {
   describe("When I do not fill fields and I click on employee button Login In", () => {
     test("Then It should renders Login page", () => {
       document.body.innerHTML = LoginUI();
 
-      const inputEmailUser = screen.getByTestId("employee-email-input");
+      const inputEmailUser = screen.getByTestId(EMPLOYEE_EMAIL_INPUT_TEST_ID);
       expect(inputEmailUser.value).toBe("");
 
-      const inputPasswordUser = screen.getByTestId("employee-password-input");
+      const inputPasswordUser = screen.getByTestId(EMPLOYEE_PASSWORD_INPUT_TEST_ID);
       expect(inputPasswordUser.value).toBe("");
 
-      const form = screen.getByTestId("form-employee");
+      const form = screen.getByTestId(FORM_EMPLOYEE_TEST_ID);
       const handleSubmit = jest.fn((e) => e.preventDefault());
 
       form.addEventListener("submit", handleSubmit);
       fireEvent.submit(form);
-      expect(screen.getByTestId("form-employee")).toBeTruthy();
+      expect(screen.getByTestId(FORM_EMPLOYEE_TEST_ID)).toBeTruthy();
     });
   });
 
@@ -31,20 +34,20 @@ describe("Given that I am a user on login page", () => {
     test("Then It should renders Login page", () => {
       document.body.innerHTML = LoginUI();
 
-      const inputEmailUser = screen.getByTestId("employee-email-input");
+      const inputEmailUser = screen.getByTestId(EMPLOYEE_EMAIL_INPUT_TEST_ID);
       fireEvent.change(inputEmailUser, { target: { value: "pasunemail" } });
       expect(inputEmailUser.value).toBe("pasunemail");
 
-      const inputPasswordUser = screen.getByTestId("employee-password-input");
+      const inputPasswordUser = screen.getByTestId(EMPLOYEE_PASSWORD_INPUT_TEST_ID);
       fireEvent.change(inputPasswordUser, { target: { value: "azerty" } });
       expect(inputPasswordUser.value).toBe("azerty");
 
-      const form = screen.getByTestId("form-employee");
+      const form = screen.getByTestId(FORM_EMPLOYEE_TEST_ID);
       const handleSubmit = jest.fn((e) => e.preventDefault());
 
       form.addEventListener("submit", handleSubmit);
       fireEvent.submit(form);
-      expect(screen.getByTestId("form-employee")).toBeTruthy();
+      expect(screen.getByTestId(FORM_EMPLOYEE_TEST_ID)).toBeTruthy();
     });
   });
 
@@ -56,17 +59,17 @@ describe("Given that I am a user on login page", () => {
         password: "azerty",
       };
 
-      const inputEmailUser = screen.getByTestId("employee-email-input");
+      const inputEmailUser = screen.getByTestId(EMPLOYEE_EMAIL_INPUT_TEST_ID);
       fireEvent.change(inputEmailUser, { target: { value: inputData.email } });
       expect(inputEmailUser.value).toBe(inputData.email);
 
-      const inputPasswordUser = screen.getByTestId("employee-password-input");
+      const inputPasswordUser = screen.getByTestId(EMPLOYEE_PASSWORD_INPUT_TEST_ID);
       fireEvent.change(inputPasswordUser, {
         target: { value: inputData.password },
       });
       expect(inputPasswordUser.value).toBe(inputData.password);
 
-      const form = screen.getByTestId("form-employee");
+      const form = screen.getByTestId(FORM_EMPLOYEE_TEST_ID);
 
       // localStorage should be populated with form data
       Object.defineProperty(window, "localStorage", {
@@ -82,7 +85,7 @@ describe("Given that I am a user on login page", () => {
         document.body.innerHTML = ROUTES({ pathname });
       };
 
-      let PREVIOUS_LOCATION = "";
+      const PREVIOUS_LOCATION = "";
 
       const store = jest.fn();
 
@@ -107,7 +110,7 @@ describe("Given that I am a user on login page", () => {
           email: inputData.email,
           password: inputData.password,
           status: "connected",
-        })
+        }),
       );
     });
 
@@ -122,18 +125,18 @@ describe("Given that I am a user on login page", () => {
     test("Then It should renders Login page", () => {
       document.body.innerHTML = LoginUI();
 
-      const inputEmailUser = screen.getByTestId("admin-email-input");
+      const inputEmailUser = screen.getByTestId(ADMIN_EMAIL_INPUT_TEST_ID);
       expect(inputEmailUser.value).toBe("");
 
-      const inputPasswordUser = screen.getByTestId("admin-password-input");
+      const inputPasswordUser = screen.getByTestId(ADMIN_PASSWORD_INPUT_TEST_ID);
       expect(inputPasswordUser.value).toBe("");
 
-      const form = screen.getByTestId("form-admin");
+      const form = screen.getByTestId(FORM_ADMIN_TEST_ID);
       const handleSubmit = jest.fn((e) => e.preventDefault());
 
       form.addEventListener("submit", handleSubmit);
       fireEvent.submit(form);
-      expect(screen.getByTestId("form-admin")).toBeTruthy();
+      expect(screen.getByTestId(FORM_ADMIN_TEST_ID)).toBeTruthy();
     });
   });
 
@@ -141,20 +144,20 @@ describe("Given that I am a user on login page", () => {
     test("Then it should renders Login page", () => {
       document.body.innerHTML = LoginUI();
 
-      const inputEmailUser = screen.getByTestId("admin-email-input");
+      const inputEmailUser = screen.getByTestId(ADMIN_EMAIL_INPUT_TEST_ID);
       fireEvent.change(inputEmailUser, { target: { value: "pasunemail" } });
       expect(inputEmailUser.value).toBe("pasunemail");
 
-      const inputPasswordUser = screen.getByTestId("admin-password-input");
+      const inputPasswordUser = screen.getByTestId(ADMIN_PASSWORD_INPUT_TEST_ID);
       fireEvent.change(inputPasswordUser, { target: { value: "azerty" } });
       expect(inputPasswordUser.value).toBe("azerty");
 
-      const form = screen.getByTestId("form-admin");
+      const form = screen.getByTestId(FORM_ADMIN_TEST_ID);
       const handleSubmit = jest.fn((e) => e.preventDefault());
 
       form.addEventListener("submit", handleSubmit);
       fireEvent.submit(form);
-      expect(screen.getByTestId("form-admin")).toBeTruthy();
+      expect(screen.getByTestId(FORM_ADMIN_TEST_ID)).toBeTruthy();
     });
   });
 
@@ -168,17 +171,17 @@ describe("Given that I am a user on login page", () => {
         status: "connected",
       };
 
-      const inputEmailUser = screen.getByTestId("admin-email-input");
+      const inputEmailUser = screen.getByTestId(ADMIN_EMAIL_INPUT_TEST_ID);
       fireEvent.change(inputEmailUser, { target: { value: inputData.email } });
       expect(inputEmailUser.value).toBe(inputData.email);
 
-      const inputPasswordUser = screen.getByTestId("admin-password-input");
+      const inputPasswordUser = screen.getByTestId(ADMIN_PASSWORD_INPUT_TEST_ID);
       fireEvent.change(inputPasswordUser, {
         target: { value: inputData.password },
       });
       expect(inputPasswordUser.value).toBe(inputData.password);
 
-      const form = screen.getByTestId("form-admin");
+      const form = screen.getByTestId(FORM_ADMIN_TEST_ID);
 
       // localStorage should be populated with form data
       Object.defineProperty(window, "localStorage", {
@@ -194,7 +197,7 @@ describe("Given that I am a user on login page", () => {
         document.body.innerHTML = ROUTES({ pathname });
       };
 
-      let PREVIOUS_LOCATION = "";
+      const PREVIOUS_LOCATION = "";
 
       const store = jest.fn();
 
@@ -219,7 +222,7 @@ describe("Given that I am a user on login page", () => {
           email: inputData.email,
           password: inputData.password,
           status: "connected",
-        })
+        }),
       );
     });
 
