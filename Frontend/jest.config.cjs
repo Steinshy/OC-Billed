@@ -1,49 +1,52 @@
-module.exports = {
+const config = {
+  verbose: false,
   testEnvironment: "jsdom",
-  extensionsToTreatAsEsm: [".js"],
-  moduleFileExtensions: ["js", "json"],
+  injectGlobals: true,
+  setupFilesAfterEnv: ["./setup-jest.cjs"],
   transform: {
     "^.+\\.js$": [
-      "babel-jest",
+      "@swc/jest",
       {
-        presets: [
-          [
-            "@babel/preset-env",
-            {
-              targets: {
-                node: "current",
-              },
-              modules: "auto",
-            },
-          ],
-        ],
+        jsc: {
+          target: "es2022",
+          parser: {
+            syntax: "ecmascript",
+            jsx: false,
+            dynamicImport: true,
+            topLevelAwait: true,
+          },
+        },
+        module: {
+          type: "es6",
+        },
       },
     ],
   },
-  transformIgnorePatterns: [
-    "node_modules/(?!(.*\\.mjs$|@testing-library))",
-  ],
-  setupFiles: ["./setup-jest.js"],
-  testMatch: [
-    "**/__tests__/**/*.js",
-    "**/?(*.)+(spec|test).js",
-  ],
-  collectCoverageFrom: [
-    "**/*.{js,jsx}",
-    "!**/app/**",
-    "!**/assets/**",
-    "!**/external/**",
-    "!**/fixtures/**",
-    "!**/lcov-report/**",
-    "!**/node_modules/**",
-    "!**/*.config.{js,cjs,mjs}",
-    "!**/coverage/**",
-  ],
-  verbose: false,
-  globals: {
-    "babel-jest": {
-      useESM: true,
-    },
+
+  modulePaths: ["<rootDir>"],
+  moduleNameMapper: {
+    "\\.(css|less|sass|scss)$": "<rootDir>/src/__mocks__/styleMock.js",
+    "^@testing-library/jest-dom/extend-expect$": "@testing-library/jest-dom",
+    "^~/(.*)$": "<rootDir>/$1",
+    "^@/(.*)$": "<rootDir>/src/$1",
+    "^@app/(.*)$": "<rootDir>/src/app/$1",
+    "^@containers/(.*)$": "<rootDir>/src/containers/$1",
+    "^@views/(.*)$": "<rootDir>/src/views/$1",
+    "^@utils/(.*)$": "<rootDir>/src/app/$1",
+    "^@constants/(.*)$": "<rootDir>/src/constants/$1",
+    "^@css/(.*)$": "<rootDir>/src/css/$1",
+    "^@assets/(.*)$": "<rootDir>/src/assets/$1",
+    "^@fixtures/(.*)$": "<rootDir>/src/fixtures/$1",
+    "^@mocks/(.*)$": "<rootDir>/src/__mocks__/$1",
   },
+  collectCoverageFrom: [
+    "src/**/*.{js,jsx}",
+    "!**/*.config.{js,cjs,mjs}",
+    "!src/app/App.js",
+    "!src/__tests__/**",
+    "!src/__mocks__/**",
+    "!src/fixtures/**",
+  ],
 };
 
+module.exports = config;
