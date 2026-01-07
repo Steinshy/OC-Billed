@@ -6,15 +6,12 @@ import LoadingPage from "./LoadingPage.js";
 import VerticalLayout from "./VerticalLayout.js";
 
 export default ({ data, loading, error }) => {
-  if (loading) {
-    return LoadingPage();
-  } else if (error) {
-    return ErrorPage(error);
-  }
+  if (loading)  return LoadingPage();
+  if (error) return ErrorPage(error);
 
   return `
     <div class='layout'>
-      ${VerticalLayout(120)}
+      ${VerticalLayout()}
       <div class='dashboard-content'>
         <div class='bills-feed'>
           <div class='status-bills-header' id='status-bills-header1'>
@@ -26,7 +23,7 @@ export default ({ data, loading, error }) => {
           <div class='status-bills-container' id='status-bills-container1'>
           </div>
           
-            <div class='status-bills-header' id='status-bills-header2' style='margin-top: 20px;'>
+            <div class='status-bills-header' id='status-bills-header2'>
               <h3> Validé (${
                 filteredBills(data && data.bills, "accepted").length
               }) </h3>
@@ -35,7 +32,7 @@ export default ({ data, loading, error }) => {
             <div class='status-bills-container' id='status-bills-container2'>
             </div>
 
-            <div class='status-bills-header' id='status-bills-header3' style='margin-top: 20px;'>
+            <div class='status-bills-header' id='status-bills-header3'>
               <h3> Refusé (${
                 filteredBills(data && data.bills, "refused").length
               }) </h3>

@@ -137,3 +137,7 @@
   height: 100%;
 }
 
+.status-bills-container + .status-bills-header {
+  margin-top: 20px;
+}
+

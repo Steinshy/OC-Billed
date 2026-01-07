@@ -4,9 +4,9 @@ import { validateFileUrl } from "../containers/Dashboard.js";
 export default (billUrl) => {
   const isValidFile = !validateFileUrl(billUrl);
   const iconClass = isValidFile ? "" : "icon-disabled";
-  return `<div class="icon-actions">
-      <div id="eye" data-testid="icon-eye" data-bill-url=${billUrl} class="${iconClass}">
-      ${eyeBlueIcon}
-      </div>
-    </div>`;
+  return `
+    <div class="icon-actions">
+      <div id="eye" data-testid="icon-eye" data-bill-url=${billUrl} class="${iconClass}">${eyeBlueIcon}</div>
+    </div>
+  `;
 };

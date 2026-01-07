@@ -38,11 +38,11 @@ class Api {
 }
 
 const getHeaders = (headers) => {
-  const h = {};
-  if (!headers.noContentType) h["Content-Type"] = "application/json";
+  const headersObject = {};
+  if (!headers.noContentType) headersObject["Content-Type"] = "application/json";
   const jwt = localStorage.getItem("jwt");
-  if (jwt && !headers.noAuthorization) h["Authorization"] = `Bearer ${jwt}`;
-  return { ...h, ...headers };
+  if (jwt && !headers.noAuthorization) headersObject["Authorization"] = `Bearer ${jwt}`;
+  return { ...headersObject, ...headers };
 };
 
 class ApiEntity {

@@ -173,11 +173,14 @@ export default class {
 
     const billUrl = iconEyes.attr("data-bill-url");
     if (validateFileUrl(billUrl)) return;
-    const imgWidth = Math.floor($("#modaleFileAdmin1").width() * 0.8);
-    $("#modaleFileAdmin1").find(".modal-body")
+    const modalElement = $("#modaleFileAdmin1");
+    const imgWidth = Math.floor(modalElement.width() * 0.8);
+    modalElement.find(".modal-body")
       .html(`<div class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill"/></div>`);
-    if (typeof $("#modaleFileAdmin1").modal === "function")
-      $("#modaleFileAdmin1").modal("show");
+    if (typeof modalElement.modal === "function") {
+      modalElement.attr("aria-hidden", "false");
+      modalElement.modal("show");
+    }
   };
 
   handleEditTicket(e, bill, bills) {

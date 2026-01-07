@@ -54,6 +54,10 @@
   height: 70vh;
 }
 
+#example {
+  width: 100%;
+}
+
 .icon-actions {
   display: flex;
   -webkit-box-pack: justify;

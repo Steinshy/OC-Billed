@@ -46,43 +46,43 @@ const months_short = [
 
 // PROTOTYPES
 Date.prototype.getWeekNumber = function () {
-  const d = new Date(
+  const date = new Date(
     Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()),
   );
-  const dayNum = d.getUTCDay() || 7;
-  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  return Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
+  const dayNum = date.getUTCDay() || 7;
+  date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+  return Math.ceil(((date - yearStart) / 86400000 + 1) / 7);
 };
 
 const DATEPICKER_FRAME_ID = "datepicker-frame";
 
 // DATEPICKER
 class Datepicker {
-  constructor(host, s) {
-    const t = this;
-    t.host = host;
-    t.frame = document.createElement("div");
-    t.frame.id = DATEPICKER_FRAME_ID;
-    t.frame.className = "noselect";
+  constructor(host, settings) {
+    const self = this;
+    self.host = host;
+    self.frame = document.createElement("div");
+    self.frame.id = DATEPICKER_FRAME_ID;
+    self.frame.className = "noselect";
 
     // Run config if settings present
-    if (s) t.config(s);
+    if (settings) self.config(settings);
 
     // Show conditions
     window.onresize = () => {
-      if (t.display_state) show(true);
+      if (self.display_state) show(true);
     }; // to update screen position
-    document.addEventListener("click", (e) => {
+    document.addEventListener("click", (event) => {
       if (
-        e.target == document.getElementById("datepicker") &&
+        event.target == document.getElementById("datepicker") &&
         !document.getElementById(DATEPICKER_FRAME_ID)
       ) {
-        t.load("day"); // Start date when opening
+        self.load("day"); // Start date when opening
         show(true);
       } else if (
         document.getElementById(DATEPICKER_FRAME_ID) != null &&
-        !e.path.includes(document.getElementById(DATEPICKER_FRAME_ID))
+        !event.path.includes(document.getElementById(DATEPICKER_FRAME_ID))
       )
         show(false);
     });
@@ -103,47 +103,47 @@ class Datepicker {
     const canNavigatePrevious = (viewType) => {
       if (viewType === "day") {
         return (
-          t.firstdate == undefined ||
-          t.date.getMonth() > t.firstdate.getMonth() ||
-          t.date.getFullYear() > t.firstdate.getFullYear()
+          self.firstdate == undefined ||
+          self.date.getMonth() > self.firstdate.getMonth() ||
+          self.date.getFullYear() > self.firstdate.getFullYear()
         );
       }
       return (
-        t.firstdate == undefined ||
-        t.date.getFullYear() > t.firstdate.getFullYear()
+        self.firstdate == undefined ||
+        self.date.getFullYear() > self.firstdate.getFullYear()
       );
     };
 
     const canNavigateNext = (viewType) => {
       if (viewType === "day") {
         return (
-          t.lastdate == undefined ||
-          t.date.getMonth() < t.lastdate.getMonth() ||
-          t.date.getFullYear() < t.lastdate.getFullYear()
+          self.lastdate == undefined ||
+          self.date.getMonth() < self.lastdate.getMonth() ||
+          self.date.getFullYear() < self.lastdate.getFullYear()
         );
       }
       return (
-        t.lastdate == undefined ||
-        t.date.getFullYear() < t.lastdate.getFullYear()
+        self.lastdate == undefined ||
+        self.date.getFullYear() < self.lastdate.getFullYear()
       );
     };
 
     const isDateInRange = (day) => {
       const inFirstRange =
-        t.firstdate == undefined
+        self.firstdate == undefined
           ? true
-          : day.getMonth() == t.firstdate.getMonth()
-          ? day.getFullYear() == t.firstdate.getFullYear()
-            ? day.getDate() >= t.firstdate.getDate()
+          : day.getMonth() == self.firstdate.getMonth()
+          ? day.getFullYear() == self.firstdate.getFullYear()
+            ? day.getDate() >= self.firstdate.getDate()
             : true
           : true;
 
       const inLastRange =
-        t.lastdate == undefined
+        self.lastdate == undefined
           ? true
-          : day.getMonth() == t.lastdate.getMonth()
-          ? day.getFullYear() == t.lastdate.getFullYear()
-            ? day.getDate() <= t.lastdate.getDate()
+          : day.getMonth() == self.lastdate.getMonth()
+          ? day.getFullYear() == self.lastdate.getFullYear()
+            ? day.getDate() <= self.lastdate.getDate()
             : true
           : true;
 
@@ -152,42 +152,42 @@ class Datepicker {
 
     const loadDayView = () => {
       const prev = createNavigationButton("<<", canNavigatePrevious("day"), () => {
-        t.date = new Date(t.date.getFullYear(), t.date.getMonth() - 1, 1);
-        t.load("day");
+        self.date = new Date(self.date.getFullYear(), self.date.getMonth() - 1, 1);
+        self.load("day");
       });
-      t.head.append(prev);
+      self.head.append(prev);
 
       const head = document.createElement("li");
-      t.head.append(head);
+      self.head.append(head);
       head.colSpan = 5;
-      head.innerHTML = `${months[t.date.getMonth()]} ${t.date.getFullYear()}`;
-      head.onclick = () => t.load("month");
+      head.innerHTML = `${months[self.date.getMonth()]} ${self.date.getFullYear()}`;
+      head.onclick = () => self.load("month");
       head.className = "pointer";
 
       const next = createNavigationButton(">>", canNavigateNext("day"), () => {
-        t.date = new Date(t.date.getFullYear(), t.date.getMonth() + 1, 1);
-        t.load("day");
+        self.date = new Date(self.date.getFullYear(), self.date.getMonth() + 1, 1);
+        self.load("day");
       });
-      t.head.append(next);
+      self.head.append(next);
 
       const row = document.createElement("tr");
-      t.table.append(row);
-      for (let day = 0; day < 7; day++) {
+      self.table.append(row);
+      for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
         const cell = document.createElement("th");
-        cell.innerHTML = weekdays_short[day];
+        cell.innerHTML = weekdays_short[dayIndex];
         row.append(cell);
       }
 
       const first_day_in_month = new Date(
-        t.date.getFullYear(),
-        t.date.getMonth(),
+        self.date.getFullYear(),
+        self.date.getMonth(),
         1,
       );
       let index = 1 - (first_day_in_month.getDay() || 7);
-      for (let y = 0; y < 6; y++) {
+      for (let rowIndex = 0; rowIndex < 6; rowIndex++) {
         const tr = document.createElement("tr");
-        t.table.append(tr);
-        for (let x = 0; x < 7; x++) {
+        self.table.append(tr);
+        for (let columnIndex = 0; columnIndex < 7; columnIndex++) {
           const day = new Date(first_day_in_month.getTime());
           day.setDate(day.getDate() + index);
 
@@ -195,13 +195,13 @@ class Datepicker {
           tr.append(td);
           td.innerHTML = day.getDate();
 
-          const isCurrentMonth = day.getMonth() == t.date.getMonth();
-          const isEnabled = t.disableddays(day) && isDateInRange(day);
+          const isCurrentMonth = day.getMonth() == self.date.getMonth();
+          const isEnabled = self.disableddays(day) && isDateInRange(day);
 
           if (isCurrentMonth && isEnabled) {
             td.className = "pointer";
             td.onclick = () => {
-              t.setDate(day);
+              self.setDate(day);
               show(false);
             };
           } else {
@@ -217,45 +217,45 @@ class Datepicker {
 
     const loadMonthView = () => {
       const prev = createNavigationButton("<<", canNavigatePrevious("month"), () => {
-        t.date = new Date(t.date.getFullYear() - 1, 1, 1);
-        t.load("month");
+        self.date = new Date(self.date.getFullYear() - 1, 1, 1);
+        self.load("month");
       });
-      t.head.append(prev);
+      self.head.append(prev);
 
       const head = document.createElement("li");
-      t.head.append(head);
-      head.innerHTML = t.date.getFullYear();
+      self.head.append(head);
+      head.innerHTML = self.date.getFullYear();
 
       const next = createNavigationButton(">>", canNavigateNext("month"), () => {
-        t.date = new Date(t.date.getFullYear() + 1, 1, 1);
-        t.load("month");
+        self.date = new Date(self.date.getFullYear() + 1, 1, 1);
+        self.load("month");
       });
-      t.head.append(next);
+      self.head.append(next);
 
-      for (let y = 0; y < 3; y++) {
+      for (let rowIndex = 0; rowIndex < 3; rowIndex++) {
         const row = document.createElement("tr");
-        t.table.append(row);
-        for (let x = 0; x < 4; x++) {
-          const index = y * 4 + x;
-          const day = new Date(t.date.getFullYear(), index, 1);
+        self.table.append(row);
+        for (let columnIndex = 0; columnIndex < 4; columnIndex++) {
+          const monthIndex = rowIndex * 4 + columnIndex;
+          const day = new Date(self.date.getFullYear(), monthIndex, 1);
 
           const cell = document.createElement("td");
           row.append(cell);
-          cell.innerHTML = months_short[index];
+          cell.innerHTML = months_short[monthIndex];
 
           const inRange =
-            (t.firstdate == undefined
+            (self.firstdate == undefined
               ? true
-              : day.getTime() >= new Date(t.firstdate).setDate(1)) &&
-            (t.lastdate == undefined
+              : day.getTime() >= new Date(self.firstdate).setDate(1)) &&
+            (self.lastdate == undefined
               ? true
-              : day.getTime() <= new Date(t.lastdate).setDate(1));
+              : day.getTime() <= new Date(self.lastdate).setDate(1));
 
           if (inRange) {
             cell.className = "pointer";
             cell.onclick = () => {
-              t.date = new Date(t.date.getFullYear(), index, 1);
-              t.load("day");
+              self.date = new Date(self.date.getFullYear(), monthIndex, 1);
+              self.load("day");
             };
           } else {
             cell.className = "disabled";
@@ -265,50 +265,50 @@ class Datepicker {
     };
 
     // Load
-    t.load = function (n) {
-      while (t.frame.firstChild) t.frame.removeChild(t.frame.firstChild);
+    self.load = function (viewType) {
+      while (self.frame.firstChild) self.frame.removeChild(self.frame.firstChild);
 
-      t.head = document.createElement("ul");
-      t.frame.append(t.head);
+      self.head = document.createElement("ul");
+      self.frame.append(self.head);
 
-      t.table = document.createElement("table");
-      t.frame.append(t.table);
-      t.table.className = n;
+      self.table = document.createElement("table");
+      self.frame.append(self.table);
+      self.table.className = viewType;
 
-      if (n == "day") {
+      if (viewType == "day") {
         loadDayView();
-      } else if (n == "month") {
+      } else if (viewType == "month") {
         loadMonthView();
       }
     };
 
-    const show = function (bool) {
-      if (bool) {
-        const rect = t.host.getBoundingClientRect();
-        const x = (rect.left + rect.right) / 2;
-        const y = rect.bottom - rect.top + document.documentElement.scrollTop;
-        t.frame.style.setProperty("top", `${y + 20  }px`);
-        t.frame.style.setProperty("left", `${x - 152  }px`);
+    const show = function (isVisible) {
+      if (isVisible) {
+        const rect = self.host.getBoundingClientRect();
+        const centerX = (rect.left + rect.right) / 2;
+        const topY = rect.bottom - rect.top + document.documentElement.scrollTop;
+        self.frame.style.setProperty("top", `${topY + 20  }px`);
+        self.frame.style.setProperty("left", `${centerX - 152  }px`);
 
-        document.body.append(t.frame);
-      } else if (!bool) document.getElementById(DATEPICKER_FRAME_ID).remove();
+        document.body.append(self.frame);
+      } else if (!isVisible) document.getElementById(DATEPICKER_FRAME_ID).remove();
     };
   }
 
-  config(s) {
-    this.firstdate = s.firstdate || this.firstdate;
-    this.lastdate = s.lastdate || this.lastdate;
+  config(settings) {
+    this.firstdate = settings.firstdate || this.firstdate;
+    this.lastdate = settings.lastdate || this.lastdate;
     this.disableddays =
-      s.disableddays ||
+      settings.disableddays ||
       this.disableddays ||
       (() => {
         return true;
       });
     this.format =
-      s.format ||
+      settings.format ||
       this.format ||
-      ((d) => {
-        return d;
+      ((date) => {
+        return date;
       });
 
     this.validateConfig();
@@ -334,34 +334,33 @@ class Datepicker {
   }
 
   findValidInitialDate() {
-    const d = new Date();
-    let date = d;
+    let initDate = new Date();
 
-    while (!this.disableddays(date)) {
-      date = this.selectInitialDate(d);
-      d.setTime(d.getTime() + DAY);
+    while (!this.disableddays(initDate)) {
+      initDate = this.selectInitialDate(initDate);
+      initDate.setTime(initDate.getTime() + DAY);
     }
 
-    return date;
+    return initDate;
   }
 
-  selectInitialDate(d) {
+  selectInitialDate(date) {
     if (this.firstdate && this.lastdate) {
       const inRange =
-        d.getTime() >= this.firstdate.getTime() &&
-        d.getTime() <= this.lastdate.getTime();
-      return inRange ? d : this.firstdate;
+        date.getTime() >= this.firstdate.getTime() &&
+        date.getTime() <= this.lastdate.getTime();
+      return inRange ? date : this.firstdate;
     }
 
     if (this.firstdate) {
-      return d.getTime() >= this.firstdate.getTime() ? d : this.firstdate;
+      return date.getTime() >= this.firstdate.getTime() ? date : this.firstdate;
     }
 
     if (this.lastdate) {
-      return d.getTime() <= this.lastdate.getTime() ? d : this.lastdate;
+      return date.getTime() <= this.lastdate.getTime() ? date : this.lastdate;
     }
 
-    return d;
+    return date;
   }
 
   getDate() {

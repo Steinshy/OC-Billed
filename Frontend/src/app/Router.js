@@ -8,9 +8,14 @@ import BillsUI from "../views/BillsUI.js";
 import DashboardUI from "../views/DashboardUI.js";
 import store from "./Store.js";
 
-const LAYOUT_ICON_1_ID = "layout-icon1";
-const LAYOUT_ICON_2_ID = "layout-icon2";
 const ACTIVE_ICON_CLASS = "active-icon";
+
+const layoutIcons = () => {
+  return {
+    divIcon1: document.getElementById("layout-icon1"),
+    divIcon2: document.getElementById("layout-icon2"),
+  };
+};
 
 export default async () => {
   const rootDiv = document.getElementById("root");
@@ -24,26 +29,29 @@ export default async () => {
       new Login({ document, localStorage, onNavigate, store });
     } else if (pathname === ROUTES_PATH["Bills"]) {
       rootDiv.innerHTML = ROUTES({ pathname, loading: true });
-      const divIcon1 = document.getElementById(LAYOUT_ICON_1_ID);
-      const divIcon2 = document.getElementById(LAYOUT_ICON_2_ID);
-      divIcon1.classList.add(ACTIVE_ICON_CLASS);
-      divIcon2.classList.remove(ACTIVE_ICON_CLASS);
+      const { divIcon1, divIcon2 } = layoutIcons();
+      if (divIcon1 && divIcon2) {
+        divIcon1.classList.add(ACTIVE_ICON_CLASS);
+        divIcon2.classList.remove(ACTIVE_ICON_CLASS);
+      }
       const bills = new Bills({ document, onNavigate, store, localStorage });
       bills.getBills().then(data => {
         rootDiv.innerHTML = BillsUI({ data });
-        const divIcon1 = document.getElementById(LAYOUT_ICON_1_ID);
-        const divIcon2 = document.getElementById(LAYOUT_ICON_2_ID);
-        divIcon1.classList.add(ACTIVE_ICON_CLASS);
-        divIcon2.classList.remove(ACTIVE_ICON_CLASS);
+        const { divIcon1, divIcon2 } = layoutIcons();
+        if (divIcon1 && divIcon2) {
+          divIcon1.classList.add(ACTIVE_ICON_CLASS);
+          divIcon2.classList.remove(ACTIVE_ICON_CLASS);
+        }
         new Bills({ document, onNavigate, store, localStorage });
       }).catch(error => rootDiv.innerHTML = ROUTES({ pathname, error }));
     } else if (pathname === ROUTES_PATH["NewBill"]) {
       rootDiv.innerHTML = ROUTES({ pathname, loading: true });
+      const { divIcon1, divIcon2 } = layoutIcons();
+      if (divIcon1 && divIcon2) {
+        divIcon1.classList.remove(ACTIVE_ICON_CLASS);
+        divIcon2.classList.add(ACTIVE_ICON_CLASS);
+      }
       new NewBill({ document, onNavigate, store, localStorage });
-      const divIcon1 = document.getElementById(LAYOUT_ICON_1_ID);
-      const divIcon2 = document.getElementById(LAYOUT_ICON_2_ID);
-      divIcon1.classList.remove(ACTIVE_ICON_CLASS);
-      divIcon2.classList.add(ACTIVE_ICON_CLASS);
 
     } else if (pathname === ROUTES_PATH["Dashboard"]) {
       rootDiv.innerHTML = ROUTES({ pathname, loading: true });
@@ -71,18 +79,20 @@ export default async () => {
   } else if (window.location.hash !== "") {
     if (window.location.hash === ROUTES_PATH["Bills"]) {
       rootDiv.innerHTML = ROUTES({ pathname: window.location.hash, loading: true });
-      const divIcon1 = document.getElementById(LAYOUT_ICON_1_ID);
-      const divIcon2 = document.getElementById(LAYOUT_ICON_2_ID);
-      divIcon1.classList.add(ACTIVE_ICON_CLASS);
-      divIcon2.classList.remove(ACTIVE_ICON_CLASS);
+      const { divIcon1, divIcon2 } = layoutIcons();
+      if (divIcon1 && divIcon2) {
+        divIcon1.classList.add(ACTIVE_ICON_CLASS);
+        divIcon2.classList.remove(ACTIVE_ICON_CLASS);
+      }
       const bills = new Bills({ document, onNavigate, store, localStorage });
 
       bills.getBills().then(data => {
         rootDiv.innerHTML = BillsUI({ data });
-        const divIcon1 = document.getElementById(LAYOUT_ICON_1_ID);
-        const divIcon2 = document.getElementById(LAYOUT_ICON_2_ID);
-        divIcon1.classList.add(ACTIVE_ICON_CLASS);
-        divIcon2.classList.remove(ACTIVE_ICON_CLASS);
+        const { divIcon1, divIcon2 } = layoutIcons();
+        if (divIcon1 && divIcon2) {
+          divIcon1.classList.add(ACTIVE_ICON_CLASS);
+          divIcon2.classList.remove(ACTIVE_ICON_CLASS);
+        }
         new Bills({ document, onNavigate, store, localStorage });
       })
       .catch(error => rootDiv.innerHTML = ROUTES({ pathname: window.location.hash, error }));
@@ -91,10 +101,11 @@ export default async () => {
     else if (window.location.hash === ROUTES_PATH["NewBill"]) {
       rootDiv.innerHTML = ROUTES({ pathname: window.location.hash, loading: true });
       new NewBill({ document, onNavigate, store, localStorage });
-      const divIcon1 = document.getElementById(LAYOUT_ICON_1_ID);
-      const divIcon2 = document.getElementById(LAYOUT_ICON_2_ID);
-      divIcon1.classList.remove(ACTIVE_ICON_CLASS);
-      divIcon2.classList.add(ACTIVE_ICON_CLASS);
+      const { divIcon1, divIcon2 } = layoutIcons();
+      if (divIcon1 && divIcon2) {
+        divIcon1.classList.remove(ACTIVE_ICON_CLASS);
+        divIcon2.classList.add(ACTIVE_ICON_CLASS);
+      }
     } else if (window.location.hash === ROUTES_PATH["Dashboard"]) {
       rootDiv.innerHTML = ROUTES({ pathname: window.location.hash, loading: true });
       const bills = new Dashboard({ document, onNavigate, store, bills: [], localStorage });

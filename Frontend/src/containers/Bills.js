@@ -23,10 +23,12 @@ export default class {
     const billUrl = icon.getAttribute("data-bill-url");
 
     if (validateFileUrl(billUrl)) return;
-    const imgWidth = Math.floor($("#modaleFile").width() * 0.5);
-    $("#modaleFile").find(".modal-body")
+    const modalElement = $("#modaleFile");
+    const imgWidth = Math.floor(modalElement.width() * 0.5);
+    modalElement.find(".modal-body")
       .html(`<div class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`);
-    $("#modaleFile").modal("show");
+    modalElement.attr("aria-hidden", "false");
+    modalElement.modal("show");
   };
 
   getBills = () => {
