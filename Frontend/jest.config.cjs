@@ -32,7 +32,6 @@ const config = {
     "^@app/(.*)$": "<rootDir>/src/app/$1",
     "^@containers/(.*)$": "<rootDir>/src/containers/$1",
     "^@views/(.*)$": "<rootDir>/src/views/$1",
-    "^@utils/(.*)$": "<rootDir>/src/app/$1",
     "^@constants/(.*)$": "<rootDir>/src/constants/$1",
     "^@css/(.*)$": "<rootDir>/src/css/$1",
     "^@assets/(.*)$": "<rootDir>/src/assets/$1",

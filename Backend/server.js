@@ -6,7 +6,6 @@ const startServer = async () => {
   try {
     await sequelize.authenticate();
     console.log("Connection to database established");
-
     await seedDatabase();
 
     app.listen(5678, () => {
