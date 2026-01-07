@@ -33,6 +33,7 @@
   padding: 20px;
   border-radius: 5px;
   overflow-y: auto;
+  height: 300px;
 }
 
 #vat-flex-container {
@@ -63,6 +64,7 @@
   display: flex;
   justify-content: space-between;
   margin-top: 24px;
+  width: 300px;
   max-width: 300px !important;
 }
 
@@ -81,4 +83,20 @@
 
 #file-name-admin {
   max-width: 300px;
+}
+
+.file-error-message {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.file-error-message p {
+  margin: 0;
+  padding: 0;
+}
+
+.modal-body > div {
+  text-align: center;
 }

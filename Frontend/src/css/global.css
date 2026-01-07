@@ -7,6 +7,10 @@ body {
   background-color: #fff;
 }
 
+body.login-page {
+  background-color: #0E5AE5;
+}
+
 #root {
   width: 100%;
   height: 100%;

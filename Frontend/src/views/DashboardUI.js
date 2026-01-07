@@ -17,7 +17,7 @@ export default ({ data, loading, error }) => {
       ${VerticalLayout(120)}
       <div class='dashboard-content'>
         <div class='bills-feed'>
-          <div class='status-bills-header'>
+          <div class='status-bills-header' id='status-bills-header1'>
             <h3> En attente (${
               filteredBills(data && data.bills, "pending").length
             }) </h3>
@@ -26,7 +26,7 @@ export default ({ data, loading, error }) => {
           <div class='status-bills-container' id='status-bills-container1'>
           </div>
           
-            <div class='status-bills-header' style='margin-top: 20px;'>
+            <div class='status-bills-header' id='status-bills-header2' style='margin-top: 20px;'>
               <h3> Validé (${
                 filteredBills(data && data.bills, "accepted").length
               }) </h3>
@@ -35,7 +35,7 @@ export default ({ data, loading, error }) => {
             <div class='status-bills-container' id='status-bills-container2'>
             </div>
 
-            <div class='status-bills-header' style='margin-top: 20px;'>
+            <div class='status-bills-header' id='status-bills-header3' style='margin-top: 20px;'>
               <h3> Refusé (${
                 filteredBills(data && data.bills, "refused").length
               }) </h3>

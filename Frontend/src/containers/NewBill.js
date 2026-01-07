@@ -8,73 +8,119 @@ export default class NewBill {
     this.store = store;
     this.fileUrl = null;
     this.fileName = null;
+    this.filePath = null;
     this.billId = null;
     this.userData = JSON.parse(localStorage.getItem("user"));
 
-    const formNewBill = this.document.querySelector("form[data-testid=\"form-new-bill\"]");
-    formNewBill?.addEventListener("submit", this.handleSubmit);
+    const formNewBill = this.document.querySelector('form[data-testid="form-new-bill"]');
 
-    const fileInput = this.document.querySelector('input[data-testid="file"]');
-    fileInput?.addEventListener("change", this.handleFileChange);
+    if (formNewBill) {formNewBill.addEventListener("submit", this.handleFormSubmit);}
+    else console.error("Form not found when initializing CreateNewBill");
+
+    const file = this.document.querySelector('input[data-testid="file"]');
+    if (file) file.addEventListener("change", this.handleFileChange);
+    else console.error("File input not found when initializing CreateNewBill");
 
     new Logout({ document, localStorage, onNavigate });
   }
   handleFileChange = event => {
     event.preventDefault();
-    const fileInput = event?.target?.querySelector('input[data-testid="file"]');
+    const fileInput = event.target;
     const file = fileInput?.files[0];
-    if (!file || !fileInput) return;
 
-    const extension = file.name.split(".").pop().toLowerCase();
-    const allowedExtensions = ["jpg", "jpeg", "png"];
-    const fileInputContainer = fileInput.closest(".col-half");
-    const userEmail = this.userData ? this.userData.email : JSON.parse(localStorage.getItem("user")).email;
-    if (!allowedExtensions.includes(extension)) {
-      const previousError = fileInputContainer?.querySelector(".file-error-message");
-      if (previousError) previousError.remove();
-      const errorMessage = document.createElement("small");
-      errorMessage.className = "file-error-message";
-      errorMessage.textContent = "Les fichiers autorisés sont: jpg, jpeg ou png";
-      fileInputContainer.appendChild(errorMessage);
-      fileInput.value = "";
+    if (!file) {
+      this.fileUrl = null;
+      this.fileName = null;
+      this.filePath = null;
+      this.billId = null;
+      this.isUploading = false;
+      this.uploadError = null;
       return;
     }
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("email", userEmail);
+    const filePath = event.target.value.split(/\\/g);
+    const fileName = filePath[filePath.length - 1];
+    const extension = fileName.split(".").pop().toLowerCase();
+    const allowedExtensions = ["jpg", "jpeg", "png"];
 
-    this.store.bills().create({ data: formData, headers: { noContentType: true } })
-    .then(({ fileUrl, key }) => {
-      this.billId = key;
-      this.fileUrl = fileUrl;
-      this.fileName = file.name;
+    const fileInputContainer = fileInput.closest(".col-half");
+    const existingError = fileInputContainer.querySelector(".file-error-message");
+
+    if (!allowedExtensions.includes(extension)) {
+      if (!existingError) {
+        const errorMessage = document.createElement("small");
+        errorMessage.className = "file-error-message";
+        errorMessage.textContent = "Les fichiers autorisés sont: jpg, jpeg ou png";
+        fileInputContainer.appendChild(errorMessage);
+      }
+      fileInput.value = "";
+      this.fileUrl = null;
+      this.fileName = null;
+      this.filePath = null;
+      this.billId = null;
+      return;
+    }
+
+    if (existingError) existingError.remove();
+
+    const formData = new FormData();
+    const email = this.userData?.email || JSON.parse(localStorage.getItem("user")).email;
+    formData.append("file", file);
+    formData.append("email", email);
+
+
+    this.store.bills().create({ data: formData, headers: { noContentType: true } }).then(bill => {
+      console.log("Bill created:", bill);
+      this.billId = bill.key;
+      this.filePath = bill.filePath;
+      this.fileUrl = `${this.store.api.baseUrl}/${bill.filePath}`;
+      this.fileName = fileName;
     }).catch(error => console.error(error));
   };
-  handleSubmit = (event) => {
+
+  handleFormSubmit = event => {
     event.preventDefault();
+    console.log("Form submit started. billId:", this.billId, "fileUrl:", this.fileUrl);
+
+    if (!this.billId || !this.fileUrl) {
+      console.error("Cannot submit bill: missing file upload");
+      return;
+    }
+
+    const email = this.userData? this.userData.email : JSON.parse(localStorage.getItem("user")).email;
     const bill = {
-      email: this.userData ? this.userData.email : "",
-      type: event.target.querySelector("select[data-testid=\"expense-type\"]").value || "",
-      name: event.target.querySelector("input[data-testid=\"expense-name\"]").value || "",
-      amount: parseInt(event.target.querySelector("input[data-testid=\"amount\"]").value || 0),
-      date: event.target.querySelector("input[data-testid=\"datepicker\"]").value || "",
-      vat: event.target.querySelector("input[data-testid=\"vat\"]").value || 0,
-      pct: parseInt(event.target.querySelector("input[data-testid=\"pct\"]").value) || 20,
-      commentary: event.target.querySelector("textarea[data-testid=\"commentary\"]").value || "",
-      fileUrl: this.fileUrl || "",
-      fileName: this.fileName || "",
+      email,
+      type: event.target.querySelector('select[data-testid="expense-type"]').value,
+      name: event.target.querySelector('input[data-testid="expense-name"]').value,
+      amount: parseInt(event.target.querySelector('input[data-testid="amount"]').value),
+      date: event.target.querySelector('input[data-testid="datepicker"]').value,
+      vat: event.target.querySelector('input[data-testid="vat"]').value,
+      pct: parseInt(event.target.querySelector('input[data-testid="pct"]').value) || 20,
+      commentary: event.target.querySelector('textarea[data-testid="commentary"]').value,
+      fileUrl: this.fileUrl,
+      fileName: this.fileName,
       status: "pending",
     };
+    console.log("Submitting bill:", bill);
     this.updateBill(bill);
   };
 
   // not need to cover this function by tests
-  updateBill = (bill) => {
+  updateBill = bill => {
     if (this.store) {
-      this.store.bills().update({ data: JSON.stringify(bill), selector: this.billId })
-        .then(() => this.onNavigate(ROUTES_PATH["Bills"]))
-        .catch(error => console.error(error));
+      this.store
+        .bills().update({ data: JSON.stringify(bill), selector: this.billId })
+        .then((response) => {
+          console.log("Bill updated successfully:", response);
+          this.fileUrl = null;
+          this.fileName = null;
+          this.filePath = null;
+          this.billId = null;
+          this.onNavigate(ROUTES_PATH["Bills"]);
+        })
+        .catch(error => {
+          console.error("Error updating bill:", error);
+        });
     }
   };
 }

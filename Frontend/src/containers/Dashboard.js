@@ -34,6 +34,23 @@ export const filteredBills = (data, status) => {
     : [];
 };
 
+export const validateFileUrl = value => {
+  if (value == null || typeof value !== "string") return true;
+  const trimmed = value.trim();
+  return !trimmed || /^(null|undefined)$|\/(null|undefined)/.test(trimmed);
+};
+
+export const formatBillForDisplay = bill => {
+  const hasValidFile = !validateFileUrl(bill.fileUrl);
+  return {
+    ...bill,
+    hasValidFile,
+    displayFileName: validateFileUrl(bill.fileName) ? "" : bill.fileName,
+    displayFileUrl: validateFileUrl(bill.fileUrl) ? "" : bill.fileUrl,
+    displayCommentAdmin: validateFileUrl(bill.commentAdmin) ? "" : bill.commentAdmin,
+  };
+};
+
 export const card = (bill) => {
   const firstAndLastNames = bill.email.split("@")[0];
   const firstName = firstAndLastNames.includes(".")
@@ -78,97 +95,172 @@ export const getStatus = (index) => {
   }
 };
 
+
 export default class {
   constructor({ document, onNavigate, store, bills, localStorage }) {
     this.document = document;
     this.onNavigate = onNavigate;
     this.store = store;
-    $("#arrow-icon1").click((e) => this.handleShowTickets(e, bills, 1));
-    $("#arrow-icon2").click((e) => this.handleShowTickets(e, bills, 2));
-    $("#arrow-icon3").click((e) => this.handleShowTickets(e, bills, 3));
+    this.bills = bills;
+    this.preservedSectionIndex = null;
+
+    $(document).on("click", "#status-bills-header1", () => this.handleShowTickets(1));
+    $(document).on("click", "#arrow-icon1", (event) => {
+      event.stopPropagation();
+      this.handleShowTickets(1);
+    });
+    $(document).on("click", "#status-bills-header2", () => this.handleShowTickets(2));
+    $(document).on("click", "#arrow-icon2", (event) => {
+      event.stopPropagation();
+      this.handleShowTickets(2);
+    });
+    $(document).on("click", "#status-bills-header3", () => this.handleShowTickets(3));
+    $(document).on("click", "#arrow-icon3", (event) => {
+      event.stopPropagation();
+      this.handleShowTickets(3);
+    });
+
+
+    $(document).on("click", '[id^="open-bill"]', event => {
+      const billId = event.currentTarget.id.replace("open-bill", "");
+      const bill = this.bills.find(b => b.id === billId);
+      if (bill) {
+        this.handleEditTicket(event, bill, this.bills);
+      }
+    });
+
+    if (this.preservedSectionIndex !== null && this.bills && this.bills.length > 0) {
+      setTimeout(() => {
+        const headerElement = $(`#status-bills-header${this.preservedSectionIndex}`);
+        if (headerElement.length > 0) {
+          this.handleShowTickets(this.preservedSectionIndex);
+        }
+      }, 100);
+    }
     new Logout({ localStorage, onNavigate });
   }
 
-  handleClickIconEye = () => {
-    const billUrl = $("#icon-eye-d").attr("data-bill-url");
-    const imgWidth = Math.floor($("#modaleFileAdmin1").width() * 0.8);
-    $("#modaleFileAdmin1")
-      .find(".modal-body")
-      .html(
-        `<div style='text-align: center;'><img width=${imgWidth} src=${billUrl} alt="Bill"/></div>`,
+  handleShowTickets(index) {
+    const sectionIsOpen = this.index !== undefined && this.index !== index;
+
+    const openTicketsSection = (index) => {
+      this.index = index;
+      this.preservedSectionIndex = index;
+      this.isSectionOpen = true;
+      $(`#arrow-icon${index}`).css({ transform: "rotate(0deg)" });
+      $(`#status-bills-container${index}`).html(
+        cards(filteredBills(this.bills, getStatus(this.index))),
       );
+    };
+
+    const closeTicketsSection = index => {
+      this.isSectionOpen = false;
+      $(`#arrow-icon${index}`).css({ transform: "rotate(90deg)" });
+      $(`#status-bills-container${index}`).html("");
+    };
+
+    if (sectionIsOpen || this.index === undefined || !this.isSectionOpen) {
+      openTicketsSection(index);
+    } else {
+      closeTicketsSection(index);
+    }
+    return this.bills;
+  }
+
+  handleClickIconEye = () => {
+    const iconEyes = $("#icon-eye-d");
+    if (iconEyes.hasClass("disabled")) return;
+
+    const billUrl = iconEyes.attr("data-bill-url");
+    if (validateFileUrl(billUrl)) return;
+    const imgWidth = Math.floor($("#modaleFileAdmin1").width() * 0.8);
+    $("#modaleFileAdmin1").find(".modal-body")
+      .html(`<div class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill"/></div>`);
     if (typeof $("#modaleFileAdmin1").modal === "function")
       $("#modaleFileAdmin1").modal("show");
   };
 
   handleEditTicket(e, bill, bills) {
-    if (this.counter === undefined || this.id !== bill.id) this.counter = 0;
-    if (this.id === undefined || this.id !== bill.id) this.id = bill.id;
-    if (this.counter % 2 === 0) {
-      bills.forEach((b) => {
+    const isSwitchingTicket = this.id !== undefined && this.id !== bill.id;
+
+    if (isSwitchingTicket) {
+      $(`#open-bill${this.id}`).css({ background: "#0D5AE5" });
+      this.id = bill.id;
+      this.counter = 1;
+      bills.forEach(b => {
         $(`#open-bill${b.id}`).css({ background: "#0D5AE5" });
       });
       $(`#open-bill${bill.id}`).css({ background: "#2A2B35" });
-      $(".dashboard-right-container div").html(DashboardFormUI(bill));
+      $(".dashboard-right-container div").html(DashboardFormUI(formatBillForDisplay(bill)));
       $(".vertical-navbar").css({ height: "150vh" });
-      this.counter++;
-    } else {
-      $(`#open-bill${bill.id}`).css({ background: "#0D5AE5" });
-
-      $(".dashboard-right-container div").html(`
-        <div id="big-billed-icon" data-testid="big-billed-icon"> ${BigBilledIcon} </div>
-      `);
-      $(".vertical-navbar").css({ height: "120vh" });
-      this.counter++;
+    } else if (this.id === undefined) {
+      this.id = bill.id;
+      this.counter = 0;
     }
-    $("#icon-eye-d").click(this.handleClickIconEye);
-    $("#btn-accept-bill").click((e) => this.handleAcceptSubmit(e, bill));
-    $("#btn-refuse-bill").click((e) => this.handleRefuseSubmit(e, bill));
+
+    if (!isSwitchingTicket) {
+      if (this.counter % 2 === 0) {
+        bills.forEach(b => {
+          $(`#open-bill${b.id}`).css({ background: "#0D5AE5" });
+        });
+        $(`#open-bill${bill.id}`).css({ background: "#2A2B35" });
+        $(".dashboard-right-container div").html(DashboardFormUI(formatBillForDisplay(bill)));
+        $(".vertical-navbar").css({ height: "150vh" });
+        this.counter++;
+      } else {
+        $(`#open-bill${bill.id}`).css({ background: "#0D5AE5" });
+        $(".dashboard-right-container").html(`
+          <h3> Validations </h3>
+          <div id="big-billed-icon" data-testid="big-billed-icon">${BigBilledIcon}</div>
+        `);
+        $(".vertical-navbar").css({ height: "120vh" });
+        this.counter++;
+      }
+    }
+
+    $("#icon-eye-d").off("click").click(this.handleClickIconEye);
+    $("#btn-accept-bill").click(event => this.handleAcceptSubmit(event, bill));
+    $("#btn-refuse-bill").click(event => this.handleRefuseSubmit(event, bill));
   }
 
-  handleAcceptSubmit = (e, bill) => {
+  handleAcceptSubmit = async (event, bill) => {
+    event.preventDefault();
     const newBill = {
-      ...bill,
+      id: bill.id,
+      name: bill.name,
+      type: bill.type,
+      email: bill.email,
+      date: bill.date,
+      vat: bill.vat,
+      pct: bill.pct,
+      commentary: bill.commentary,
+      amount: bill.amount,
       status: "accepted",
       commentAdmin: $("#commentary2").val(),
     };
-    this.updateBill(newBill);
+    await this.updateBill(newBill);
     this.onNavigate(ROUTES_PATH["Dashboard"]);
   };
 
-  handleRefuseSubmit = (e, bill) => {
+  handleRefuseSubmit = async (event, bill) => {
+    event.preventDefault();
     const newBill = {
-      ...bill,
+      id: bill.id,
+      name: bill.name,
+      type: bill.type,
+      email: bill.email,
+      date: bill.date,
+      vat: bill.vat,
+      pct: bill.pct,
+      commentary: bill.commentary,
+      amount: bill.amount,
       status: "refused",
       commentAdmin: $("#commentary2").val(),
     };
-    this.updateBill(newBill);
+    await this.updateBill(newBill);
     this.onNavigate(ROUTES_PATH["Dashboard"]);
   };
 
-  handleShowTickets(e, bills, index) {
-    if (this.counter === undefined || this.index !== index) this.counter = 0;
-    if (this.index === undefined || this.index !== index) this.index = index;
-    if (this.counter % 2 === 0) {
-      $(`#arrow-icon${this.index}`).css({ transform: "rotate(0deg)" });
-      $(`#status-bills-container${this.index}`).html(
-        cards(filteredBills(bills, getStatus(this.index))),
-      );
-      this.counter++;
-    } else {
-      $(`#arrow-icon${this.index}`).css({ transform: "rotate(90deg)" });
-      $(`#status-bills-container${this.index}`).html("");
-      this.counter++;
-    }
-
-    bills.forEach((bill) => {
-      $(`#open-bill${bill.id}`).click((e) =>
-        this.handleEditTicket(e, bill, bills),
-      );
-    });
-
-    return bills;
-  }
 
   getBillsAllUsers = () => {
     if (this.store) {
@@ -188,17 +280,20 @@ export default class {
           throw error;
         });
     }
+    return Promise.reject(new Error("Store is not available"));
   };
 
   // not need to cover this function by tests
   /* istanbul ignore next */
-  updateBill = (bill) => {
+  updateBill = async (bill) => {
     if (this.store) {
-      return this.store
-        .bills()
+      return await this.store.bills()
         .update({ data: JSON.stringify(bill), selector: bill.id })
-        .then((bill) => bill)
-        .catch(console.log);
+        .catch(error => {
+          console.error(error);
+          return Promise.reject(new Error("Failed to update bill"));
+        });
     }
+    return Promise.reject(new Error("Store is not available"));
   };
 }

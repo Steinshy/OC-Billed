@@ -3,7 +3,6 @@ import ErrorPage from "./ErrorPage.js";
 import LoadingPage from "./LoadingPage.js";
 import VerticalLayout from "./VerticalLayout.js";
 
-
 const row = (bill) => {
   return `
     <tr>

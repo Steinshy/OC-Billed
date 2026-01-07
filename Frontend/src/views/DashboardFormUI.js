@@ -38,7 +38,7 @@ export default (bill) => {
         </div>
         <div class="col-sm" id="dashboard-form-col2">
           <label for="commentary" class="bold-label">Commentaire</label>
-          <div class='textarea-field' style="height: 300px;"> ${
+          <div class='textarea-field'> ${
             bill.commentary
           } </div>
         </div>
@@ -68,46 +68,58 @@ export default (bill) => {
       <div class="row">
         <div class="col-sm">
           <label for="file" class="bold-label">Justificatif</label>
+          ${
+            bill.hasValidFile
+              ? `
             <div class='input-field input-flex file-flex'>
-            <span id="file-name-admin">${bill.fileName}</span>
-            <div class='icons-container'>
-              <span id="icon-eye-d" data-testid="icon-eye-d" data-bill-url="${
-                bill.fileUrl
-              }"> ${eyeWhite} </span>
+              <span id="file-name-admin">${bill.displayFileName || bill.fileName}</span>
+              <div class='icons-container'>
+                <span id="icon-eye-d" data-testid="icon-eye-d" data-bill-url="${
+                  bill.displayFileUrl || bill.fileUrl
+                }"> ${eyeWhite} </span>
+              </div>
             </div>
+          `
+              : `
+            <div class="file-error-message">
+              <p>Le fichier n'est pas valide.</p>
+            </div>
+          `
+          }
+        </div>
+      </div>
+      <div class="row">
+        ${
+          bill.status === "pending"
+            ? `
+          <div class="col-sm">
+            <label for="commentary-admin" class="bold-label">Ajouter un commentaire</label>
+            <textarea id="commentary2" class="form-control blue-border" data-testid="commentary2" rows="5"></textarea>
           </div>
-        </div>
+          `
+            : bill.status === "accepted"
+            ? `
+          <div class="col-sm">
+            <label for="commentary-admin" class="bold-label">Votre commentaire</label>
+            <div class='input-field'> ${bill.commentAdmin} </div>
+          </div>
+          `
+            : ""
+        }
       </div>
       <div class="row">
-       ${
-         bill.status === "pending"
-           ? `
-        <div class="col-sm">
-          <label for="commentary-admin" class="bold-label">Ajouter un commentaire</label>
-          <textarea id="commentary2" class="form-control blue-border" data-testid="commentary2" rows="5"></textarea>
-        </div>
-       `
-           : `
-        <div class="col-sm">
-          <label for="commentary-admin" class="bold-label">Votre commentaire</label>
-          <div class='input-field'> ${bill.commentAdmin} </div>
-        </div>
-       `
-       }
+        ${
+          bill.status === "pending"
+            ? `
+          <div class="col-sm buttons-flex">
+            <button type="submit" id='btn-refuse-bill' data-testid='btn-refuse-bill-d' class="btn btn-primary">Refuser</button>
+            <button type="submit" id='btn-accept-bill' data-testid='btn-accept-bill-d' class="btn btn-primary">Accepter</button>
+          </div>
+          `
+            : ""
+        }
       </div>
-      <div class="row">
-      ${
-        bill.status === "pending"
-          ? `
-      <div class="col-sm buttons-flex" style="width: 300px;" >
-        <button type="submit" id='btn-refuse-bill' data-testid='btn-refuse-bill-d' class="btn btn-primary">Refuser</button>
-        <button type="submit" id='btn-accept-bill' data-testid='btn-accept-bill-d' class="btn btn-primary">Accepter</button>
+      ${modal()}
       </div>
-      `
-          : ""
-      }
-    </div>
-    ${modal()}
-    </div>
-  `;
+    `;
 };
