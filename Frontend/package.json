@@ -7,8 +7,6 @@
     "dev:all": "concurrently \"npm run dev:backend\" \"npm run dev\"",
     "dev:backend": "cd ../Backend && npm run dev",
     "lint": "eslint ./src",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
     "stylelint": "stylelint \"**/*.css\"",
     "mutation": "stryker run"
   },

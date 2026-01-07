@@ -1,6 +1,5 @@
-import { formatDate, formatStatus } from "../app/format.js";
+import { formatDate, formatStatus, validateFileUrl } from "../app/format.js";
 import { ROUTES_PATH } from "../constants/routes.js";
-import { validateFileUrl } from "../containers/Dashboard.js";
 import Logout from "./Logout.js";
 
 export default class {

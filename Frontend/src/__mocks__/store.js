@@ -97,6 +97,13 @@ const mockedBills = {
 export default {
   bills() {
     return mockedBills;
-    //return {}
+  },
+  login() {
+    return Promise.resolve({ jwt: "mock-jwt-token" });
+  },
+  users() {
+    return {
+      create: () => Promise.resolve({}),
+    };
   },
 };

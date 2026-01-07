@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/dom";
+import { fireEvent, screen, waitFor } from "@testing-library/dom";
 import { ROUTES } from "../constants/routes.js";
 import Login from "../containers/Login.js";
 import LoginUI from "../views/LoginUI.js";
@@ -76,6 +76,7 @@ describe("Given that I am a user on login page", () => {
         value: {
           getItem: jest.fn(() => null),
           setItem: jest.fn(() => null),
+          removeItem: jest.fn(() => null),
         },
         writable: true,
       });
@@ -114,8 +115,52 @@ describe("Given that I am a user on login page", () => {
       );
     });
 
-    test("It should renders Bills page", () => {
-      expect(screen.getAllByText("Mes notes de frais")).toBeTruthy();
+    test("It should renders Bills page", async () => {
+      document.body.innerHTML = LoginUI();
+      const inputData = {
+        email: "johndoe@email.com",
+        password: "azerty",
+      };
+
+      const inputEmailUser = screen.getByTestId(EMPLOYEE_EMAIL_INPUT_TEST_ID);
+      fireEvent.change(inputEmailUser, { target: { value: inputData.email } });
+
+      const inputPasswordUser = screen.getByTestId(EMPLOYEE_PASSWORD_INPUT_TEST_ID);
+      fireEvent.change(inputPasswordUser, {
+        target: { value: inputData.password },
+      });
+
+      const form = screen.getByTestId(FORM_EMPLOYEE_TEST_ID);
+
+      Object.defineProperty(window, "localStorage", {
+        value: {
+          getItem: jest.fn(() => null),
+          setItem: jest.fn(() => null),
+          removeItem: jest.fn(() => null),
+        },
+        writable: true,
+      });
+
+      const onNavigate = (pathname) => {
+        document.body.innerHTML = ROUTES({ pathname, data: null, loading: false, error: null });
+      };
+
+      const store = {
+        login: jest.fn().mockResolvedValue({ jwt: "mock-jwt-token" }),
+      };
+
+      new Login({
+        document,
+        localStorage: window.localStorage,
+        onNavigate,
+        store,
+      });
+
+      fireEvent.submit(form);
+
+      await waitFor(() => {
+        expect(screen.getAllByText("Mes notes de frais")).toBeTruthy();
+      });
     });
   });
 });
@@ -188,6 +233,7 @@ describe("Given that I am a user on login page", () => {
         value: {
           getItem: jest.fn(() => null),
           setItem: jest.fn(() => null),
+          removeItem: jest.fn(() => null),
         },
         writable: true,
       });
@@ -226,8 +272,52 @@ describe("Given that I am a user on login page", () => {
       );
     });
 
-    test("It should renders HR dashboard page", () => {
-      expect(screen.queryByText("Validations")).toBeTruthy();
+    test("It should renders HR dashboard page", async () => {
+      document.body.innerHTML = LoginUI();
+      const inputData = {
+        email: "johndoe@email.com",
+        password: "azerty",
+      };
+
+      const inputEmailUser = screen.getByTestId(ADMIN_EMAIL_INPUT_TEST_ID);
+      fireEvent.change(inputEmailUser, { target: { value: inputData.email } });
+
+      const inputPasswordUser = screen.getByTestId(ADMIN_PASSWORD_INPUT_TEST_ID);
+      fireEvent.change(inputPasswordUser, {
+        target: { value: inputData.password },
+      });
+
+      const form = screen.getByTestId(FORM_ADMIN_TEST_ID);
+
+      Object.defineProperty(window, "localStorage", {
+        value: {
+          getItem: jest.fn(() => null),
+          setItem: jest.fn(() => null),
+          removeItem: jest.fn(() => null),
+        },
+        writable: true,
+      });
+
+      const onNavigate = (pathname) => {
+        document.body.innerHTML = ROUTES({ pathname, data: null, loading: false, error: null });
+      };
+
+      const store = {
+        login: jest.fn().mockResolvedValue({ jwt: "mock-jwt-token" }),
+      };
+
+      new Login({
+        document,
+        localStorage: window.localStorage,
+        onNavigate,
+        store,
+      });
+
+      fireEvent.submit(form);
+
+      await waitFor(() => {
+        expect(screen.queryByText("Validations")).toBeTruthy();
+      });
     });
   });
 });

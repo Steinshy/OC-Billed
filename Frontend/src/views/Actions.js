@@ -1,5 +1,5 @@
+import { validateFileUrl } from "../app/format.js";
 import eyeBlueIcon from "../assets/svg/eye_blue.js";
-import { validateFileUrl } from "../containers/Dashboard.js";
 
 export default (billUrl) => {
   const isValidFile = !validateFileUrl(billUrl);

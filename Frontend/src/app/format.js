@@ -17,3 +17,20 @@ export const formatStatus = (status) => {
       return "Refused";
   }
 };
+
+export const validateFileUrl = value => {
+  if (value == null || typeof value !== "string") return true;
+  const trimmed = value.trim();
+  return !trimmed || /^(null|undefined)$|\/(null|undefined)/.test(trimmed);
+};
+
+export const formatBillForDisplay = bill => {
+  const hasValidFile = !validateFileUrl(bill.fileUrl);
+  return {
+    ...bill,
+    hasValidFile,
+    displayFileName: validateFileUrl(bill.fileName) ? "" : bill.fileName,
+    displayFileUrl: validateFileUrl(bill.fileUrl) ? "" : bill.fileUrl,
+    displayCommentAdmin: validateFileUrl(bill.commentAdmin) ? "" : bill.commentAdmin,
+  };
+};

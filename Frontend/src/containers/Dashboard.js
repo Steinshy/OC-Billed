@@ -1,4 +1,4 @@
-import { formatDate } from "../app/format.js";
+import { formatDate, formatBillForDisplay, validateFileUrl } from "../app/format.js";
 import BigBilledIcon from "../assets/svg/big_billed.js";
 import { ROUTES_PATH } from "../constants/routes.js";
 import USERS_TEST from "../constants/usersTest.js";
@@ -34,22 +34,6 @@ export const filteredBills = (data, status) => {
     : [];
 };
 
-export const validateFileUrl = value => {
-  if (value == null || typeof value !== "string") return true;
-  const trimmed = value.trim();
-  return !trimmed || /^(null|undefined)$|\/(null|undefined)/.test(trimmed);
-};
-
-export const formatBillForDisplay = bill => {
-  const hasValidFile = !validateFileUrl(bill.fileUrl);
-  return {
-    ...bill,
-    hasValidFile,
-    displayFileName: validateFileUrl(bill.fileName) ? "" : bill.fileName,
-    displayFileUrl: validateFileUrl(bill.fileUrl) ? "" : bill.fileUrl,
-    displayCommentAdmin: validateFileUrl(bill.commentAdmin) ? "" : bill.commentAdmin,
-  };
-};
 
 export const card = (bill) => {
   const firstAndLastNames = bill.email.split("@")[0];
@@ -140,8 +124,14 @@ export default class {
     new Logout({ localStorage, onNavigate });
   }
 
-  handleShowTickets(index) {
-    const sectionIsOpen = this.index !== undefined && this.index !== index;
+  handleShowTickets(event, bills, index) {
+    let actualIndex = index;
+    if (typeof index === "undefined" && typeof event === "number") {
+      actualIndex = event;
+    } else if (typeof bills === "number" && typeof index === "undefined") {
+      actualIndex = bills;
+    }
+    const sectionIsOpen = this.index !== undefined && this.index !== actualIndex;
 
     const openTicketsSection = (index) => {
       this.index = index;
@@ -160,9 +150,9 @@ export default class {
     };
 
     if (sectionIsOpen || this.index === undefined || !this.isSectionOpen) {
-      openTicketsSection(index);
+      openTicketsSection(actualIndex);
     } else {
-      closeTicketsSection(index);
+      closeTicketsSection(actualIndex);
     }
     return this.bills;
   }
@@ -242,6 +232,8 @@ export default class {
       commentAdmin: $("#commentary2").val(),
     };
     await this.updateBill(newBill);
+    const updatedBills = this.bills.map(b => b.id === bill.id ? newBill : b);
+    this.bills = updatedBills;
     this.onNavigate(ROUTES_PATH["Dashboard"]);
   };
 
@@ -261,6 +253,8 @@ export default class {
       commentAdmin: $("#commentary2").val(),
     };
     await this.updateBill(newBill);
+    const updatedBills = this.bills.map(b => b.id === bill.id ? newBill : b);
+    this.bills = updatedBills;
     this.onNavigate(ROUTES_PATH["Dashboard"]);
   };
 
@@ -283,7 +277,6 @@ export default class {
           throw error;
         });
     }
-    return Promise.reject(new Error("Store is not available"));
   };
 
   // not need to cover this function by tests
@@ -297,6 +290,5 @@ export default class {
           return Promise.reject(new Error("Failed to update bill"));
         });
     }
-    return Promise.reject(new Error("Store is not available"));
   };
 }

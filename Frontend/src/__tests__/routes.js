@@ -24,7 +24,7 @@ describe("Given I am connected and I am on some page of the app", () => {
       const pathname = ROUTES_PATH["Bills"];
       const html = ROUTES({
         pathname,
-        data,
+        data: null,
         loading,
         error,
       });

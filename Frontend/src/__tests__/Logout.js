@@ -1,5 +1,4 @@
-import { screen } from "@testing-library/dom";
-import userEvent from "@testing-library/user-event";
+import { fireEvent, screen } from "@testing-library/dom";
 import { localStorageMock } from "../__mocks__/localStorage.js";
 import { ROUTES } from "../constants/routes.js";
 import Logout from "../containers/Logout.js";
@@ -27,11 +26,15 @@ const bills = [
 describe("Given I am connected", () => {
   describe("When I click on disconnect button", () => {
     test("Then, I should be sent to login page", () => {
-      const onNavigate = (pathname) => {
+      const onNavigate = jest.fn((pathname) => {
         document.body.innerHTML = ROUTES({ pathname });
+      });
+      const mockLocalStorage = {
+        ...localStorageMock,
+        clear: jest.fn(),
       };
       Object.defineProperty(window, "localStorage", {
-        value: localStorageMock,
+        value: mockLocalStorage,
       });
       window.localStorage.setItem(
         "user",
@@ -40,13 +43,12 @@ describe("Given I am connected", () => {
         }),
       );
       document.body.innerHTML = DashboardUI({ bills });
-      const logout = new Logout({ document, onNavigate, localStorage });
-      const handleClick = jest.fn(logout.handleClick);
+      new Logout({ document, onNavigate, localStorage: mockLocalStorage });
 
       const disco = screen.getByTestId("layout-disconnect");
-      disco.addEventListener("click", handleClick);
-      userEvent.click(disco);
-      expect(handleClick).toHaveBeenCalled();
+      fireEvent.click(disco);
+      expect(mockLocalStorage.clear).toHaveBeenCalled();
+      expect(onNavigate).toHaveBeenCalledWith("/");
       expect(screen.getByText("Administration")).toBeTruthy();
     });
   });

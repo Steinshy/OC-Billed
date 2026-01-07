@@ -17,6 +17,7 @@ const bill = {
   amount: 400,
   email: "a@a",
   pct: 20,
+  hasValidFile: true,
 };
 
 const billAccepted = {

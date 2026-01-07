@@ -1,5 +1,4 @@
 import { fireEvent, screen, waitFor } from "@testing-library/dom";
-import userEvent from "@testing-library/user-event";
 import { localStorageMock } from "../__mocks__/localStorage.js";
 import mockStore from "../__mocks__/store.js";
 import router from "../app/Router.js";
@@ -9,7 +8,10 @@ import { bills } from "../fixtures/bills.js";
 import DashboardFormUI from "../views/DashboardFormUI.js";
 import DashboardUI from "../views/DashboardUI.js";
 
-jest.mock("../app/Store.js", () => mockStore);
+jest.mock("../app/Store.js", () => {
+  return mockStore;
+});
+
 
 const BILL_47QAXB_TEST_ID = "open-bill47qAXb6fIm2zOKkLzMro";
 const ARROW_ICON_1_TEST_ID = "arrow-icon1";
@@ -71,33 +73,25 @@ describe("Given I am connected as an Admin", () => {
       });
       document.body.innerHTML = DashboardUI({ data: { bills } });
 
-      const handleShowTickets1 = jest.fn((e) =>
-        dashboard.handleShowTickets(e, bills, 1),
-      );
-      const handleShowTickets2 = jest.fn((e) =>
-        dashboard.handleShowTickets(e, bills, 2),
-      );
-      const handleShowTickets3 = jest.fn((e) =>
-        dashboard.handleShowTickets(e, bills, 3),
-      );
+      const handleShowTickets1 = jest.spyOn(dashboard, "handleShowTickets");
+      const handleShowTickets2 = jest.spyOn(dashboard, "handleShowTickets");
+      const handleShowTickets3 = jest.spyOn(dashboard, "handleShowTickets");
 
       const icon1 = screen.getByTestId(ARROW_ICON_1_TEST_ID);
       const icon2 = screen.getByTestId("arrow-icon2");
       const icon3 = screen.getByTestId("arrow-icon3");
 
-      icon1.addEventListener("click", handleShowTickets1);
-      userEvent.click(icon1);
+      fireEvent.click(icon1);
       expect(handleShowTickets1).toHaveBeenCalled();
       await waitFor(() => screen.getByTestId(BILL_47QAXB_TEST_ID));
       expect(screen.getByTestId(BILL_47QAXB_TEST_ID)).toBeTruthy();
-      icon2.addEventListener("click", handleShowTickets2);
-      userEvent.click(icon2);
+
+      fireEvent.click(icon2);
       expect(handleShowTickets2).toHaveBeenCalled();
       await waitFor(() => screen.getByTestId("open-billUIUZtnPQvnbFnB0ozvJh"));
       expect(screen.getByTestId("open-billUIUZtnPQvnbFnB0ozvJh")).toBeTruthy();
 
-      icon3.addEventListener("click", handleShowTickets3);
-      userEvent.click(icon3);
+      fireEvent.click(icon3);
       expect(handleShowTickets3).toHaveBeenCalled();
       await waitFor(() => screen.getByTestId("open-billBeKy5Mo4jkmdfPGYpTxZ"));
       expect(screen.getByTestId("open-billBeKy5Mo4jkmdfPGYpTxZ")).toBeTruthy();
@@ -105,7 +99,7 @@ describe("Given I am connected as an Admin", () => {
   });
 
   describe("When I am on Dashboard page and I click on edit icon of a card", () => {
-    test("Then, right form should be filled", () => {
+    test("Then, right form should be filled", async () => {
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname });
       };
@@ -128,22 +122,21 @@ describe("Given I am connected as an Admin", () => {
         localStorage: window.localStorage,
       });
       document.body.innerHTML = DashboardUI({ data: { bills } });
-      const handleShowTickets1 = jest.fn((e) =>
-        dashboard.handleShowTickets(e, bills, 1),
-      );
+      const handleShowTickets1 = jest.spyOn(dashboard, "handleShowTickets");
       const icon1 = screen.getByTestId(ARROW_ICON_1_TEST_ID);
-      icon1.addEventListener("click", handleShowTickets1);
-      userEvent.click(icon1);
+      fireEvent.click(icon1);
       expect(handleShowTickets1).toHaveBeenCalled();
+      await waitFor(() => screen.getByTestId(BILL_47QAXB_TEST_ID));
       expect(screen.getByTestId(BILL_47QAXB_TEST_ID)).toBeTruthy();
       const iconEdit = screen.getByTestId(BILL_47QAXB_TEST_ID);
-      userEvent.click(iconEdit);
+      fireEvent.click(iconEdit);
+      await waitFor(() => screen.getByTestId("dashboard-form"));
       expect(screen.getByTestId("dashboard-form")).toBeTruthy();
     });
   });
 
   describe("When I am on Dashboard page and I click 2 times on edit icon of a card", () => {
-    test("Then, big bill Icon should Appear", () => {
+    test("Then, big bill Icon should Appear", async () => {
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname });
       };
@@ -167,18 +160,19 @@ describe("Given I am connected as an Admin", () => {
       });
       document.body.innerHTML = DashboardUI({ data: { bills } });
 
-      const handleShowTickets1 = jest.fn((e) =>
-        dashboard.handleShowTickets(e, bills, 1),
-      );
+      const handleShowTickets1 = jest.spyOn(dashboard, "handleShowTickets");
       const icon1 = screen.getByTestId(ARROW_ICON_1_TEST_ID);
-      icon1.addEventListener("click", handleShowTickets1);
-      userEvent.click(icon1);
+      fireEvent.click(icon1);
       expect(handleShowTickets1).toHaveBeenCalled();
+      await waitFor(() => screen.getByTestId(BILL_47QAXB_TEST_ID));
       expect(screen.getByTestId(BILL_47QAXB_TEST_ID)).toBeTruthy();
       const iconEdit = screen.getByTestId(BILL_47QAXB_TEST_ID);
-      userEvent.click(iconEdit);
-      userEvent.click(iconEdit);
-      const bigBilledIcon = screen.queryByTestId("big-billed-icon");
+      fireEvent.click(iconEdit);
+      await waitFor(() => screen.getByTestId("dashboard-form"));
+      fireEvent.click(iconEdit);
+      const bigBilledIconTestId = "big-billed-icon";
+      await waitFor(() => screen.queryByTestId(bigBilledIconTestId));
+      const bigBilledIcon = screen.queryByTestId(bigBilledIconTestId);
       expect(bigBilledIcon).toBeTruthy();
     });
   });
@@ -194,7 +188,7 @@ describe("Given I am connected as an Admin", () => {
 
 describe("Given I am connected as Admin, and I am on Dashboard page, and I clicked on a pending bill", () => {
   describe("When I click on accept button", () => {
-    test("I should be sent on Dashboard with big billed icon instead of form", () => {
+    test("I should be sent on Dashboard with big billed icon instead of form", async () => {
       Object.defineProperty(window, "localStorage", {
         value: localStorageMock,
       });
@@ -204,11 +198,11 @@ describe("Given I am connected as Admin, and I am on Dashboard page, and I click
           type: "Admin",
         }),
       );
-      document.body.innerHTML = DashboardFormUI(bills[0]);
+      document.body.innerHTML = DashboardUI({ data: { bills } });
 
-      const onNavigate = (pathname) => {
+      const onNavigate = jest.fn((pathname) => {
         document.body.innerHTML = ROUTES({ pathname });
-      };
+      });
       const store = null;
       const dashboard = new Dashboard({
         document,
@@ -218,19 +212,18 @@ describe("Given I am connected as Admin, and I am on Dashboard page, and I click
         localStorage: window.localStorage,
       });
 
-      const acceptButton = screen.getByTestId("btn-accept-bill-d");
-      const handleAcceptSubmit = jest.fn((e) =>
-        dashboard.handleAcceptSubmit(e, bills[0]),
-      );
-      acceptButton.addEventListener("click", handleAcceptSubmit);
-      fireEvent.click(acceptButton);
-      expect(handleAcceptSubmit).toHaveBeenCalled();
+      dashboard.handleEditTicket(null, bills[0], bills);
+
+      const handleAcceptSubmit = jest.spyOn(dashboard, "handleAcceptSubmit");
+      $("#btn-accept-bill").click();
+      await waitFor(() => expect(handleAcceptSubmit).toHaveBeenCalled());
+      await waitFor(() => expect(onNavigate).toHaveBeenCalledWith(ROUTES_PATH["Dashboard"]));
       const bigBilledIcon = screen.queryByTestId("big-billed-icon");
       expect(bigBilledIcon).toBeTruthy();
     });
   });
   describe("When I click on refuse button", () => {
-    test("I should be sent on Dashboard with big billed icon instead of form", () => {
+    test("I should be sent on Dashboard with big billed icon instead of form", async () => {
       Object.defineProperty(window, "localStorage", {
         value: localStorageMock,
       });
@@ -240,11 +233,11 @@ describe("Given I am connected as Admin, and I am on Dashboard page, and I click
           type: "Admin",
         }),
       );
-      document.body.innerHTML = DashboardFormUI(bills[0]);
+      document.body.innerHTML = DashboardUI({ data: { bills } });
 
-      const onNavigate = (pathname) => {
+      const onNavigate = jest.fn((pathname) => {
         document.body.innerHTML = ROUTES({ pathname });
-      };
+      });
       const store = null;
       const dashboard = new Dashboard({
         document,
@@ -253,13 +246,13 @@ describe("Given I am connected as Admin, and I am on Dashboard page, and I click
         bills,
         localStorage: window.localStorage,
       });
-      const refuseButton = screen.getByTestId("btn-refuse-bill-d");
-      const handleRefuseSubmit = jest.fn((e) =>
-        dashboard.handleRefuseSubmit(e, bills[0]),
-      );
-      refuseButton.addEventListener("click", handleRefuseSubmit);
-      fireEvent.click(refuseButton);
-      expect(handleRefuseSubmit).toHaveBeenCalled();
+
+      dashboard.handleEditTicket(null, bills[0], bills);
+
+      const handleRefuseSubmit = jest.spyOn(dashboard, "handleRefuseSubmit");
+      $("#btn-refuse-bill").click();
+      await waitFor(() => expect(handleRefuseSubmit).toHaveBeenCalled());
+      await waitFor(() => expect(onNavigate).toHaveBeenCalledWith(ROUTES_PATH["Dashboard"]));
       const bigBilledIcon = screen.queryByTestId("big-billed-icon");
       expect(bigBilledIcon).toBeTruthy();
     });
@@ -268,7 +261,7 @@ describe("Given I am connected as Admin, and I am on Dashboard page, and I click
 
 describe("Given I am connected as Admin and I am on Dashboard page and I clicked on a bill", () => {
   describe("When I click on the icon eye", () => {
-    test("A modal should open", () => {
+    test("A modal should open", async () => {
       Object.defineProperty(window, "localStorage", {
         value: localStorageMock,
       });
@@ -278,7 +271,7 @@ describe("Given I am connected as Admin and I am on Dashboard page and I clicked
           type: "Admin",
         }),
       );
-      document.body.innerHTML = DashboardFormUI(bills[0]);
+      document.body.innerHTML = DashboardUI({ data: { bills } });
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname });
       };
@@ -291,11 +284,11 @@ describe("Given I am connected as Admin and I am on Dashboard page and I clicked
         localStorage: window.localStorage,
       });
 
-      const handleClickIconEye = jest.fn(dashboard.handleClickIconEye);
-      const eye = screen.getByTestId("icon-eye-d");
-      eye.addEventListener("click", handleClickIconEye);
-      userEvent.click(eye);
-      expect(handleClickIconEye).toHaveBeenCalled();
+      const handleClickIconEye = jest.spyOn(dashboard, "handleClickIconEye");
+      dashboard.handleEditTicket(null, bills[0], bills);
+
+      $("#icon-eye-d").click();
+      await waitFor(() => expect(handleClickIconEye).toHaveBeenCalled());
 
       const modale = screen.getByTestId("modaleFileAdmin");
       expect(modale).toBeTruthy();
