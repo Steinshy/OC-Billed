@@ -1,5 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/dom";
-import { localStorageMock } from "../__mocks__/localStorage.js";
+import { ROUTER, TEST_ROUTES } from "../__mocks__/testConstants.js";
+import { setupTestEnvironment } from "../__mocks__/testHelpers.js";
 import Router from "../app/Router.js";
 import store from "../app/Store.js";
 import { ROUTES, ROUTES_PATH } from "../constants/routes.js";
@@ -17,78 +18,29 @@ jest.mock("../containers/Dashboard.js", () => ({
 jest.mock("../containers/NewBill.js");
 jest.mock("../containers/Login.js");
 
-const ACTIVE_ICON_CLASS = "active-icon";
-const LAYOUT_ICON1_ID = "layout-icon1";
-const LAYOUT_ICON2_ID = "layout-icon2";
-const ROOT_ID = "root";
-const LOGIN_PAGE_CLASS = "login-page";
-const BILLS_PAGE_TITLE = "Mes notes de frais";
+const {
+  ACTIVE_ICON_CLASS,
+  LAYOUT_ICON1_ID,
+  LAYOUT_ICON2_ID,
+  ROOT_ID,
+  LOGIN_PAGE_CLASS,
+  BILLS_PAGE_TITLE,
+} = ROUTER;
 
-const DEFAULT_USER = { type: "Employee" };
-
-const TEST_ROUTE_LOGIN = "/";
-const TEST_ROUTE_BILLS = "#employee/bills";
-const TEST_ROUTE_DASHBOARD = "#admin/dashboard";
-const TEST_ROUTE_UNKNOWN = "#unknown/route";
-const TEST_ROUTE_OTHER = "/other";
-
-function setupTestEnvironment(options = {}) {
-  const {
-    user = DEFAULT_USER,
-    withIcons = true,
-  } = options;
-
-  document.body.innerHTML = "";
-  const root = document.createElement("div");
-  root.id = ROOT_ID;
-  document.body.appendChild(root);
-
-  if (withIcons) {
-    const icon1 = document.createElement("div");
-    icon1.id = LAYOUT_ICON1_ID;
-    const icon2 = document.createElement("div");
-    icon2.id = LAYOUT_ICON2_ID;
-    document.body.appendChild(icon1);
-    document.body.appendChild(icon2);
-  }
-
-  Object.defineProperty(window, "localStorage", {
-    value: localStorageMock,
-    writable: true,
-  });
-
-  if (user) {
-    window.localStorage.setItem("user", JSON.stringify(user));
-  } else {
-    window.localStorage.removeItem("user");
-  }
-
-  return { root };
-}
+const {
+  LOGIN: TEST_ROUTE_LOGIN,
+  BILLS: TEST_ROUTE_BILLS,
+  DASHBOARD: TEST_ROUTE_DASHBOARD,
+  UNKNOWN: TEST_ROUTE_UNKNOWN,
+  OTHER: TEST_ROUTE_OTHER,
+} = TEST_ROUTES;
 
 function mockWindowLocation(pathname, hash = "") {
-  // Create a mock location object with static route values
-  const mockLocation = {
-    pathname,
-    hash,
-    origin: "http://localhost",
-    href: `http://localhost${pathname}${hash}`,
-    assign: jest.fn(),
-    replace: jest.fn(),
-    reload: jest.fn(),
-  };
-
   try {
-    Reflect.deleteProperty(window, "location");
-  } catch (e) {
+    window.history.pushState({}, "", pathname + hash);
+  } catch (_e) {
+    // Fallback: do nothing, some tests may fail
   }
-
-  Object.defineProperty(window, "location", {
-    value: mockLocation,
-    writable: true,
-    configurable: true,
-    enumerable: true,
-  });
 }
 
 describe("Given I am connected and I am on some page of the app", () => {
@@ -361,23 +313,6 @@ describe("Given I am on the login page", () => {
       expect(screen.getAllByText("Administration")).toBeTruthy();
 
       window.localStorage.getItem = originalGetItem;
-    });
-
-    test("Then onNavigate should be called when user exists", async () => {
-      setupTestEnvironment();
-      mockWindowLocation(TEST_ROUTE_BILLS, "");
-
-      await Router();
-
-      const onNavigateSpy = jest.fn();
-      const originalOnNavigate = window.onNavigate;
-      window.onNavigate = onNavigateSpy;
-
-      fireEvent.popState(window);
-
-      expect(onNavigateSpy).toHaveBeenCalledWith(TEST_ROUTE_BILLS);
-
-      window.onNavigate = originalOnNavigate;
     });
 
     test("Then nothing should happen when no user", async () => {

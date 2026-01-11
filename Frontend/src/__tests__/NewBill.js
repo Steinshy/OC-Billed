@@ -2,20 +2,23 @@ import { screen, fireEvent, waitFor } from "@testing-library/dom";
 import "@testing-library/jest-dom";
 import { localStorageMock } from "../__mocks__/localStorage.js";
 import mockStore from "../__mocks__/store.js";
+import { NEW_BILL } from "../__mocks__/testConstants.js";
 import { ROUTES_PATH } from "../constants/routes.js";
 import NewBill from "../containers/NewBill.js";
 import NewBillUI from "../views/NewBillUI.js";
 
 jest.mock("../app/Store", () => mockStore);
 
-describe("Given I am connected as an employee", () => {
-  const EMPLOYEE_TYPE = "Employee";
-  const FORM_NEW_BILL_TEST_ID = "form-new-bill";
-  const TEST_EMAIL = "test@test.com";
-  const TEST_FILE_URL = "https://localhost:3456/images/test.jpg";
-  const TEST_FILE_NAME = "test.jpg";
-  const TEST_BILL_ID = "1234";
+const {
+  EMPLOYEE_TYPE,
+  FORM_TEST_ID: FORM_NEW_BILL_TEST_ID,
+  TEST_EMAIL,
+  TEST_FILE_URL,
+  TEST_FILE_NAME,
+  TEST_BILL_ID,
+} = NEW_BILL;
 
+describe("Given I am connected as an employee", () => {
   beforeEach(() => {
     Object.defineProperty(window, "localStorage", { value: localStorageMock });
     window.localStorage.setItem(
@@ -60,7 +63,6 @@ describe("Given I am connected as an employee", () => {
         const fileName = `test.${fileType.extension}`;
         const file = new File(["test"], fileName, { type: fileType.mimeType });
 
-        // Create a mock event with all required properties
         const changeEvent = new Event("change", { bubbles: true });
         Object.defineProperty(changeEvent, "preventDefault", {
           value: jest.fn(),
@@ -73,7 +75,6 @@ describe("Given I am connected as an employee", () => {
           writable: false,
         });
 
-        // Mock closest method for the event target
         changeEvent.target.closest = jest.fn().mockReturnValue({
           querySelector: jest.fn().mockReturnValue(null),
           appendChild: jest.fn(),
@@ -108,13 +109,11 @@ describe("Given I am connected as an employee", () => {
           type: "application/octet-stream",
         });
 
-        // Create a mock event with all required properties
         const changeEvent = new Event("change", { bubbles: true });
         Object.defineProperty(changeEvent, "preventDefault", {
           value: jest.fn(),
         });
 
-        // Get the actual container element for the file input
         const fileInputContainer = fileInput.closest(".col-half");
 
         Object.defineProperty(changeEvent, "target", {
@@ -160,7 +159,6 @@ describe("Given I am connected as an employee", () => {
         localStorage: window.localStorage,
       });
 
-      // Set required file data and user data (bypass localStorage mock issue)
       newBillInstance.fileUrl = TEST_FILE_URL;
       newBillInstance.fileName = TEST_FILE_NAME;
       newBillInstance.billId = TEST_BILL_ID;
@@ -173,10 +171,7 @@ describe("Given I am connected as an employee", () => {
       };
 
       newBillInstance.handleFormSubmit(submitEvent);
-
       expect(submitEvent.preventDefault).toHaveBeenCalled();
-
-      // Wait for the async update to complete
       await waitFor(() => {
         expect(updateSpy).toHaveBeenCalled();
         expect(onNavigate).toHaveBeenCalledWith(ROUTES_PATH["Bills"]);
@@ -201,13 +196,11 @@ describe("Given I am connected as an employee", () => {
         localStorage: window.localStorage,
       });
 
-      // Set required file data and user data (bypass localStorage mock issue)
       newBillInstance.fileUrl = TEST_FILE_URL;
       newBillInstance.fileName = TEST_FILE_NAME;
       newBillInstance.billId = TEST_BILL_ID;
       newBillInstance.userData = { type: EMPLOYEE_TYPE, email: TEST_EMAIL };
 
-      // Fill form fields
       const expenseType = screen.getByTestId("expense-type");
       const expenseName = screen.getByTestId("expense-name");
       const datepicker = screen.getByTestId("datepicker");
@@ -264,7 +257,6 @@ describe("Given I am connected as an employee", () => {
         localStorage: window.localStorage,
       });
 
-      // Do NOT set fileUrl/billId - simulating missing file upload
       const form = screen.getByTestId(FORM_NEW_BILL_TEST_ID);
       const submitEvent = {
         preventDefault: jest.fn(),

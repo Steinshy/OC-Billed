@@ -1,6 +1,7 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/dom";
 import { localStorageMock } from "../__mocks__/localStorage.js";
 import mockStore from "../__mocks__/store.js";
+import { DASHBOARD, STATUS, TEST_EMAILS } from "../__mocks__/testConstants.js";
 import router from "../app/Router.js";
 import { ROUTES, ROUTES_PATH } from "../constants/routes.js";
 import USERS_TEST from "../constants/usersTest.js";
@@ -10,15 +11,9 @@ import DashboardUI from "../views/DashboardUI.js";
 
 jest.mock("../app/Store.js", () => mockStore);
 
-const BILL_47QAXB_TEST_ID = "open-bill47qAXb6fIm2zOKkLzMro";
-const DASHBOARD_FORM_TEST_ID = "dashboard-form";
-const STATUS_PENDING = "pending";
-const STATUS_ACCEPTED = "accepted";
-const STATUS_REFUSED = "refused";
-const EMPLOYEE_EMAIL = "employee@test.com";
-const OTHER_EMAIL = "other@test.com";
-const MODAL_FILE_ADMIN_ID = "modaleFileAdmin1";
-const ICON_EYE_D_SELECTOR = "#icon-eye-d";
+const { BILL_47QAXB_TEST_ID, FORM_TEST_ID: DASHBOARD_FORM_TEST_ID, MODAL_FILE_ADMIN_ID, ICON_EYE_D_SELECTOR } = DASHBOARD;
+const { PENDING: STATUS_PENDING, ACCEPTED: STATUS_ACCEPTED, REFUSED: STATUS_REFUSED } = STATUS;
+const { EMPLOYEE: EMPLOYEE_EMAIL, OTHER: OTHER_EMAIL } = TEST_EMAILS;
 
 function setupDashboard(options = {}) {
   const {

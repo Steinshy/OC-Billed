@@ -1,14 +1,17 @@
-import { fireEvent, screen, waitFor } from "@testing-library/dom";
+import { fireEvent, screen } from "@testing-library/dom";
+import { LOGIN } from "../__mocks__/testConstants.js";
 import { ROUTES, ROUTES_PATH } from "../constants/routes.js";
 import Login from "../containers/Login.js";
 import LoginUI from "../views/LoginUI.js";
 
-const FORM_EMPLOYEE_TEST_ID = "form-employee";
-const FORM_ADMIN_TEST_ID = "form-admin";
-const EMPLOYEE_EMAIL_INPUT_TEST_ID = "employee-email-input";
-const EMPLOYEE_PASSWORD_INPUT_TEST_ID = "employee-password-input";
-const ADMIN_EMAIL_INPUT_TEST_ID = "admin-email-input";
-const ADMIN_PASSWORD_INPUT_TEST_ID = "admin-password-input";
+const {
+  FORM_EMPLOYEE_TEST_ID,
+  FORM_ADMIN_TEST_ID,
+  EMPLOYEE_EMAIL_INPUT_TEST_ID,
+  EMPLOYEE_PASSWORD_INPUT_TEST_ID,
+  ADMIN_EMAIL_INPUT_TEST_ID,
+  ADMIN_PASSWORD_INPUT_TEST_ID,
+} = LOGIN;
 
 describe("Given that I am a user on login page", () => {
   describe("Employee Login", () => {

@@ -11,3 +11,11 @@ global.fetch = jest.fn(() =>
   }),
 );
 
+global.mockWindowLocation = (pathname, hash = "") => {
+  const url = hash ? `${pathname}${hash}` : pathname;
+  window.history.pushState({}, "", url);
+};
+
+global.resetMockLocation = () => {
+  window.history.pushState({}, "", "/");
+};
