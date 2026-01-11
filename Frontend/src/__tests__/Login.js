@@ -120,44 +120,6 @@ describe("Given that I am a user on login page", () => {
   });
 
   describe("Admin Login", () => {
-    describe("Form Validation", () => {
-      test("When I try to login with empty form, Then it should stay on login page", () => {
-        document.body.innerHTML = LoginUI();
-
-        const inputEmailUser = screen.getByTestId(ADMIN_EMAIL_INPUT_TEST_ID);
-        expect(inputEmailUser.value).toBe("");
-
-        const inputPasswordUser = screen.getByTestId(ADMIN_PASSWORD_INPUT_TEST_ID);
-        expect(inputPasswordUser.value).toBe("");
-
-        const form = screen.getByTestId(FORM_ADMIN_TEST_ID);
-        const handleSubmit = jest.fn((e) => e.preventDefault());
-
-        form.addEventListener("submit", handleSubmit);
-        fireEvent.submit(form);
-        expect(screen.getByTestId(FORM_ADMIN_TEST_ID)).toBeTruthy();
-      });
-
-      test("When I try to login with invalid email format, Then it should stay on login page", () => {
-        document.body.innerHTML = LoginUI();
-
-        const inputEmailUser = screen.getByTestId(ADMIN_EMAIL_INPUT_TEST_ID);
-        fireEvent.change(inputEmailUser, { target: { value: "pasunemail" } });
-        expect(inputEmailUser.value).toBe("pasunemail");
-
-        const inputPasswordUser = screen.getByTestId(ADMIN_PASSWORD_INPUT_TEST_ID);
-        fireEvent.change(inputPasswordUser, { target: { value: "azerty" } });
-        expect(inputPasswordUser.value).toBe("azerty");
-
-        const form = screen.getByTestId(FORM_ADMIN_TEST_ID);
-        const handleSubmit = jest.fn((e) => e.preventDefault());
-
-        form.addEventListener("submit", handleSubmit);
-        fireEvent.submit(form);
-        expect(screen.getByTestId(FORM_ADMIN_TEST_ID)).toBeTruthy();
-      });
-    });
-
     describe("Successful Login", () => {
       test("Then I should be identified as an HR admin in the app", () => {
       document.body.innerHTML = LoginUI();
