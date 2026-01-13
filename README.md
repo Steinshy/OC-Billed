@@ -1,6 +1,10 @@
 # 🧾 OC-Billed
 
 <p align="center">
+  <img src="src/assets/Mockup.png" alt="Billed Application Mockup" width="700" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.06);">
+</p>
+
+<p align="center">
   🇫🇷 Français · <a href="README.en.md">🇬🇧 English</a>
 </p>
 
@@ -9,18 +13,6 @@
 ![Jest](https://img.shields.io/badge/Jest-Testing-C21325?style=flat&logo=jest&logoColor=white)
 ![Accessibility](https://img.shields.io/badge/Accessibility-WCAG-AA-green)
 ![OpenClassrooms](https://img.shields.io/badge/OpenClassrooms-Project-blue)
-
-<div align="center" style="margin: 24px 0;">
-  <p>
-    🚀 <a href="https://steinshy.github.io/Oc-Billed/" target="_blank">
-      <strong>Accéder à l'application en ligne (Live Demo)</strong>
-    </a>
-  </p>
-</div>
-
-> 💡 **Test en ligne**  
-> Cette version déployée permet de tester l’interface utilisateur, la navigation et les comportements front-end.  
-> Les appels API nécessitent le backend local pour un fonctionnement complet.
 
 **OC-Billed** est une application web de gestion de notes de frais,
 développée dans le cadre du parcours **Développeur Frontend OpenClassrooms**.
