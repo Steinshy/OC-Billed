@@ -1,18 +1,23 @@
 # 🧾 OC-Billed
 
-<p align="center">
-  <img src="src/assets/Mockup.png" alt="Billed Application Mockup" width="700" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.06);">
-</p>
+<p align="center"><img src="./Mockup.png" alt="Billed Application Mockup" width="700" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.06);"></p>
+
 
 <p align="center">
   <a href="README.md">🇫🇷 Français</a> · 🇬🇧 English
 </p>
 
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat&logo=javascript&logoColor=black)
-![Vite](https://img.shields.io/badge/Vite-5173-646CFF?style=flat&logo=vite&logoColor=white)
-![Jest](https://img.shields.io/badge/Jest-Testing-C21325?style=flat&logo=jest&logoColor=white)
-![Accessibility](https://img.shields.io/badge/Accessibility-WCAG-AA-green)
-![OpenClassrooms](https://img.shields.io/badge/OpenClassrooms-Project-blue)
+<p align="center">
+  <img src="https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat&logo=javascript&logoColor=black" />
+  <img src="https://img.shields.io/badge/CSS-Modules-1572B6?style=flat&logo=css3&logoColor=white" />
+  <img src="https://img.shields.io/badge/Jest-Testing-C21325?style=flat&logo=jest&logoColor=white" />
+  <img src="https://img.shields.io/badge/ESLint-9.39.2-4B32C3?style=flat&logo=eslint&logoColor=white" />
+  <img src="https://img.shields.io/badge/Prettier-3.7.4-F7B93E?style=flat&logo=prettier&logoColor=white" />
+  <img src="https://img.shields.io/badge/Stylelint-16.26.1-263238?style=flat&logo=stylelint&logoColor=white" />
+  <img src="https://img.shields.io/badge/jQuery-3.7.1-0769AD?style=flat&logo=jquery&logoColor=white" />
+  <img src="https://img.shields.io/badge/Live--Server-Dev-green?style=flat&logo=javascript&logoColor=white" />
+  <img src="https://img.shields.io/badge/OpenClassrooms-Project-blue" />
+</p>
 
 **OC-Billed** is a web application for managing employee expense reports,
 developed as part of the **OpenClassrooms Frontend Developer program**.
@@ -71,12 +76,21 @@ Oc-Billed/
 
 ## Technologies
 
-- **JavaScript ES6+** (framework-free SPA)
-- **Vite** (development server and build tool)
+### Frontend
+- **JavaScript ES6+** — Framework‑free SPA
 - **Semantic HTML5**
 - **Modular CSS**
-- **Jest + Testing Library**
-- **Node.js / Express (provided backend)**
+
+### Tooling & Quality
+- **Jest** + **Testing Library** — unit & integration tests
+- **ESLint** — JavaScript linting
+- **Prettier** — code formatting
+- **Stylelint** — CSS linting
+- **Live Server** — development server
+
+### Environment
+- **Node.js** ≥ 18
+- **npm**
 
 ---
 
