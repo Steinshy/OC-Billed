@@ -14,32 +14,32 @@
   <img src="https://img.shields.io/badge/OpenClassrooms-Project-blue" />
 </p>
 
-**OC-Billed** is a web expense management application,
-developed as part of the **OpenClassrooms Frontend Developer** curriculum.
+**OC-Billed** est une application web de gestion de notes de frais,  
+développée dans le cadre du parcours **Développeur Frontend OpenClassrooms**.
 
-It allows employees to submit their expense reports
-and administrators to view and manage them via a dedicated interface.
-
----
-
-## Quick overview
-
-- Employee / administrator authentication
-- Creation and tracking of expense reports
-- Upload of receipts (images)
-- Administrator dashboard
-- API error handling (404 / 500)
-- Framework-free SPA application
+Elle permet aux employés de soumettre leurs notes de frais  
+et aux administrateurs de les consulter et de les gérer via une interface dédiée.
 
 ---
 
-## GitHub repository
+## Aperçu rapide
 
-- [Main branch](https://github.com/Steinshy/Oc-Billed)
+- Authentification employé / administrateur
+- Création et suivi des notes de frais
+- Upload de justificatifs (images)
+- Tableau de bord administrateur
+- Gestion des erreurs API (404 / 500)
+- Application SPA sans framework
 
 ---
 
-## Project structure
+## Dépôt GitHub
+
+- [Branche principale](https://github.com/Steinshy/Oc-Billed)
+
+---
+
+## Structure du projet
 
 ```text
 Oc-Billed/
@@ -72,53 +72,53 @@ Oc-Billed/
 ## Technologies
 
 ### Frontend
-- **JavaScript ES6+** — Framework‑free SPA
-- **Semantic HTML5**
-- **Modular CSS**
+- **JavaScript ES6+** — SPA sans framework
+- **HTML5 sémantique**
+- **CSS modulaire**
 
-### Tooling & Quality
-- **Jest** + **Testing Library** — unit & integration tests
-- **ESLint** — JavaScript linting
-- **Prettier** — code formatting
-- **Stylelint** — CSS linting
-- **Live Server** — development server
+### Outils & Qualité
+- **Jest** + **Testing Library** — tests unitaires et d’intégration
+- **ESLint** — lint JavaScript
+- **Prettier** — formatage du code
+- **Stylelint** — lint CSS
+- **Live Server** — serveur de développement
 
-### Environment
+### Environnement
 - **Node.js** ≥ 18
 - **npm**
 
 ---
 
-## Main features
+## Fonctionnalités principales
 
-### Employee
-- Secure login
-- Viewing expense reports
-- Creating an expense report
-- Uploading receipt (jpg, jpeg, png)
-- Viewing receipt (modal)
+### Employé
+- Connexion sécurisée
+- Consultation des notes de frais
+- Création d’une note de frais
+- Upload de justificatif (jpg, jpeg, png)
+- Visualisation d’un justificatif (modale)
 
-### Administrator
-- Access to global dashboard
-- Viewing all expense reports
+### Administrateur
+- Accès au tableau de bord global
+- Consultation de toutes les notes de frais
 
 ---
 
-## Accessibility
+## Accessibilité
 
-- Full keyboard navigation
-- Semantic HTML structure
-- Clear error messages
-- Accessible modals
-- WCAG best practices compliance
+- Navigation clavier complète
+- Structure HTML sémantique
+- Messages d’erreur clairs
+- Modales accessibles
+- Respect des bonnes pratiques WCAG
 
 ---
 
 ## Tests
 
-- Unit and integration tests with **Jest**
-- Mock store and localStorage
-- Router and component tests
+- Tests unitaires et intégration avec **Jest**
+- Mock du store et du localStorage
+- Tests du router et des composants
 
 ```bash
 npm test
@@ -126,7 +126,7 @@ npm test
 
 ---
 
-## Getting started
+## Démarrage
 
 ### Installation
 
@@ -136,7 +136,7 @@ cd Oc-Billed
 npm install
 ```
 
-### Development
+### Développement
 
 ```bash
 npm run dev
@@ -144,37 +144,37 @@ npm run dev
 
 ---
 
-## Available scripts
+## Scripts disponibles
 
-| Command           | Description             |
-| ----------------- | ----------------------- |
-| `npm run dev`     | Runs the frontend       |
-| `npm run dev:all` | Runs frontend + backend |
-| `npm run build`   | Production build        |
-| `npm run preview` | Preview                 |
-| `npm test`        | Runs tests              |
-| `npm run lint`    | Lints the project       |
+| Commande          | Description        |
+| ----------------- | ------------------ |
+| `npm run dev`     | Lance le frontend  |
+| `npm run dev:all` | Frontend + backend |
+| `npm run build`   | Build production   |
+| `npm run preview` | Prévisualisation   |
+| `npm test`        | Lance les tests    |
+| `npm run lint`    | Lint du projet     |
 
 ---
 
 ## Configuration
 
-- JWT storage via `localStorage`
-- Role-based protected routes
-- Centralized API calls via `store.js`
+- Stockage JWT via `localStorage`
+- Routes protégées selon le rôle
+- Appels API centralisés via `store.js`
 
 ---
 
-## Compatibility
+## Compatibilité
 
-- Modern browsers (Chrome, Firefox, Edge)
+- Navigateurs modernes (Chrome, Firefox, Edge)
 - Node.js ≥ 18
 
 ---
 
-## License
+## Licence
 
-Project developed as part of the
-**OpenClassrooms Frontend Developer** curriculum.
+Projet réalisé dans le cadre du parcours  
+**Développeur Frontend OpenClassrooms**.
 
 © 2025 — OC-Billed
