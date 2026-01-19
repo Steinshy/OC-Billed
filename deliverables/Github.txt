@@ -1,0 +1,18 @@
+Github
+
+Branche principale
+
+https://github.com/Steinshy/OC-Billed
+
+Jest
+
+Jest report => jest-test-report.png
+Jest report complet => test-report.html
+
+Coverage
+
+Coverage report => jest-coverage-report.png
+
+Plan e2e
+
+Plan e2e Employe => plan-e2e-employe.pdf ou plan-e2e-employe.md
