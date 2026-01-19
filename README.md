@@ -1,45 +1,45 @@
 # 🧾 OC-Billed
 
-<p align="center">
-  <img src="src/assets/Mockup.png" alt="Billed Application Mockup" width="700" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.06);">
-</p>
+<p align="center"><img src="./Mockup.png" alt="Billed Application Mockup" width="700" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.06);"></p>
 
 <p align="center">
-  🇫🇷 Français · <a href="README.en.md">🇬🇧 English</a>
+  <img src="https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat&logo=javascript&logoColor=black" />
+  <img src="https://img.shields.io/badge/CSS-Modules-1572B6?style=flat&logo=css3&logoColor=white" />
+  <img src="https://img.shields.io/badge/Jest-Testing-C21325?style=flat&logo=jest&logoColor=white" />
+  <img src="https://img.shields.io/badge/ESLint-9.39.2-4B32C3?style=flat&logo=eslint&logoColor=white" />
+  <img src="https://img.shields.io/badge/Prettier-3.7.4-F7B93E?style=flat&logo=prettier&logoColor=white" />
+  <img src="https://img.shields.io/badge/Stylelint-16.26.1-263238?style=flat&logo=stylelint&logoColor=white" />
+  <img src="https://img.shields.io/badge/jQuery-3.7.1-0769AD?style=flat&logo=jquery&logoColor=white" />
+  <img src="https://img.shields.io/badge/Live--Server-Dev-green?style=flat&logo=javascript&logoColor=white" />
+  <img src="https://img.shields.io/badge/OpenClassrooms-Project-blue" />
 </p>
 
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat&logo=javascript&logoColor=black)
-![Vite](https://img.shields.io/badge/Vite-5173-646CFF?style=flat&logo=vite&logoColor=white)
-![Jest](https://img.shields.io/badge/Jest-Testing-C21325?style=flat&logo=jest&logoColor=white)
-![Accessibility](https://img.shields.io/badge/Accessibility-WCAG-AA-green)
-![OpenClassrooms](https://img.shields.io/badge/OpenClassrooms-Project-blue)
+**OC-Billed** is a web expense management application,
+developed as part of the **OpenClassrooms Frontend Developer** curriculum.
 
-**OC-Billed** est une application web de gestion de notes de frais,
-développée dans le cadre du parcours **Développeur Frontend OpenClassrooms**.
-
-Elle permet aux employés de soumettre leurs notes de frais
-et aux administrateurs de les consulter et gérer via une interface dédiée.
+It allows employees to submit their expense reports
+and administrators to view and manage them via a dedicated interface.
 
 ---
 
-## Aperçu rapide
+## Quick overview
 
-- Authentification employé / administrateur
-- Création et suivi des notes de frais
-- Upload de justificatifs (images)
-- Tableau de bord administrateur
-- Gestion des erreurs API (404 / 500)
-- Application SPA sans framework
-
----
-
-## Dépôt GitHub
-
-- [Branche de développement](https://github.com/Steinshy/Oc-Billed/tree/dev)
+- Employee / administrator authentication
+- Creation and tracking of expense reports
+- Upload of receipts (images)
+- Administrator dashboard
+- API error handling (404 / 500)
+- Framework-free SPA application
 
 ---
 
-## Structure du projet
+## GitHub repository
+
+- [Main branch](https://github.com/Steinshy/Oc-Billed)
+
+---
+
+## Project structure
 
 ```text
 Oc-Billed/
@@ -71,45 +71,54 @@ Oc-Billed/
 
 ## Technologies
 
-- **JavaScript ES6+** (SPA sans framework)
-- **Vite** (dev server et build)
-- **HTML5 sémantique**
-- **CSS modulaire**
-- **Jest + Testing Library**
-- **Node.js / Express (backend fourni)**
+### Frontend
+- **JavaScript ES6+** — Framework‑free SPA
+- **Semantic HTML5**
+- **Modular CSS**
+
+### Tooling & Quality
+- **Jest** + **Testing Library** — unit & integration tests
+- **ESLint** — JavaScript linting
+- **Prettier** — code formatting
+- **Stylelint** — CSS linting
+- **Live Server** — development server
+
+### Environment
+- **Node.js** ≥ 18
+- **npm**
 
 ---
 
-## Fonctionnalités principales
+## Main features
 
-### Employé
-- Connexion sécurisée
-- Consultation des notes de frais
-- Création d’une note de frais
-- Upload de justificatif (jpg, jpeg, png)
-- Visualisation du justificatif (modale)
+### Employee
+- Secure login
+- Viewing expense reports
+- Creating an expense report
+- Uploading receipt (jpg, jpeg, png)
+- Viewing receipt (modal)
 
-### Administrateur
-- Accès au tableau de bord global
-- Visualisation de toutes les notes de frais
+### Administrator
+- Access to global dashboard
+- Viewing all expense reports
 
 ---
 
-## Accessibilité
+## Accessibility
 
-- Navigation clavier complète
-- Structure HTML sémantique
-- Messages d’erreur explicites
-- Modales accessibles
-- Respect des bonnes pratiques WCAG
+- Full keyboard navigation
+- Semantic HTML structure
+- Clear error messages
+- Accessible modals
+- WCAG best practices compliance
 
 ---
 
 ## Tests
 
-- Tests unitaires et d’intégration avec **Jest**
-- Mock du store et du localStorage
-- Tests du router et des composants
+- Unit and integration tests with **Jest**
+- Mock store and localStorage
+- Router and component tests
 
 ```bash
 npm test
@@ -117,7 +126,7 @@ npm test
 
 ---
 
-## Démarrage
+## Getting started
 
 ### Installation
 
@@ -127,7 +136,7 @@ cd Oc-Billed
 npm install
 ```
 
-### Développement
+### Development
 
 ```bash
 npm run dev
@@ -135,37 +144,37 @@ npm run dev
 
 ---
 
-## Scripts disponibles
+## Available scripts
 
-| Commande          | Description              |
-| ----------------- | ------------------------ |
-| `npm run dev`     | Lance le frontend        |
-| `npm run dev:all` | Lance frontend + backend |
-| `npm run build`   | Build production         |
-| `npm run preview` | Prévisualisation         |
-| `npm test`        | Lance les tests          |
-| `npm run lint`    | Lint du projet           |
+| Command           | Description             |
+| ----------------- | ----------------------- |
+| `npm run dev`     | Runs the frontend       |
+| `npm run dev:all` | Runs frontend + backend |
+| `npm run build`   | Production build        |
+| `npm run preview` | Preview                 |
+| `npm test`        | Runs tests              |
+| `npm run lint`    | Lints the project       |
 
 ---
 
 ## Configuration
 
-- Stockage JWT via `localStorage`
-- Routes protégées selon le rôle utilisateur
-- Appels API centralisés via `store.js`
+- JWT storage via `localStorage`
+- Role-based protected routes
+- Centralized API calls via `store.js`
 
 ---
 
-## Compatibilité
+## Compatibility
 
-- Navigateurs modernes (Chrome, Firefox, Edge)
-- Node.js >= 18
+- Modern browsers (Chrome, Firefox, Edge)
+- Node.js ≥ 18
 
 ---
 
-## Licence
+## License
 
-Projet réalisé dans le cadre du parcours
-**Développeur Frontend OpenClassrooms**.
+Project developed as part of the
+**OpenClassrooms Frontend Developer** curriculum.
 
 © 2025 — OC-Billed
