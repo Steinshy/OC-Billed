@@ -1,16 +1,28 @@
-.oc
+# OS / editors
 .DS_Store
-.claude
 .vscode
 .cursor
-Backend/CLAUDE.md
-Backend/database_test.sqlite
-Backend/database_dev.sqlite
-Backend/node_modules/
-Backend/coverage/
-Backend/public
-Frontend/CLAUDE.md
-Frontend/node_modules
+.idea
 Frontend/.idea
-Frontend/.stryker-tmp
+
+# Local tooling state
+.oc
+.claude
 .serena
+
+# Dependencies
+node_modules/
+
+# Test artifacts (regenerate with `pnpm test`)
+coverage/
+test-report.html
+Frontend/.stryker-tmp
+
+# Local databases & uploaded files
+Backend/database_dev.sqlite
+Backend/database_test.sqlite
+Backend/public
+
+# Per-package agent notes (root CLAUDE.md is tracked)
+Backend/CLAUDE.md
+Frontend/CLAUDE.md

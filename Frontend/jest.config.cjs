@@ -57,7 +57,7 @@ const config = {
   coverageDirectory: "coverage",
   reporters: [
     "default",
-    ["./node_modules/jest-html-reporter", {
+    ["jest-html-reporter", {
       pageTitle: "Test Report",
       outputPath: "./test-report.html",
       includeFailureMsg: true,

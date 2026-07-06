@@ -1,11 +1,11 @@
+const { sequelize } = require("./models/index.js");
 const fixtures = require("./tests/fixtures");
 
-beforeAll(async () => {
-  await fixtures.reset();
-});
 beforeEach(async () => {
   await fixtures.reset();
 });
-//afterAll(async () => {
-//  await fixtures.clear();
-//});
+
+// Close the database connection so jest can exit cleanly.
+afterAll(async () => {
+  await sequelize.close();
+});

@@ -1,53 +1,60 @@
 import { ROUTES_PATH } from "../constants/routes.js";
 import Logout from "./Logout.js";
 
+const ALLOWED_EXTENSIONS = ["jpg", "jpeg", "png"];
+
 export default class NewBill {
   constructor({ document, onNavigate, store, localStorage }) {
     this.document = document;
     this.onNavigate = onNavigate;
     this.store = store;
-    this.fileUrl = null;
-    this.fileName = null;
-    this.filePath = null;
-    this.billId = null;
+    this.localStorage = localStorage;
+    this.resetFileState();
     const userItem = localStorage.getItem("user");
     this.userData = userItem ? JSON.parse(userItem) : null;
 
     const formNewBill = this.document.querySelector('form[data-testid="form-new-bill"]');
-
-    if (formNewBill) {formNewBill.addEventListener("submit", this.handleFormSubmit);}
-    else console.error("Form not found when initializing CreateNewBill");
+    if (formNewBill) formNewBill.addEventListener("submit", this.handleFormSubmit);
+    else console.error("Form not found when initializing NewBill");
 
     const file = this.document.querySelector('input[data-testid="file"]');
     if (file) file.addEventListener("change", this.handleFileChange);
-    else console.error("File input not found when initializing CreateNewBill");
+    else console.error("File input not found when initializing NewBill");
 
     new Logout({ document, localStorage, onNavigate });
   }
+
+  resetFileState = () => {
+    this.fileUrl = null;
+    this.fileName = null;
+    this.filePath = null;
+    this.billId = null;
+  };
+
+  getUserEmail = () => {
+    if (this.userData?.email) return this.userData.email;
+    const userItem = this.localStorage.getItem("user");
+    const user = userItem ? JSON.parse(userItem) : null;
+    return user?.email ?? null;
+  };
+
   handleFileChange = event => {
     event.preventDefault();
     const fileInput = event.target;
     const file = fileInput?.files[0];
 
     if (!file) {
-      this.fileUrl = null;
-      this.fileName = null;
-      this.filePath = null;
-      this.billId = null;
-      this.isUploading = false;
-      this.uploadError = null;
+      this.resetFileState();
       return;
     }
 
-    const filePath = event.target.value.split(/\\/g);
-    const fileName = filePath[filePath.length - 1];
+    const fileName = fileInput.value.split(/\\/g).pop();
     const extension = fileName.split(".").pop().toLowerCase();
-    const allowedExtensions = ["jpg", "jpeg", "png"];
 
     const fileInputContainer = fileInput.closest(".col-half");
     const existingError = fileInputContainer.querySelector(".file-error-message");
 
-    if (!allowedExtensions.includes(extension)) {
+    if (!ALLOWED_EXTENSIONS.includes(extension)) {
       if (!existingError) {
         const errorMessage = document.createElement("small");
         errorMessage.className = "file-error-message";
@@ -55,52 +62,48 @@ export default class NewBill {
         fileInputContainer.appendChild(errorMessage);
       }
       fileInput.value = "";
-      this.fileUrl = null;
-      this.fileName = null;
-      this.filePath = null;
-      this.billId = null;
+      this.resetFileState();
       return;
     }
 
     if (existingError) existingError.remove();
 
-    const formData = new FormData();
-    const userItem = localStorage.getItem("user");
-    const user = userItem ? JSON.parse(userItem) : null;
-    const email = this.userData?.email || user?.email;
+    const email = this.getUserEmail();
     if (!email) {
       console.error("User email not found");
       return;
     }
+
+    const formData = new FormData();
     formData.append("file", file);
     formData.append("email", email);
 
-
-    this.store.bills().create({ data: formData, headers: { noContentType: true } }).then(bill => {
-      console.log("Bill created:", bill);
-      this.billId = bill.key;
-      this.filePath = bill.filePath;
-      this.fileUrl = `${this.store.api.baseUrl}/${bill.filePath}`;
-      this.fileName = fileName;
-    }).catch(error => console.error(error));
+    this.store
+      .bills()
+      .create({ data: formData, headers: { noContentType: true } })
+      .then(bill => {
+        this.billId = bill.key;
+        this.filePath = bill.filePath;
+        this.fileUrl = `${this.store.api.baseUrl}/${bill.filePath}`;
+        this.fileName = fileName;
+      })
+      .catch(error => console.error(error));
   };
 
   handleFormSubmit = event => {
     event.preventDefault();
-    console.log("Form submit started. billId:", this.billId, "fileUrl:", this.fileUrl);
 
     if (!this.billId || !this.fileUrl) {
       console.error("Cannot submit bill: missing file upload");
       return;
     }
 
-    const userItem = localStorage.getItem("user");
-    const user = userItem ? JSON.parse(userItem) : null;
-    const email = this.userData?.email || user?.email;
+    const email = this.getUserEmail();
     if (!email) {
       console.error("User email not found");
       return;
     }
+
     const bill = {
       email,
       type: event.target.querySelector('select[data-testid="expense-type"]').value,
@@ -114,26 +117,20 @@ export default class NewBill {
       fileName: this.fileName,
       status: "pending",
     };
-    console.log("Submitting bill:", bill);
     this.updateBill(bill);
   };
 
-  // not need to cover this function by tests
   updateBill = bill => {
-    if (this.store) {
-      this.store
-        .bills().update({ data: JSON.stringify(bill), selector: this.billId })
-        .then((response) => {
-          console.log("Bill updated successfully:", response);
-          this.fileUrl = null;
-          this.fileName = null;
-          this.filePath = null;
-          this.billId = null;
-          this.onNavigate(ROUTES_PATH["Bills"]);
-        })
-        .catch(error => {
-          console.error("Error updating bill:", error);
-        });
-    }
+    if (!this.store) return;
+    this.store
+      .bills()
+      .update({ data: JSON.stringify(bill), selector: this.billId })
+      .then(() => {
+        this.resetFileState();
+        this.onNavigate(ROUTES_PATH["Bills"]);
+      })
+      .catch(error => {
+        console.error("Error updating bill:", error);
+      });
   };
 }

@@ -52,7 +52,7 @@ describe("Given I am connected as an employee", () => {
       });
 
       expect(consoleErrorSpy).toHaveBeenCalledWith(
-        "Form not found when initializing CreateNewBill",
+        "Form not found when initializing NewBill",
       );
       consoleErrorSpy.mockRestore();
     });
@@ -72,7 +72,7 @@ describe("Given I am connected as an employee", () => {
       });
 
       expect(consoleErrorSpy).toHaveBeenCalledWith(
-        "File input not found when initializing CreateNewBill",
+        "File input not found when initializing NewBill",
       );
       consoleErrorSpy.mockRestore();
     });
