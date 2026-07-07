@@ -27,7 +27,7 @@
     "@swc/core": "^1.15.11",
     "@swc/jest": "^0.2.39",
     "@types/jest": "^30.0.0",
-    "concurrently": "^9.2.1",
+    "concurrently": "^10.0.3",
     "eslint": "^9.39.2",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-html": "^8.1.4",
