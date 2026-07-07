@@ -84,7 +84,7 @@ describe("Test the root path", () => {
 
   test("It should return a specific bill as admin", () => {
     return request(app)
-      .get("`/bills/${TEST_BILL_ID}`")
+      .get(`/bills/${TEST_BILL_ID}`)
       .set("Authorization", `Bearer ${jwtValueAdmin}`)
       .expect(200)
       .then(response => {
@@ -133,15 +133,15 @@ describe("Test the root path", () => {
       .then(response => {
         expect(response.body).toMatchObject({
           name: "bill-name",
-          fileName: false,
-          filePath: false,
+          fileName: null,
+          filePath: null,
         });
       });
   });
 
   test("It should update a bill as admin", () => {
     return request(app)
-      .patch("`/bills/${TEST_BILL_ID}`")
+      .patch(`/bills/${TEST_BILL_ID}`)
       .set("Authorization", `Bearer ${jwtValueAdmin}`)
       .send({ name: "bill-name" })
       .set("Accept", "application/json")
@@ -159,7 +159,7 @@ describe("Test the root path", () => {
 
   test("It should delete a bill as admin", () => {
     return request(app)
-      .delete("`/bills/${TEST_BILL_ID}`")
+      .delete(`/bills/${TEST_BILL_ID}`)
       .set("Authorization", `Bearer ${jwtValueAdmin}`)
       .set("Accept", "application/json")
       .expect(200);

@@ -83,7 +83,7 @@ describe("Given I am connected as an employee", () => {
 
       test("Then corrupted bill data should be handled gracefully", async () => {
         const onNavigate = jest.fn();
-        const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+        const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
 
         const mockStore = {
           bills: jest.fn(() => ({

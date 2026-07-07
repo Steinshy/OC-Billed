@@ -148,6 +148,13 @@ export default [
     },
   },
   {
+    // .mjs files (like this config) are ES modules; everything else in Backend is CommonJS.
+    files: ["**/*.mjs"],
+    languageOptions: {
+      sourceType: "module",
+    },
+  },
+  {
     files: [
       "tests/**/*.{js,mjs,cjs}",
       "**/*.test.{js,mjs,cjs}",
@@ -183,7 +190,6 @@ export default [
       ".vscode/",
       ".idea/",
       ".DS_Store",
-      "eslint.config.js",
       "stryker.conf.js",
     ],
   },

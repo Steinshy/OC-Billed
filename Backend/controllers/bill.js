@@ -8,26 +8,43 @@ const getFileURL = filePath => `http://localhost:5678/${filePath}`;
 const isPicture = mimeType =>
   ["image/jpeg", "image/jpg", "image/png", "image/gif"].includes(mimeType);
 
+// Fields a client is allowed to set on a bill.
+const pickBillAttributes = ({
+  name,
+  type,
+  email,
+  date,
+  vat,
+  pct,
+  commentary,
+  status,
+  commentAdmin,
+  amount,
+}) => ({ name, type, email, date, vat, pct, commentary, status, commentAdmin, amount });
+
+// Public representation of a bill (exposes `key` as `id`, never the internal id).
+const toBillDTO = bill => ({
+  id: bill.key,
+  ...pickBillAttributes(bill),
+  fileName: bill.fileName,
+  fileUrl: getFileURL(bill.filePath),
+});
+
+// Admins can access any bill; other users only their own.
+const findBillForUser = (user, key) =>
+  Bill.findOne({
+    where: user.type === "Admin" ? { key } : { key, email: user.email },
+  });
+
 const create = async (req, res) => {
-  const { user } = req;
+  const { user, file } = req;
   if (!user) return res.status(401).send({ message: USER_MUST_BE_AUTHENTICATED });
   try {
-    const { name, type, email, date, vat, pct, commentary, status, commentAdmin, amount } =
-      req.body;
-    const { file } = req;
+    const hasPicture = Boolean(file) && isPicture(file.mimetype);
     const bill = await Bill.create({
-      name,
-      type,
-      email,
-      date,
-      vat,
-      pct,
-      commentary,
-      status,
-      commentAdmin,
-      fileName: isPicture(file.mimetype) ? file.originalname : "null",
-      filePath: isPicture(file.mimetype) ? file.path : "null",
-      amount,
+      ...pickBillAttributes(req.body),
+      fileName: hasPicture ? file.originalname : null,
+      filePath: hasPicture ? file.path : null,
     });
     return res.status(201).json(bill);
   } catch (error) {
@@ -39,43 +56,9 @@ const get = async (req, res) => {
   const { user } = req;
   if (!user) return res.status(401).send({ message: USER_MUST_BE_AUTHENTICATED });
   try {
-    const bill =
-      user.type === "Admin"
-        ? await Bill.findOne({ where: { key: req.params.id } })
-        : await Bill.findOne({
-            where: { key: req.params.id, email: user.email },
-          });
+    const bill = await findBillForUser(user, req.params.id);
     if (!bill) return res.status(401).send({ message: UNAUTHORIZED_ACTION });
-    const {
-      key: id,
-      name,
-      type,
-      email,
-      date,
-      vat,
-      pct,
-      commentary,
-      status,
-      commentAdmin,
-      fileName,
-      amount,
-      filePath,
-    } = bill;
-    return res.json({
-      id,
-      name,
-      type,
-      email,
-      date,
-      vat,
-      pct,
-      commentary,
-      status,
-      commentAdmin,
-      fileName,
-      fileUrl: getFileURL(filePath),
-      amount,
-    });
+    return res.json(toBillDTO(bill));
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
@@ -89,39 +72,7 @@ const list = async (req, res) => {
       user.type === "Admin"
         ? await Bill.findAll()
         : await Bill.findAll({ where: { email: user.email } });
-    return res.json(
-      bills.map(
-        ({
-          key: id,
-          name,
-          type,
-          email,
-          date,
-          vat,
-          pct,
-          commentary,
-          status,
-          commentAdmin,
-          fileName,
-          amount,
-          filePath,
-        }) => ({
-          id,
-          name,
-          type,
-          email,
-          date,
-          vat,
-          pct,
-          commentary,
-          status,
-          commentAdmin,
-          fileName,
-          amount,
-          fileUrl: getFileURL(filePath),
-        }),
-      ),
-    );
+    return res.json(bills.map(toBillDTO));
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
@@ -131,45 +82,22 @@ const update = async (req, res) => {
   const { user } = req;
   if (!user) return res.status(401).send({ message: USER_MUST_BE_AUTHENTICATED });
   try {
-    const { name, type, email, date, vat, pct, commentary, status, commentAdmin, amount } =
-      req.body;
-    const toUpdate = {
-      name,
-      type,
-      email,
-      date,
-      vat,
-      pct,
-      commentary,
-      status,
-      commentAdmin,
-      amount,
-    };
-    const bill =
-      user.type === "Admin"
-        ? await Bill.findOne({ where: { key: req.params.id } })
-        : await Bill.findOne({
-            where: { key: req.params.id, email: user.email },
-          });
+    const bill = await findBillForUser(user, req.params.id);
     if (!bill) return res.status(401).send({ message: UNAUTHORIZED_ACTION });
-    const updated = await bill.update(toUpdate);
+    const updated = await bill.update(pickBillAttributes(req.body));
     return res.json(updated);
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
 };
+
 const remove = async (req, res) => {
   const { user } = req;
   if (!user) return res.status(401).send({ message: USER_MUST_BE_AUTHENTICATED });
   try {
-    const bill =
-      user.type === "Admin"
-        ? await Bill.findOne({ where: { key: req.params.id } })
-        : await Bill.findOne({
-            where: { key: req.params.id, email: user.email },
-          });
+    const bill = await findBillForUser(user, req.params.id);
     if (!bill) return res.status(401).send({ message: UNAUTHORIZED_ACTION });
-    await Bill.destroy({ where: { id: bill.id } });
+    await bill.destroy();
     return res.send("Bill removed");
   } catch (error) {
     return res.status(500).send({ message: error.message });
