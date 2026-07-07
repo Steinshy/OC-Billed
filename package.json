@@ -33,7 +33,7 @@
     "eslint-plugin-html": "^8.1.4",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsdoc": "62.6.0",
-    "eslint-plugin-security": "^3.0.1",
+    "eslint-plugin-security": "^4.0.1",
     "eslint-plugin-sonarjs": "^3.0.7",
     "eslint-plugin-unicorn": "^62.0.0",
     "globals": "17.3.0",
