@@ -99,8 +99,6 @@ class Store {
       headers: getHeaders({ noAuthorization: true }),
     });
 
-  ref = (path) => this.store.doc(path);
-
   bill = (bid) =>
     new ApiEntity({ key: "bills", api: this.api }).select({ selector: bid });
   bills = () => new ApiEntity({ key: "bills", api: this.api });

@@ -21,8 +21,9 @@ const login = async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 };
-const loggout = async (req, res) => {
+const logout = async (req, res) => {
   const { user } = req;
+  if (!user) return res.status(401).send({ message: "user must be authenticated" });
   try {
     await User.update({ status: "disconnected" }, { where: { id: user.id } });
     return res.status(200).send({ message: "user disconnected" });
@@ -33,5 +34,5 @@ const loggout = async (req, res) => {
 
 module.exports = {
   login,
-  loggout,
+  logout,
 };

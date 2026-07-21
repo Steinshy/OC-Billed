@@ -47,29 +47,27 @@ to review and manage them through a dedicated interface.
 ## Project structure
 
 ```text
-Oc-Billed/
-├── index.html
-├── src/
-│   ├── App.js
-│   ├── api/
-│   │   ├── api.js
-│   │   ├── entity.js
-│   │   └── store.js
-│   ├── components/
-│   │   ├── bills/
-│   │   ├── dashboard/
-│   │   ├── login/
-│   │   └── error/
-│   ├── middleware/
-│   │   ├── router.js
-│   │   ├── routes.js
-│   │   └── path.js
-│   ├── utils/
-│   └── data/
-├── styles/
-├── public/
-├── test/
-└── dist/
+OC-Billed/                  # pnpm workspace
+├── package.json            # Root scripts (dev, test, lint…)
+├── pnpm-workspace.yaml
+├── Backend/                # Express + Sequelize (SQLite) API
+│   ├── server.js           # Entry point (port 5678)
+│   ├── app.js              # Express application
+│   ├── controllers/        # auth, bill, user
+│   ├── routes/             # /auth, /bills, /users
+│   ├── middlewares/        # JWT authentication
+│   ├── models/             # Sequelize models (User, Bill)
+│   ├── migrations/         # Database migrations
+│   ├── services/           # jwt, password (bcrypt)
+│   └── tests/              # Integration tests (supertest)
+└── Frontend/               # Framework-free JavaScript SPA
+    ├── index.html
+    └── src/
+        ├── app/            # Router, Store (API client), format
+        ├── containers/     # Logic: Bills, NewBill, Login, Dashboard…
+        ├── views/          # Page HTML rendering
+        ├── constants/      # Routes, test users
+        └── __tests__/      # Jest + Testing Library tests
 ```
 
 ---
@@ -89,8 +87,8 @@ Oc-Billed/
 - **Live Server** — development server
 
 ### Environment
-- **Node.js** ≥ 18
-- **npm**
+- **Node.js** ≥ 22
+- **pnpm** ≥ 10
 
 ---
 
@@ -126,7 +124,7 @@ Oc-Billed/
 - Router and component tests
 
 ```bash
-npm test
+pnpm test
 ```
 
 ---
@@ -138,27 +136,29 @@ npm test
 ```bash
 git clone https://github.com/Steinshy/Oc-Billed.git
 cd Oc-Billed
-npm install
+pnpm install
 ```
 
 ### Development
 
 ```bash
-npm run dev
+pnpm seed   # first run: migrations + demo data
+pnpm dev    # start backend (5678) + frontend (live-server)
 ```
 
 ---
 
-## Available scripts
+## Available scripts (root)
 
-| Command           | Description              |
-| ----------------- | ------------------------ |
-| `npm run dev`     | Start the frontend       |
-| `npm run dev:all` | Start frontend + backend |
-| `npm run build`   | Production build         |
-| `npm run preview` | Preview build            |
-| `npm test`        | Run tests                |
-| `npm run lint`    | Run linter               |
+| Command             | Description                    |
+| ------------------- | ------------------------------ |
+| `pnpm dev`          | Backend + frontend in parallel |
+| `pnpm dev:backend`  | Backend only (port 5678)       |
+| `pnpm dev:frontend` | Frontend only (live-server)    |
+| `pnpm seed`         | Migrations + demo data         |
+| `pnpm test`         | Test both packages             |
+| `pnpm lint`         | Lint both packages             |
+| `pnpm format`       | Format with Prettier           |
 
 ---
 

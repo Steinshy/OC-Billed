@@ -42,29 +42,27 @@ et aux administrateurs de les consulter et de les gérer via une interface dédi
 ## Structure du projet
 
 ```text
-Oc-Billed/
-├── index.html
-├── src/
-│   ├── App.js
-│   ├── api/
-│   │   ├── api.js
-│   │   ├── entity.js
-│   │   └── store.js
-│   ├── components/
-│   │   ├── bills/
-│   │   ├── dashboard/
-│   │   ├── login/
-│   │   └── error/
-│   ├── middleware/
-│   │   ├── router.js
-│   │   ├── routes.js
-│   │   └── path.js
-│   ├── utils/
-│   └── data/
-├── styles/
-├── public/
-├── test/
-└── dist/
+OC-Billed/                  # Workspace pnpm
+├── package.json            # Scripts racine (dev, test, lint…)
+├── pnpm-workspace.yaml
+├── Backend/                # API Express + Sequelize (SQLite)
+│   ├── server.js           # Point d'entrée (port 5678)
+│   ├── app.js              # Application Express
+│   ├── controllers/        # auth, bill, user
+│   ├── routes/             # /auth, /bills, /users
+│   ├── middlewares/        # Authentification JWT
+│   ├── models/             # Modèles Sequelize (User, Bill)
+│   ├── migrations/         # Migrations base de données
+│   ├── services/           # jwt, password (bcrypt)
+│   └── tests/              # Tests d'intégration (supertest)
+└── Frontend/               # SPA JavaScript sans framework
+    ├── index.html
+    └── src/
+        ├── app/            # Router, Store (API), format
+        ├── containers/     # Logique : Bills, NewBill, Login, Dashboard…
+        ├── views/          # Rendu HTML des pages
+        ├── constants/      # Routes, utilisateurs de test
+        └── __tests__/      # Tests Jest + Testing Library
 ```
 
 ---
@@ -84,8 +82,8 @@ Oc-Billed/
 - **Live Server** — serveur de développement
 
 ### Environnement
-- **Node.js** ≥ 18
-- **npm**
+- **Node.js** ≥ 22
+- **pnpm** ≥ 10
 
 ---
 
@@ -121,7 +119,7 @@ Oc-Billed/
 - Tests du router et des composants
 
 ```bash
-npm test
+pnpm test
 ```
 
 ---
@@ -133,27 +131,29 @@ npm test
 ```bash
 git clone https://github.com/Steinshy/Oc-Billed.git
 cd Oc-Billed
-npm install
+pnpm install
 ```
 
 ### Développement
 
 ```bash
-npm run dev
+pnpm seed   # première fois : migrations + données de démo
+pnpm dev    # lance backend (5678) + frontend (live-server)
 ```
 
 ---
 
-## Scripts disponibles
+## Scripts disponibles (racine)
 
-| Commande          | Description        |
-| ----------------- | ------------------ |
-| `npm run dev`     | Lance le frontend  |
-| `npm run dev:all` | Frontend + backend |
-| `npm run build`   | Build production   |
-| `npm run preview` | Prévisualisation   |
-| `npm test`        | Lance les tests    |
-| `npm run lint`    | Lint du projet     |
+| Commande            | Description                      |
+| ------------------- | -------------------------------- |
+| `pnpm dev`          | Backend + frontend en parallèle  |
+| `pnpm dev:backend`  | Backend seul (port 5678)         |
+| `pnpm dev:frontend` | Frontend seul (live-server)      |
+| `pnpm seed`         | Migrations + données de démo     |
+| `pnpm test`         | Tests des deux packages          |
+| `pnpm lint`         | Lint des deux packages           |
+| `pnpm format`       | Formatage Prettier               |
 
 ---
 
@@ -168,7 +168,7 @@ npm run dev
 ## Compatibilité
 
 - Navigateurs modernes (Chrome, Firefox, Edge)
-- Node.js ≥ 18
+- Node.js ≥ 22
 
 ---
 

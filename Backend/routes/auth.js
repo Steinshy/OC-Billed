@@ -8,7 +8,6 @@ router.get("/", (req, res) => {
   res.send("auth routes");
 });
 router.post("/login", authController.login);
-
-router.patch("/loggout", authController.loggout);
+router.patch("/logout", authController.logout);
 
 module.exports = router;

@@ -50,3 +50,12 @@ export function setupEmployeeUser(email = "employee@test.com") {
   });
   window.localStorage.setItem("user", JSON.stringify({ type: "Employee", email }));
 }
+
+// Minimal store whose bills().update resolves through the given spy.
+export function makeBillsStore(update) {
+  return {
+    bills() {
+      return { update };
+    },
+  };
+}

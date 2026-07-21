@@ -1,94 +1,43 @@
+# Billed — Frontend
 
-## L'architecture du projet :
-Ce projet, dit frontend, est connecté à un service API backend que vous devez aussi lancer en local.
+SPA JavaScript sans framework (jQuery/Bootstrap via CDN, live-server en développement).
 
-Le projet backend se trouve ici: https://github.com/OpenClassrooms-Student-Center/Billed-app-FR-back
+## Prérequis
 
-## Organiser son espace de travail :
-Pour une bonne organization, vous pouvez créer un dossier bill-app dans lequel vous allez cloner le projet backend et par la suite, le projet frontend:
+- Node.js ≥ 22
+- pnpm ≥ 10 (`corepack enable` ou `npm i -g pnpm`)
+- Le backend doit tourner sur `http://localhost:5678` (voir `Backend/README.md`)
 
-Clonez le projet backend dans le dossier bill-app :
-```
-$ git clone https://github.com/OpenClassrooms-Student-Center/Billed-app-FR-Back.git
-```
+## Installation
 
-```
-bill-app/
-   - Billed-app-FR-Back
-```
+Depuis la racine du dépôt (workspace pnpm) :
 
-Clonez le projet frontend dans le dossier bill-app :
-```
-$ git clone https://github.com/OpenClassrooms-Student-Center/Billed-app-FR-Front.git
+```bash
+pnpm install
 ```
 
-```
-bill-app/
-   - Billed-app-FR-Back
-   - Billed-app-FR-Front
-```
+## Lancer l'application
 
-## Comment lancer l'application en local ?
-
-### étape 1 - Lancer le backend :
-
-Suivez les indications dans le README du projet backend.
-
-### étape 2 - Lancer le frontend :
-
-Allez au repo cloné :
-```
-$ cd Billed-app-FR-Front
+```bash
+pnpm dev            # depuis la racine : backend + frontend
+pnpm dev:frontend   # frontend seul
 ```
 
-Installez les packages npm (décrits dans `package.json`) :
-```
-$ npm install
-```
+Puis ouvrez `http://127.0.0.1:8080/`.
 
-Installez live-server pour lancer un serveur local :
-```
-$ npm install -g live-server
-```
+## Tests
 
-Lancez l'application :
-```
-$ live-server
+```bash
+pnpm --filter billed-frontend test         # suite complète + couverture
+pnpm --filter billed-frontend test:watch   # mode watch
+pnpm --filter billed-frontend exec jest src/__tests__/Bills.js   # un seul fichier
 ```
 
-Puis allez à l'adresse : `http://127.0.0.1:8080/`
+La couverture est générée dans `coverage/` et un rapport HTML dans `test-report.html`.
 
+## Comptes de test
 
-## Comment lancer tous les tests en local avec Jest ?
-
-```
-$ npm run test
-```
-
-## Comment lancer un seul test ?
-
-Installez jest-cli :
-
-```
-$npm i -g jest-cli
-$jest src/__tests__/your_test_file.js
-```
-
-## Comment voir la couverture de test ?
-
-`http://127.0.0.1:8080/coverage/lcov-report/`
-
-## Comptes et utilisateurs :
-
-Vous pouvez vous connecter en utilisant les comptes:
-
-### administrateur : 
-```
-utilisateur : admin@test.tld 
-mot de passe : admin
-```
-### employé :
-```
-utilisateur : employee@test.tld
-mot de passe : employee
-```
+| Rôle           | Email               | Mot de passe |
+| -------------- | ------------------- | ------------ |
+| Administrateur | `admin@test.tld`    | `admin`      |
+| Employé        | `employee@test.tld` | `employee`   |

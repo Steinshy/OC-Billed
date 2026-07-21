@@ -36,11 +36,15 @@ describe("Test the root path", () => {
       .expect(400);
   });
 
-  test("It should loggout a user", () => {
+  test("It should logout a user", () => {
     return request(app)
-      .patch("/auth/loggout")
+      .patch("/auth/logout")
       .set("Authorization", `Bearer ${jwtValue}`)
       .set("Accept", "application/json")
       .expect(200);
+  });
+
+  test("It should not logout an unauthenticated user", () => {
+    return request(app).patch("/auth/logout").set("Accept", "application/json").expect(401);
   });
 });

@@ -1,0 +1,16 @@
+packages:
+  - Backend
+  - Frontend
+
+# eslint-plugin-sonarjs requires ts-api-utils at runtime without declaring it;
+# npm's hoisting hid this, pnpm's strict node_modules does not.
+packageExtensions:
+  eslint-plugin-sonarjs:
+    dependencies:
+      ts-api-utils: "^2.1.0"
+
+onlyBuiltDependencies:
+  - "@swc/core"
+  - bcrypt
+  - sqlite3
+  - unrs-resolver
