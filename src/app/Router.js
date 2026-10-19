@@ -3,10 +3,9 @@ import Bills from "../containers/Bills.js";
 import Dashboard from "../containers/Dashboard.js";
 import Login from "../containers/Login.js";
 import NewBill from "../containers/NewBill.js";
+import store from "../store/Store.js";
 import BillsUI from "../views/BillsUI.js";
 import DashboardUI from "../views/DashboardUI.js";
-
-import store from "./Store.js";
 
 const ACTIVE_ICON_CLASS = "active-icon";
 

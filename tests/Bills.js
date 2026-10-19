@@ -10,7 +10,7 @@ import { localStorageMock } from "./mocks/localStorage.js";
 import mockStore from "./mocks/store.js";
 
 // Load the mock inside the factory: jest.mock is hoisted above the imports.
-jest.mock("../src/app/Store.js", () => jest.requireActual("./mocks/store.js").default);
+jest.mock("../src/store/Store.js", () => jest.requireActual("./mocks/store.js").default);
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {

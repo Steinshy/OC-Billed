@@ -1,4 +1,4 @@
-import Store from "../src/app/Store.js";
+import Store from "../src/store/Store.js";
 
 const MOCK_JWT_TOKEN = "mock-jwt-token";
 const HTTP_LOCALHOST_PORT = "http://localhost:5678";

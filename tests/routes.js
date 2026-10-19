@@ -1,11 +1,11 @@
 import { fireEvent, screen, waitFor } from "@testing-library/dom";
 
 import Router from "../src/app/Router.js";
-import store from "../src/app/Store.js";
 import { ROUTES, ROUTES_PATH } from "../src/constants/routes.js";
 import Bills from "../src/containers/Bills.js";
 import Dashboard from "../src/containers/Dashboard.js";
 import Login from "../src/containers/Login.js";
+import store from "../src/store/Store.js";
 
 import { bills } from "./mocks/bills.js";
 import { ROUTER, TEST_ROUTES } from "./mocks/testConstants.js";

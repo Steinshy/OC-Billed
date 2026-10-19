@@ -7,7 +7,7 @@ export const DEMO_TOKEN_PREFIX = "demo-jwt:";
 const LATENCY_MS = 200;
 // Uploaded proofs are stored as data URLs; bigger files fall back to the demo receipt.
 const MAX_FILE_BYTES = 1_000_000;
-const DEMO_RECEIPT = "src/assets/images/facturefreemobile.jpg";
+const DEMO_RECEIPT = "src/store/demo-receipt.jpg";
 const PICTURE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
 const BILL_FIELDS = [
   "name",

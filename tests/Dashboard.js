@@ -18,7 +18,7 @@ import mockStore from "./mocks/store.js";
 import { DASHBOARD, STATUS, TEST_EMAILS } from "./mocks/testConstants.js";
 
 // Load the mock inside the factory: jest.mock is hoisted above the imports.
-jest.mock("../src/app/Store.js", () => jest.requireActual("./mocks/store.js").default);
+jest.mock("../src/store/Store.js", () => jest.requireActual("./mocks/store.js").default);
 
 const {
   BILL_47QAXB_TEST_ID,
