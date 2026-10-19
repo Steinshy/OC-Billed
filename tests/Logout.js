@@ -1,10 +1,11 @@
 import { fireEvent, screen } from "@testing-library/dom";
 
-import { localStorageMock } from "../__mocks__/localStorage.js";
-import { singleBillArray as bills } from "../__mocks__/testData.js";
-import { ROUTES } from "../constants/routes.js";
-import Logout from "../containers/Logout.js";
-import DashboardUI from "../views/DashboardUI.js";
+import { ROUTES } from "../src/constants/routes.js";
+import Logout from "../src/containers/Logout.js";
+import DashboardUI from "../src/views/DashboardUI.js";
+
+import { localStorageMock } from "./mocks/localStorage.js";
+import { singleBillArray as bills } from "./mocks/testData.js";
 
 describe("Given I am connected", () => {
   describe("When I click on disconnect button", () => {

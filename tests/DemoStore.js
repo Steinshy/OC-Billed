@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import DemoStore, { resetDemoStore } from "../app/DemoStore.js";
+import DemoStore, { resetDemoStore } from "../src/app/DemoStore.js";
 
 const EMPLOYEE_EMAIL = "employee@test.tld";
 

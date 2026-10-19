@@ -1,13 +1,9 @@
 import { screen } from "@testing-library/dom";
 
-import {
-  bill,
-  billAccepted,
-  billPending,
-  billRefused as billrefused,
-} from "../__mocks__/testData.js";
-import { formatDate, formatBillForDisplay } from "../app/format.js";
-import DashboardFormUI, { modal } from "../views/DashboardFormUI.js";
+import { formatDate, formatBillForDisplay } from "../src/app/format.js";
+import DashboardFormUI, { modal } from "../src/views/DashboardFormUI.js";
+
+import { bill, billAccepted, billPending, billRefused as billrefused } from "./mocks/testData.js";
 
 describe("Given I am connected as an Admin and I am on Dashboard Page", () => {
   describe("When bill data is passed to DashboardUI", () => {

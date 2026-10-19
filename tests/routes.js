@@ -1,23 +1,24 @@
 import { fireEvent, screen, waitFor } from "@testing-library/dom";
 
-import { ROUTER, TEST_ROUTES } from "../__mocks__/testConstants.js";
-import { setupTestEnvironment } from "../__mocks__/testHelpers.js";
-import Router from "../app/Router.js";
-import store from "../app/Store.js";
-import { ROUTES, ROUTES_PATH } from "../constants/routes.js";
-import Bills from "../containers/Bills.js";
-import Dashboard from "../containers/Dashboard.js";
-import Login from "../containers/Login.js";
-import { bills } from "../fixtures/bills.js";
+import Router from "../src/app/Router.js";
+import store from "../src/app/Store.js";
+import { ROUTES, ROUTES_PATH } from "../src/constants/routes.js";
+import Bills from "../src/containers/Bills.js";
+import Dashboard from "../src/containers/Dashboard.js";
+import Login from "../src/containers/Login.js";
 
-jest.mock("../containers/Bills.js");
-jest.mock("../containers/Dashboard.js", () => ({
+import { bills } from "./mocks/bills.js";
+import { ROUTER, TEST_ROUTES } from "./mocks/testConstants.js";
+import { setupTestEnvironment } from "./mocks/testHelpers.js";
+
+jest.mock("../src/containers/Bills.js");
+jest.mock("../src/containers/Dashboard.js", () => ({
   __esModule: true,
   default: jest.fn(),
   filteredBills: () => [],
 }));
-jest.mock("../containers/NewBill.js");
-jest.mock("../containers/Login.js");
+jest.mock("../src/containers/NewBill.js");
+jest.mock("../src/containers/Login.js");
 
 const {
   ACTIVE_ICON_CLASS,

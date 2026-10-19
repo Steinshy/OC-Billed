@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/dom";
 
-import Actions from "../views/Actions.js";
+import Actions from "../src/views/Actions.js";
 
 describe("Given I am connected as an Employee", () => {
   describe("When I am on Bills page and there are bills", () => {

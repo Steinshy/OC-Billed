@@ -1,14 +1,16 @@
 import { fireEvent, screen, waitFor } from "@testing-library/dom";
 
-import { localStorageMock } from "../__mocks__/localStorage.js";
-import mockStore from "../__mocks__/store.js";
-import router from "../app/Router.js";
-import { ROUTES_PATH } from "../constants/routes.js";
-import Bills from "../containers/Bills.js";
-import { bills } from "../fixtures/bills.js";
-import BillsUI from "../views/BillsUI.js";
+import router from "../src/app/Router.js";
+import { ROUTES_PATH } from "../src/constants/routes.js";
+import Bills from "../src/containers/Bills.js";
+import BillsUI from "../src/views/BillsUI.js";
 
-jest.mock("../app/Store.js", () => mockStore);
+import { bills } from "./mocks/bills.js";
+import { localStorageMock } from "./mocks/localStorage.js";
+import mockStore from "./mocks/store.js";
+
+// Load the mock inside the factory: jest.mock is hoisted above the imports.
+jest.mock("../src/app/Store.js", () => jest.requireActual("./mocks/store.js").default);
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {

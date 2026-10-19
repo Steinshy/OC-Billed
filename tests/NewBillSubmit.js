@@ -1,12 +1,13 @@
 import { screen, fireEvent, waitFor } from "@testing-library/dom";
 
 import "@testing-library/jest-dom";
-import mockStore from "../__mocks__/store.js";
-import { NEW_BILL } from "../__mocks__/testConstants.js";
-import { makeBillsStore, setupEmployeeUser } from "../__mocks__/testHelpers.js";
-import { ROUTES_PATH } from "../constants/routes.js";
-import NewBill from "../containers/NewBill.js";
-import NewBillUI from "../views/NewBillUI.js";
+import { ROUTES_PATH } from "../src/constants/routes.js";
+import NewBill from "../src/containers/NewBill.js";
+import NewBillUI from "../src/views/NewBillUI.js";
+
+import mockStore from "./mocks/store.js";
+import { NEW_BILL } from "./mocks/testConstants.js";
+import { makeBillsStore, setupEmployeeUser } from "./mocks/testHelpers.js";
 
 const {
   EMPLOYEE_TYPE,

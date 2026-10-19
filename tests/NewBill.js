@@ -1,11 +1,12 @@
 import { screen } from "@testing-library/dom";
 
 import "@testing-library/jest-dom";
-import mockStore from "../__mocks__/store.js";
-import { NEW_BILL } from "../__mocks__/testConstants.js";
-import { setupEmployeeUser } from "../__mocks__/testHelpers.js";
-import NewBill from "../containers/NewBill.js";
-import NewBillUI from "../views/NewBillUI.js";
+import NewBill from "../src/containers/NewBill.js";
+import NewBillUI from "../src/views/NewBillUI.js";
+
+import mockStore from "./mocks/store.js";
+import { NEW_BILL } from "./mocks/testConstants.js";
+import { setupEmployeeUser } from "./mocks/testHelpers.js";
 
 const { FORM_TEST_ID: FORM_NEW_BILL_TEST_ID, TEST_EMAIL } = NEW_BILL;
 

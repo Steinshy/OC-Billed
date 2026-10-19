@@ -1,9 +1,10 @@
 import { fireEvent, screen } from "@testing-library/dom";
 
-import { LOGIN } from "../__mocks__/testConstants.js";
-import { ROUTES, ROUTES_PATH } from "../constants/routes.js";
-import Login from "../containers/Login.js";
-import LoginUI from "../views/LoginUI.js";
+import { ROUTES, ROUTES_PATH } from "../src/constants/routes.js";
+import Login from "../src/containers/Login.js";
+import LoginUI from "../src/views/LoginUI.js";
+
+import { LOGIN } from "./mocks/testConstants.js";
 
 const {
   FORM_EMPLOYEE_TEST_ID,

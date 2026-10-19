@@ -1,22 +1,24 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/dom";
 
-import { localStorageMock } from "../__mocks__/localStorage.js";
-import mockStore from "../__mocks__/store.js";
-import { DASHBOARD, STATUS, TEST_EMAILS } from "../__mocks__/testConstants.js";
-import router from "../app/Router.js";
-import { ROUTES, ROUTES_PATH } from "../constants/routes.js";
-import USERS_TEST from "../constants/usersTest.js";
+import router from "../src/app/Router.js";
+import { ROUTES, ROUTES_PATH } from "../src/constants/routes.js";
+import USERS_TEST from "../src/constants/usersTest.js";
 import Dashboard, {
   filteredBills,
   cards,
   shouldIncludeBill,
   card,
   getStatus,
-} from "../containers/Dashboard.js";
-import { bills } from "../fixtures/bills.js";
-import DashboardUI from "../views/DashboardUI.js";
+} from "../src/containers/Dashboard.js";
+import DashboardUI from "../src/views/DashboardUI.js";
 
-jest.mock("../app/Store.js", () => mockStore);
+import { bills } from "./mocks/bills.js";
+import { localStorageMock } from "./mocks/localStorage.js";
+import mockStore from "./mocks/store.js";
+import { DASHBOARD, STATUS, TEST_EMAILS } from "./mocks/testConstants.js";
+
+// Load the mock inside the factory: jest.mock is hoisted above the imports.
+jest.mock("../src/app/Store.js", () => jest.requireActual("./mocks/store.js").default);
 
 const {
   BILL_47QAXB_TEST_ID,
