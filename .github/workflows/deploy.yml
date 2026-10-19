@@ -3,47 +3,33 @@ name: Deploy
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [main]
+    paths: ["index.html", "src/**", ".github/workflows/deploy.yml"]
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# One deployment at a time; never cancel one that is already publishing.
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-  build:
-    name: Build and Upload
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
-
-      # No bundler: src/ holds only runtime code. The demo store turns itself on outside localhost.
-      - name: Collect runtime files
-        run: mkdir dist && cp -R index.html src dist/
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
-        with:
-          path: dist
-
   deploy:
     name: Deploy to GitHub Pages
-    needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 10
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
-      - name: Deploy
-        id: deployment
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      # No bundler and no backend: ship index.html + src/ as-is; the demo store turns itself on outside localhost.
+      - run: mkdir dist && cp -R index.html src dist/
+      - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
+        with:
+          path: dist
+      - id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
