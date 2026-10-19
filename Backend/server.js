@@ -2,7 +2,7 @@ const app = require("./app.js");
 const { sequelize } = require("./models/index.js");
 const { seedDatabase } = require("./seed.js");
 
-// The frontend Store (Frontend/src/app/Store.js) targets this port.
+// The frontend Store (src/app/Store.js) targets this port.
 const PORT = process.env.PORT || 5678;
 
 const startServer = async () => {

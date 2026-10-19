@@ -1,4 +1,5 @@
 const sequelize_fixtures = require("sequelize-fixtures");
+
 const { sequelize } = require("../models");
 const models = require("../models");
 

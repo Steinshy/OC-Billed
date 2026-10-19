@@ -2,6 +2,7 @@ const cors = require("cors");
 const express = require("express");
 const helmet = require("helmet");
 const multer = require("multer");
+
 const authMiddleware = require("./middlewares/auth.js");
 const authRoute = require("./routes/auth.js");
 const billRoute = require("./routes/bill.js");

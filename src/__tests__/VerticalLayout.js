@@ -1,4 +1,5 @@
 import { screen } from "@testing-library/dom";
+
 import { localStorageMock } from "../__mocks__/localStorage.js";
 import VerticalLayout from "../views/VerticalLayout.js";
 

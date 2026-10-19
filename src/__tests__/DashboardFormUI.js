@@ -1,4 +1,5 @@
 import { screen } from "@testing-library/dom";
+
 import { bill, billAccepted, billPending, billRefused as billrefused } from "../__mocks__/testData.js";
 import { formatDate, formatBillForDisplay } from "../app/format.js";
 import DashboardFormUI, { modal } from "../views/DashboardFormUI.js";

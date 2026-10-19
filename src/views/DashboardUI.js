@@ -1,6 +1,7 @@
 import ArrowIcon from "../assets/svg/arrow.js";
 import BigBilledIcon from "../assets/svg/big_billed.js";
 import { filteredBills } from "../containers/Dashboard.js";
+
 import ErrorPage from "./ErrorPage.js";
 import LoadingPage from "./LoadingPage.js";
 import VerticalLayout from "./VerticalLayout.js";

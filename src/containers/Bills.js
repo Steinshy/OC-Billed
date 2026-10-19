@@ -1,5 +1,6 @@
 import { formatDate, formatStatus, validateFileUrl } from "../app/format.js";
 import { ROUTES_PATH } from "../constants/routes.js";
+
 import Logout from "./Logout.js";
 
 export default class Bills {

@@ -1,4 +1,5 @@
 import { fireEvent, screen, waitFor } from "@testing-library/dom";
+
 import { ROUTER, TEST_ROUTES } from "../__mocks__/testConstants.js";
 import { setupTestEnvironment } from "../__mocks__/testHelpers.js";
 import Router from "../app/Router.js";

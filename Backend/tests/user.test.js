@@ -1,6 +1,8 @@
 const request = require("supertest");
+
 const app = require("../app");
 const jwt = require("../services/jwt");
+
 const fixtures = require("./fixtures");
 
 const UNAUTHENTICATE_ERROR_TEXT = "unauthenticate error";
