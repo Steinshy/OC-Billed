@@ -1,12 +1,6 @@
 node_modules
-dist
-dist-ssr
-*.local
-.vscode
-.idea
-package-lock.json
-yarn.lock
+pnpm-lock.yaml
 coverage
-temp
-.stryker-tmp
-.oc
+test-report.html
+deliverables
+Backend/public
