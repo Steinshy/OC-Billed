@@ -1,11 +1,11 @@
-import ReceiptIcon from "../assets/svg/receipt.js";
+const receiptIcon = lucide.createElement(lucide.Receipt, { width: "3em", height: "3em" }).outerHTML;
 
 export default () => {
   return `
     <div class="page-div">
       <div class="row">
         <div class="title-container">
-          ${ReceiptIcon}
+          ${receiptIcon}
           <h1>Billed</h1>
         </div>
       </div>

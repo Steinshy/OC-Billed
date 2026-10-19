@@ -7,6 +7,7 @@ import globals from "globals";
 
 const testGlobals = {
   $: "readonly", // jQuery, set by tests/setup.cjs
+  lucide: "readonly", // set by tests/setup.cjs
   describe: "readonly",
   test: "readonly",
   it: "readonly",
@@ -88,6 +89,7 @@ export default [
       globals: {
         ...globals.browser,
         $: "readonly",
+        lucide: "readonly",
         onNavigate: "readonly",
       },
     },

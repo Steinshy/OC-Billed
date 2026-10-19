@@ -1,5 +1,6 @@
 import { validateFileUrl } from "../app/format.js";
-import eyeBlueIcon from "../assets/svg/eye_blue.js";
+
+const eyeBlueIcon = lucide.createElement(lucide.Eye, { stroke: "#0D5AE5" }).outerHTML;
 
 export default billUrl => {
   const isValidFile = !validateFileUrl(billUrl);

@@ -9,12 +9,7 @@ module.exports = {
   moduleNameMapper: {
     "\\.css$": "<rootDir>/tests/mocks/styleMock.js",
   },
-  collectCoverageFrom: [
-    "src/**/*.js",
-    "!src/app/App.js",
-    "!src/app/datepicker.js",
-    "!src/assets/svg/**",
-  ],
+  collectCoverageFrom: ["src/**/*.js", "!src/app/App.js", "!src/app/datepicker.js"],
   coverageReporters: ["text", "lcov", "html"],
   reporters: [
     "default",

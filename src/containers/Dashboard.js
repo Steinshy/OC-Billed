@@ -1,10 +1,17 @@
 import { formatDate, formatBillForDisplay, validateFileUrl } from "../app/format.js";
-import BigBilledIcon from "../assets/svg/big_billed.js";
 import { ROUTES_PATH } from "../constants/routes.js";
 import USERS_TEST from "../constants/usersTest.js";
 import DashboardFormUI from "../views/DashboardFormUI.js";
 
 import Logout from "./Logout.js";
+
+// Placeholder shown when no bill is selected; DashboardUI reuses it.
+export const bigBilledIcon = lucide.createElement(lucide.Receipt, {
+  width: 250,
+  height: 250,
+  stroke: "#eaeaea",
+  "stroke-width": 1,
+}).outerHTML;
 
 export const shouldIncludeBill = (bill, userEmail, isAdmin) => {
   if (isAdmin) {
@@ -217,7 +224,7 @@ export default class {
         $(`#open-bill${bill.id}`).css({ background: "#0D5AE5" });
         $(".dashboard-right-container").html(`
           <h3> Validations </h3>
-          <div id="big-billed-icon" data-testid="big-billed-icon">${BigBilledIcon}</div>
+          <div id="big-billed-icon" data-testid="big-billed-icon">${bigBilledIcon}</div>
         `);
         $(".vertical-navbar").css({ height: "120vh" });
         this.counter++;

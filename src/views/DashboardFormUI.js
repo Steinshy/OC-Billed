@@ -1,8 +1,21 @@
 import { formatDate } from "../app/format.js";
-import calendarIcon from "../assets/svg/calendar.js";
-import euroIcon from "../assets/svg/euro.js";
-import eyeWhite from "../assets/svg/eye_white.js";
-import pctIcon from "../assets/svg/pct.js";
+
+const calendarIcon = lucide.createElement(lucide.Calendar, {
+  width: 20,
+  height: 20,
+  stroke: "#0D5AE5",
+}).outerHTML;
+const euroIcon = lucide.createElement(lucide.Euro, {
+  width: 20,
+  height: 20,
+  stroke: "#0D5AE5",
+}).outerHTML;
+const eyeWhiteIcon = lucide.createElement(lucide.Eye, { stroke: "#fff" }).outerHTML;
+const pctIcon = lucide.createElement(lucide.Percent, {
+  width: 18,
+  height: 18,
+  stroke: "#0D5AE5",
+}).outerHTML;
 
 export const modal = () => `
   <div class="modal fade" id="modaleFileAdmin1" data-testid="modaleFileAdmin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
@@ -72,7 +85,7 @@ export default formattedBill => {
                 <div class="input-field input-flex file-flex">
                   <span id="file-name-admin">${formattedBill.displayFileName || formattedBill.fileName}</span>
                   <div class="icons-container">
-                    <span id="icon-eye-d" data-testid="icon-eye-d" data-bill-url="${formattedBill.displayFileUrl}">${eyeWhite}</span>
+                    <span id="icon-eye-d" data-testid="icon-eye-d" data-bill-url="${formattedBill.displayFileUrl}">${eyeWhiteIcon}</span>
                   </div>
                 </div>
               `

@@ -1,10 +1,14 @@
-import ArrowIcon from "../assets/svg/arrow.js";
-import BigBilledIcon from "../assets/svg/big_billed.js";
-import { filteredBills } from "../containers/Dashboard.js";
+import { bigBilledIcon, filteredBills } from "../containers/Dashboard.js";
 
 import ErrorPage from "./ErrorPage.js";
 import LoadingPage from "./LoadingPage.js";
 import VerticalLayout from "./VerticalLayout.js";
+
+const arrowIcon = lucide.createElement(lucide.ChevronDown, {
+  width: 18,
+  height: 18,
+  stroke: "#979797",
+}).outerHTML;
 
 export default ({ data, loading, error }) => {
   if (loading) return LoadingPage();
@@ -17,19 +21,19 @@ export default ({ data, loading, error }) => {
         <div class="bills-feed">
           <div class="status-bills-header" id="status-bills-header1">
             <h3>En attente (${filteredBills(data && data.bills, "pending").length})</h3>
-            <span class="arrow-icon" id="arrow-icon1" data-testid="arrow-icon1">${ArrowIcon}</span>
+            <span class="arrow-icon" id="arrow-icon1" data-testid="arrow-icon1">${arrowIcon}</span>
           </div>
           <div class="status-bills-container" id="status-bills-container1">
           </div>
           <div class="status-bills-header" id="status-bills-header2">
             <h3>Validé (${filteredBills(data && data.bills, "accepted").length})</h3>
-            <span class="arrow-icon" id="arrow-icon2" data-testid="arrow-icon2">${ArrowIcon}</span>
+            <span class="arrow-icon" id="arrow-icon2" data-testid="arrow-icon2">${arrowIcon}</span>
           </div>
           <div class="status-bills-container" id="status-bills-container2">
           </div>
           <div class="status-bills-header" id="status-bills-header3">
             <h3>Refusé (${filteredBills(data && data.bills, "refused").length})</h3>
-            <span class="arrow-icon" id="arrow-icon3" data-testid="arrow-icon3">${ArrowIcon}</span>
+            <span class="arrow-icon" id="arrow-icon3" data-testid="arrow-icon3">${arrowIcon}</span>
           </div>
           <div class="status-bills-container" id="status-bills-container3">
           </div>
@@ -37,7 +41,7 @@ export default ({ data, loading, error }) => {
         <div class="dashboard-right-container">
           <h3>Validations</h3>
           <div>
-            <div id="big-billed-icon" data-testid="big-billed-icon">${BigBilledIcon}</div>
+            <div id="big-billed-icon" data-testid="big-billed-icon">${bigBilledIcon}</div>
           </div>
         </div>
       </div>

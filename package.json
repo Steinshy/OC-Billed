@@ -33,6 +33,7 @@
     "jest-html-reporter": "^4.4.2",
     "jquery": "^3.7.1",
     "live-server": "^1.2.2",
+    "lucide": "1.59.0",
     "prettier": "^3.9.10",
     "stylelint": "^17.16.0",
     "stylelint-config-standard": "^40.0.0",

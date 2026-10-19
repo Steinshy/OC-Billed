@@ -2,6 +2,8 @@ const $ = require("jquery");
 require("@testing-library/jest-dom");
 
 global.$ = global.jQuery = $;
+// The browser loads Lucide from a CDN script (global `lucide`); tests use the local package.
+global.lucide = require("lucide");
 
 global.fetch = jest.fn(() =>
   Promise.resolve({

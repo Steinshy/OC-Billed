@@ -7,8 +7,8 @@
   opacity: 0.5;
 }
 
-#eye.icon-disabled svg path {
-  fill: #979797;
+#eye.icon-disabled svg {
+  stroke: #979797;
 }
 
 #download {
