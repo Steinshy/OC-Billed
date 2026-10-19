@@ -12,8 +12,8 @@ Path-scoped rules live in `.claude/rules/` (frontend, backend, deployment). `ARC
 
 ## Run modes
 
-- Local dev: `src/app/Store.js` calls the real API at `http://localhost:5678`.
-- Releases (GitHub Pages, Coolify): no backend; `USE_DEMO` (`src/app/config.js`) is on outside localhost and `src/app/DemoStore.js` answers in-browser. Locally, `?demo` turns it on.
+- Local dev: `src/store/Store.js` calls the real API at `http://localhost:5678`.
+- Releases (GitHub Pages, Coolify): no backend; `USE_DEMO` (`src/store/config.js`) is on outside localhost and `src/store/DemoStore.js` answers in-browser. Locally, `?demo` turns it on.
 - Demo accounts: `employee@test.tld` / `employee`, `admin@test.tld` / `admin` (backend seed and demo store).
 
 ## Rules

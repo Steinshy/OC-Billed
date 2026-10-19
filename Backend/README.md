@@ -1,6 +1,6 @@
 # Billed — Backend
 
-API Express 5 + Sequelize (SQLite) de l'application Billed. Elle sert au développement local uniquement : les releases (GitHub Pages, Coolify) utilisent le store simulé `src/app/DemoStore.js`.
+API Express 5 + Sequelize (SQLite) de l'application Billed. Elle sert au développement local uniquement : les releases (GitHub Pages, Coolify) utilisent le store de démo `src/store/DemoStore.js`.
 
 ## Lancer l'API
 

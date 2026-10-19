@@ -14,7 +14,7 @@ Expense report SPA built for the OpenClassrooms front-end path: employees submit
 
 ## Live demo
 
-The demo runs without a backend: an in-browser demo store (`src/app/DemoStore.js`) answers the same routes as the Express API.
+The demo runs without a backend: an in-browser demo store (`src/store/DemoStore.js`) answers the same routes as the Express API.
 
 | Role     | Email               | Password   |
 | -------- | ------------------- | ---------- |
@@ -31,12 +31,12 @@ Bills you create and admin decisions are kept in the tab's `sessionStorage`; clo
 
 ## Tech stack
 
-| Area     | Stack                                                    |
-| -------- | -------------------------------------------------------- |
-| Frontend | Vanilla JavaScript (ES modules), Bootstrap 4, jQuery     |
-| Backend  | Express 5, Sequelize, SQLite, JWT, Multer                |
-| Tests    | Jest, Testing Library (jsdom), Supertest                 |
-| Tooling  | pnpm workspace, ESLint, Stylelint, Prettier, live-server |
+| Area     | Stack                                                              |
+| -------- | ------------------------------------------------------------------ |
+| Frontend | Vanilla JavaScript (ES modules), Bootstrap 4, jQuery, Lucide icons |
+| Backend  | Express 5, Sequelize, SQLite, JWT, Multer                          |
+| Tests    | Jest, Testing Library (jsdom), Supertest                           |
+| Tooling  | pnpm workspace, ESLint, Stylelint, Prettier, live-server           |
 
 ## Getting started
 

@@ -14,7 +14,7 @@ SPA de gestion de notes de frais réalisée dans le cadre du parcours front-end 
 
 ## Démo en ligne
 
-La démo fonctionne sans backend : un store de démo dans le navigateur (`src/app/DemoStore.js`) répond aux mêmes routes que l'API Express.
+La démo fonctionne sans backend : un store de démo dans le navigateur (`src/store/DemoStore.js`) répond aux mêmes routes que l'API Express.
 
 | Rôle           | Email               | Mot de passe |
 | -------------- | ------------------- | ------------ |
@@ -31,12 +31,12 @@ Les notes créées et les décisions de l'administrateur sont conservées dans l
 
 ## Stack technique
 
-| Domaine  | Stack                                                    |
-| -------- | -------------------------------------------------------- |
-| Frontend | JavaScript natif (modules ES), Bootstrap 4, jQuery       |
-| Backend  | Express 5, Sequelize, SQLite, JWT, Multer                |
-| Tests    | Jest, Testing Library (jsdom), Supertest                 |
-| Outils   | Workspace pnpm, ESLint, Stylelint, Prettier, live-server |
+| Domaine  | Stack                                                             |
+| -------- | ----------------------------------------------------------------- |
+| Frontend | JavaScript natif (modules ES), Bootstrap 4, jQuery, icônes Lucide |
+| Backend  | Express 5, Sequelize, SQLite, JWT, Multer                         |
+| Tests    | Jest, Testing Library (jsdom), Supertest                          |
+| Outils   | Workspace pnpm, ESLint, Stylelint, Prettier, live-server          |
 
 ## Démarrage
 
