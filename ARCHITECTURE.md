@@ -47,12 +47,12 @@ index.html → src/app/App.js → src/app/Router.js → views/* (HTML strings)
 - **`app/DemoStore.js`** — release-only stand-in for the API with the same surface, routes, response shapes and error messages as `Backend/controllers`. Seeded from `Backend/seed.js` (two demo accounts, six bills); data lives in `sessionStorage` because `Logout` clears localStorage. Receipts are stored as data URLs.
 - **Base path** — `Router.js` resolves URLs against the directory the app is served from, so it works at `/` and under `/OC-Billed/` on GitHub Pages.
 - **Auth state** — the logged-in user (`user`) and token (`jwt`) live in localStorage; `Logout` clears it.
-- **Tests** (`src/__tests__/`) — jest + jsdom + Testing Library. The API is mocked via `src/__mocks__/store.js`; shared helpers/fixtures in `src/__mocks__/` and `src/fixtures/`. Coverage and an HTML report are generated on `pnpm test`.
+- **Tests** (`tests/`, outside `src/`) — jest + jsdom + Testing Library. The API is mocked via `tests/mocks/store.js`; shared helpers and fixture data live in `tests/mocks/`. Coverage (of `src/`) and an HTML report are generated on `pnpm test`.
 
 ## Tooling
 
 - **pnpm workspace** — the root package is the frontend; `pnpm-workspace.yaml` lists `Backend`. One root `pnpm-lock.yaml`; dev tooling lives in the root `package.json`, backend-only tools (sequelize-cli, sequelize-fixtures, supertest) in `Backend/`. pnpm 11 reviews install scripts through `allowBuilds`.
 - **Quality** — one root ESLint flat config for `src/` and `Backend/` (import-x, security, sonarjs, unicorn plugins; `import-x/order` is an error), Stylelint for `src/css/`, Prettier for all formatting; `pnpm lint` runs all three.
 - **Demo switch** — `src/app/config.js` sets `USE_DEMO` at runtime: on for any host other than localhost/127.0.0.1, or locally with `?demo` (kept in sessionStorage). Releases ship the source files as-is; there is no build step.
-- **CI** — `.github/workflows/ci.yml` (Node 24): frozen install, `pnpm lint`, `pnpm test`, non-blocking `pnpm audit --prod`. `.github/workflows/deploy.yml` publishes the whitelisted runtime files (same list as `.dockerignore`) to GitHub Pages on push to `main`.
-- **Coolify** — the `Dockerfile` copies the `.dockerignore`-whitelisted runtime files into nginx (inline config, gzip, security headers, healthcheck); it is Coolify-only and not built in CI.
+- **CI** — `.github/workflows/ci.yml` (Node 24): frozen install, `pnpm lint`, `pnpm test`, non-blocking `pnpm audit --prod`. `.github/workflows/deploy.yml` publishes `index.html` + `src/` to GitHub Pages on push to `main`.
+- **Coolify** — the `Dockerfile` copies `index.html` + `src/` (`.dockerignore` whitelist) into nginx (inline config, gzip, security headers, healthcheck); it is Coolify-only and not built in CI.
