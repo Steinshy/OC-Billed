@@ -1,28 +1,22 @@
-# OS / editors
-.DS_Store
-.vscode
-.cursor
-.idea
-Frontend/.idea
-
-# Local tooling state
-.oc
-.claude
-.serena
-
 # Dependencies
 node_modules/
 
-# Test artifacts (regenerate with `pnpm test`)
+# Test output (regenerate with `pnpm test`)
 coverage/
 test-report.html
-Frontend/.stryker-tmp
 
-# Local databases & uploaded files
+# Local databases and uploaded files
 Backend/database_dev.sqlite
 Backend/database_test.sqlite
-Backend/public
+Backend/public/
 
-# Per-package agent notes (root CLAUDE.md is tracked)
-Backend/CLAUDE.md
-Frontend/CLAUDE.md
+# Claude Code: rules are shared, personal settings stay local
+.claude/settings.local.json
+
+# Editors and OS
+.vscode/
+*.code-workspace
+.cursor/
+.idea/
+.DS_Store
+Thumbs.db

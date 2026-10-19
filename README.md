@@ -1,180 +1,79 @@
-# 🧾 OC-Billed
+<h1 align="center">Billed</h1>
 
-<p align="center"><img src="./Mockup.png" alt="Billed Application Mockup" width="700" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.06);"></p>
+<p align="center"><strong>Languages:</strong> <a href="README.md">English</a> | <a href="README.fr.md">Français</a></p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat&logo=javascript&logoColor=black" />
-  <img src="https://img.shields.io/badge/CSS-Modules-1572B6?style=flat&logo=css3&logoColor=white" />
-  <img src="https://img.shields.io/badge/Jest-Testing-C21325?style=flat&logo=jest&logoColor=white" />
-  <img src="https://img.shields.io/badge/ESLint-9.39.2-4B32C3?style=flat&logo=eslint&logoColor=white" />
-  <img src="https://img.shields.io/badge/Prettier-3.7.4-F7B93E?style=flat&logo=prettier&logoColor=white" />
-  <img src="https://img.shields.io/badge/Stylelint-16.26.1-263238?style=flat&logo=stylelint&logoColor=white" />
-  <img src="https://img.shields.io/badge/jQuery-3.7.1-0769AD?style=flat&logo=jquery&logoColor=white" />
-  <img src="https://img.shields.io/badge/Live--Server-Dev-green?style=flat&logo=javascript&logoColor=white" />
-  <img src="https://img.shields.io/badge/OpenClassrooms-Project-blue" />
+  <a href="https://steinshy.github.io/OC-Billed/"><strong>Live demo →</strong></a>
 </p>
 
-**OC-Billed** est une application web de gestion de notes de frais,  
-développée dans le cadre du parcours **Développeur Frontend OpenClassrooms**.
+<p align="center">
+  <img src=".github/assets/mockup.png" alt="Billed mockup" width="700" />
+</p>
 
-Elle permet aux employés de soumettre leurs notes de frais  
-et aux administrateurs de les consulter et de les gérer via une interface dédiée.
+Expense report SPA built for the OpenClassrooms front-end path: employees submit expense reports with a receipt, administrators accept or refuse them. The project focus is debugging an existing codebase and covering it with tests.
 
----
+## Live demo
 
-## Aperçu rapide
+The demo runs without a backend: an in-browser demo store (`src/app/DemoStore.js`) answers the same routes as the Express API.
 
-- Authentification employé / administrateur
-- Création et suivi des notes de frais
-- Upload de justificatifs (images)
-- Tableau de bord administrateur
-- Gestion des erreurs API (404 / 500)
-- Application SPA sans framework
+| Role     | Email               | Password   |
+| -------- | ------------------- | ---------- |
+| Employee | `employee@test.tld` | `employee` |
+| Admin    | `admin@test.tld`    | `admin`    |
 
----
+Bills you create and admin decisions are kept in the tab's `sessionStorage`; closing the tab resets the demo.
 
-## Dépôt GitHub
+## Features
 
-- [Branche principale](https://github.com/Steinshy/Oc-Billed)
+- Employee and admin sign-in, sign-out
+- Employee: list of their expense reports, receipt preview, new report with image upload (jpg, jpeg, png)
+- Admin: dashboard grouped by status, accept or refuse with a comment
 
----
+## Tech stack
 
-## Structure du projet
+| Area     | Stack                                                    |
+| -------- | -------------------------------------------------------- |
+| Frontend | Vanilla JavaScript (ES modules), Bootstrap 4, jQuery     |
+| Backend  | Express 5, Sequelize, SQLite, JWT, Multer                |
+| Tests    | Jest, Testing Library (jsdom), Supertest                 |
+| Tooling  | pnpm workspace, ESLint, Stylelint, Prettier, live-server |
 
-```text
-OC-Billed/                  # Workspace pnpm
-├── package.json            # Scripts racine (dev, test, lint…)
-├── pnpm-workspace.yaml
-├── Backend/                # API Express + Sequelize (SQLite)
-│   ├── server.js           # Point d'entrée (port 5678)
-│   ├── app.js              # Application Express
-│   ├── controllers/        # auth, bill, user
-│   ├── routes/             # /auth, /bills, /users
-│   ├── middlewares/        # Authentification JWT
-│   ├── models/             # Modèles Sequelize (User, Bill)
-│   ├── migrations/         # Migrations base de données
-│   ├── services/           # jwt, password (bcrypt)
-│   └── tests/              # Tests d'intégration (supertest)
-└── Frontend/               # SPA JavaScript sans framework
-    ├── index.html
-    └── src/
-        ├── app/            # Router, Store (API), format
-        ├── containers/     # Logique : Bills, NewBill, Login, Dashboard…
-        ├── views/          # Rendu HTML des pages
-        ├── constants/      # Routes, utilisateurs de test
-        └── __tests__/      # Tests Jest + Testing Library
-```
+## Getting started
 
----
-
-## Technologies
-
-### Frontend
-- **JavaScript ES6+** — SPA sans framework
-- **HTML5 sémantique**
-- **CSS modulaire**
-
-### Outils & Qualité
-- **Jest** + **Testing Library** — tests unitaires et d’intégration
-- **ESLint** — lint JavaScript
-- **Prettier** — formatage du code
-- **Stylelint** — lint CSS
-- **Live Server** — serveur de développement
-
-### Environnement
-- **Node.js** ≥ 22
-- **pnpm** ≥ 10
-
----
-
-## Fonctionnalités principales
-
-### Employé
-- Connexion sécurisée
-- Consultation des notes de frais
-- Création d’une note de frais
-- Upload de justificatif (jpg, jpeg, png)
-- Visualisation d’un justificatif (modale)
-
-### Administrateur
-- Accès au tableau de bord global
-- Consultation de toutes les notes de frais
-
----
-
-## Accessibilité
-
-- Navigation clavier complète
-- Structure HTML sémantique
-- Messages d’erreur clairs
-- Modales accessibles
-- Respect des bonnes pratiques WCAG
-
----
-
-## Tests
-
-- Tests unitaires et intégration avec **Jest**
-- Mock du store et du localStorage
-- Tests du router et des composants
+Requires Node.js 24 and pnpm (`corepack enable` picks the version pinned in `package.json`).
 
 ```bash
-pnpm test
-```
-
----
-
-## Démarrage
-
-### Installation
-
-```bash
-git clone https://github.com/Steinshy/Oc-Billed.git
-cd Oc-Billed
+git clone https://github.com/Steinshy/OC-Billed.git
+cd OC-Billed
 pnpm install
+pnpm dev   # API on :5678 (migrated and reseeded at start) + frontend on :8080
 ```
 
-### Développement
+To try the frontend without the backend, run `pnpm dev:frontend` and open `http://127.0.0.1:8080/?demo`.
 
-```bash
-pnpm seed   # première fois : migrations + données de démo
-pnpm dev    # lance backend (5678) + frontend (live-server)
-```
+API reference: [Backend/README.md](./Backend/README.md).
 
----
+## Scripts
 
-## Scripts disponibles (racine)
+| Command             | Purpose                                              |
+| ------------------- | ---------------------------------------------------- |
+| `pnpm dev`          | Backend + frontend                                   |
+| `pnpm dev:frontend` | Frontend only (live-server)                          |
+| `pnpm dev:backend`  | Backend only (migrations, then API on :5678)         |
+| `pnpm seed`         | Migrations + demo data                               |
+| `pnpm test`         | Frontend tests with coverage, then backend tests     |
+| `pnpm lint`         | ESLint + Stylelint + Prettier check                  |
+| `pnpm fix`          | Auto-fix ESLint, Stylelint and Prettier issues       |
 
-| Commande            | Description                      |
-| ------------------- | -------------------------------- |
-| `pnpm dev`          | Backend + frontend en parallèle  |
-| `pnpm dev:backend`  | Backend seul (port 5678)         |
-| `pnpm dev:frontend` | Frontend seul (live-server)      |
-| `pnpm seed`         | Migrations + données de démo     |
-| `pnpm test`         | Tests des deux packages          |
-| `pnpm lint`         | Lint des deux packages           |
-| `pnpm format`       | Formatage Prettier               |
+## Deployment
 
----
+Both targets serve the source files as-is (no bundler) and no backend: the demo store turns itself on outside localhost.
 
-## Configuration
+- **GitHub Pages:** `.github/workflows/deploy.yml` publishes on every push to `main`.
+- **Coolify:** the `Dockerfile` serves the same files with nginx.
 
-- Stockage JWT via `localStorage`
-- Routes protégées selon le rôle
-- Appels API centralisés via `store.js`
+## Documentation
 
----
-
-## Compatibilité
-
-- Navigateurs modernes (Chrome, Firefox, Edge)
-- Node.js ≥ 22
-
----
-
-## Licence
-
-Projet réalisé dans le cadre du parcours  
-**Développeur Frontend OpenClassrooms**.
-
-© 2025 — OC-Billed
+- [ARCHITECTURE.md](./ARCHITECTURE.md): structure and decisions
+- [Backend/README.md](./Backend/README.md): API, database and demo accounts
+- [`deliverables/`](./deliverables): test reports and the employee E2E test plan

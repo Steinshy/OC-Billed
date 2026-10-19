@@ -1,10 +1,10 @@
 # Architecture
 
-Billed is an expense-report application split into two packages inside a pnpm workspace.
+Billed is an expense-report application: a vanilla JS SPA at the repo root and an Express API in `Backend/` (pnpm workspace). Releases ship the frontend alone with an in-browser demo store standing in for the API.
 
 ```
 ┌──────────────────────────┐         ┌───────────────────────────────┐
-│  Frontend (port 8080)    │  fetch  │  Backend (port 5678)          │
+│  Frontend (root, :8080)  │  fetch  │  Backend (port 5678)          │
 │  vanilla JS SPA          │ ──────► │  Express 5 + Sequelize        │
 │  live-server (dev)       │  JWT    │  SQLite (dev/test files)      │
 └──────────────────────────┘         └───────────────────────────────┘
@@ -27,7 +27,7 @@ server.js → app.js → middlewares/auth.js → multer → routes/* → control
 - **Services** — `services/jwt.js` (sign/verify, secret is hardcoded for this training project) and `services/password.js` (bcrypt hash/compare).
 - **Tests** (`tests/`, `services/*.test.js`) — supertest integration tests against the real test DB; `setupTests.js` resets fixtures (`tests/fixtures.js`, via sequelize-fixtures) before each test and closes the DB connection afterwards so jest exits.
 
-## Frontend (`Frontend/`, ES modules)
+## Frontend (repo root: `index.html` + `src/`, ES modules)
 
 A single `index.html` contains every page's markup shell; the app swaps rendered HTML into the DOM.
 
@@ -37,17 +37,22 @@ index.html → src/app/App.js → src/app/Router.js → views/* (HTML strings)
                                    └─► containers/* (event handlers, API calls)
                                             │
                                             └─► src/app/Store.js → Backend API
+                                                    or src/app/DemoStore.js (USE_DEMO)
 ```
 
 - **`app/Router.js`** — hash-based routing over `constants/routes.js` (`#employee/bills`, `#admin/dashboard`…). Renders the matching view then instantiates its container.
 - **Views** (`src/views/`) — pure functions returning HTML strings (`BillsUI`, `NewBillUI`, `DashboardUI`, `LoginUI`, error/loading pages). All interactive elements carry `data-testid` attributes used by both containers and tests.
 - **Containers** (`src/containers/`) — classes wiring DOM events to behavior: `Login`, `Bills` (list + receipt modal), `NewBill` (file validation jpg/jpeg/png + create/update), `Dashboard` (admin), `Logout`.
-- **`app/Store.js`** — thin fetch client (`Api`/`ApiEntity`) exposing `bills()`/`users()`/`login()`. Reads the JWT from localStorage and sends it as a Bearer header. Base URL is hardcoded to `http://localhost:5678`.
+- **`app/Store.js`** — thin fetch client (`Api`/`ApiEntity`) exposing `bills()`/`users()`/`login()`. Reads the JWT from localStorage and sends it as a Bearer header. Base URL is hardcoded to `http://localhost:5678`. Exports `DemoStore` instead when `USE_DEMO` (`src/app/config.js`) is true.
+- **`app/DemoStore.js`** — release-only stand-in for the API with the same surface, routes, response shapes and error messages as `Backend/controllers`. Seeded from `Backend/seed.js` (two demo accounts, six bills); data lives in `sessionStorage` because `Logout` clears localStorage. Receipts are stored as data URLs.
+- **Base path** — `Router.js` resolves URLs against the directory the app is served from, so it works at `/` and under `/OC-Billed/` on GitHub Pages.
 - **Auth state** — the logged-in user (`user`) and token (`jwt`) live in localStorage; `Logout` clears it.
 - **Tests** (`src/__tests__/`) — jest + jsdom + Testing Library. The API is mocked via `src/__mocks__/store.js`; shared helpers/fixtures in `src/__mocks__/` and `src/fixtures/`. Coverage and an HTML report are generated on `pnpm test`.
 
 ## Tooling
 
-- **pnpm workspace** — `pnpm-workspace.yaml` lists `Backend` and `Frontend`; one root `pnpm-lock.yaml`. Shared dev tooling (eslint + plugins, jest, @swc/jest, prettier, concurrently) is hoisted to the root `package.json`; package-specific tools stay in each package (sequelize-cli/supertest in Backend, testing-library/live-server/stylelint in Frontend). Native build scripts are allowlisted via `onlyBuiltDependencies`.
-- **CI** — GitHub Actions (`.github/workflows/ci.yml`): two jobs (frontend, backend) on Node 22, `pnpm install --frozen-lockfile`, then lint + tests per package. Dependabot watches the npm ecosystem (root, covers the workspace) and GitHub Actions weekly.
-- **Quality** — ESLint 9 flat configs per package (import, jsdoc, security, sonarjs, unicorn plugins), Prettier, Stylelint for the frontend CSS.
+- **pnpm workspace** — the root package is the frontend; `pnpm-workspace.yaml` lists `Backend`. One root `pnpm-lock.yaml`; dev tooling lives in the root `package.json`, backend-only tools (sequelize-cli, sequelize-fixtures, supertest) in `Backend/`. pnpm 11 reviews install scripts through `allowBuilds`.
+- **Quality** — one root ESLint flat config for `src/` and `Backend/` (import-x, security, sonarjs, unicorn plugins; `import-x/order` is an error), Stylelint for `src/css/`, Prettier for all formatting; `pnpm lint` runs all three.
+- **Demo switch** — `src/app/config.js` sets `USE_DEMO` at runtime: on for any host other than localhost/127.0.0.1, or locally with `?demo` (kept in sessionStorage). Releases ship the source files as-is; there is no build step.
+- **CI** — `.github/workflows/ci.yml` (Node 24): frozen install, `pnpm lint`, `pnpm test`, non-blocking `pnpm audit --prod`. `.github/workflows/deploy.yml` publishes the whitelisted runtime files (same list as `.dockerignore`) to GitHub Pages on push to `main`.
+- **Coolify** — the `Dockerfile` copies the `.dockerignore`-whitelisted runtime files into nginx (inline config, gzip, security headers, healthcheck); it is Coolify-only and not built in CI.

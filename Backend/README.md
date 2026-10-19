@@ -1,37 +1,26 @@
 # Billed — Backend
 
-API Express + Sequelize (SQLite) de l'application Billed.
-
-## Prérequis
-
-- Node.js ≥ 22
-- pnpm ≥ 10 (`corepack enable` ou `npm i -g pnpm`)
-
-## Installation
-
-Depuis la racine du dépôt (workspace pnpm) :
-
-```bash
-pnpm install
-```
+API Express 5 + Sequelize (SQLite) de l'application Billed. Elle sert au développement local uniquement : les releases (GitHub Pages, Coolify) utilisent le store simulé `src/app/DemoStore.js`.
 
 ## Lancer l'API
 
+Depuis la racine du dépôt (Node.js 24, pnpm) :
+
 ```bash
-pnpm seed          # première fois : migrations + données de démo
-pnpm dev:backend   # ou, depuis Backend/ : pnpm dev
+pnpm install
+pnpm dev:backend   # migrations, puis API sur http://localhost:5678 (port configurable via PORT)
+pnpm seed          # migrations + réinitialisation des données de démo
 ```
 
-L'API est accessible sur `http://localhost:5678` (port configurable via `PORT`).
+`server.js` réinitialise aussi les données de démo à chaque démarrage.
 
 ## Tests
 
 ```bash
-pnpm --filter billed-backend test         # suite complète (jest + supertest)
-pnpm --filter billed-backend test:watch   # mode watch
+pnpm --filter billed-backend test   # migre la base de test, puis jest + supertest
 ```
 
-## Utilisateurs par défaut
+## Utilisateurs de démo
 
 | Rôle           | Email               | Mot de passe |
 | -------------- | ------------------- | ------------ |
@@ -44,5 +33,4 @@ pnpm --filter billed-backend test:watch   # mode watch
 - `GET|POST /bills`, `GET|PATCH|DELETE /bills/:id`
 - `GET|POST /users`, `GET|PATCH|DELETE /users/:id`
 
-Toutes les routes (hors login/création d'utilisateur) exigent un header
-`Authorization: Bearer <jwt>`.
+Toutes les routes (hors login et création d'utilisateur) exigent un header `Authorization: Bearer <jwt>`.
