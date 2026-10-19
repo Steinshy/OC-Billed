@@ -6,7 +6,7 @@ import unicorn from "eslint-plugin-unicorn";
 import globals from "globals";
 
 const testGlobals = {
-  $: "readonly", // jQuery, set by setup-jest.cjs
+  $: "readonly", // jQuery, set by tests/setup.cjs
   describe: "readonly",
   test: "readonly",
   it: "readonly",
@@ -97,7 +97,7 @@ export default [
     },
   },
   {
-    files: ["tests/**/*.js", "setup-jest.cjs"],
+    files: ["tests/**/*.{js,cjs}"],
     languageOptions: {
       globals: { ...globals.browser, ...globals.node, ...testGlobals },
     },

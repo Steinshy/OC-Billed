@@ -2,7 +2,7 @@ module.exports = {
   roots: ["<rootDir>/src", "<rootDir>/tests"],
   testMatch: ["<rootDir>/tests/*.js"],
   testEnvironment: "jsdom",
-  setupFilesAfterEnv: ["./setup-jest.cjs"],
+  setupFilesAfterEnv: ["<rootDir>/tests/setup.cjs"],
   transform: {
     "^.+\\.js$": ["@swc/jest", { jsc: { target: "es2022" }, module: { type: "es6" } }],
   },
