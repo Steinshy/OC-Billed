@@ -9,7 +9,18 @@ const LATENCY_MS = 200;
 const MAX_FILE_BYTES = 1_000_000;
 const DEMO_RECEIPT = "src/assets/images/facturefreemobile.jpg";
 const PICTURE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
-const BILL_FIELDS = ["name", "type", "email", "date", "vat", "pct", "commentary", "status", "commentAdmin", "amount"];
+const BILL_FIELDS = [
+  "name",
+  "type",
+  "email",
+  "date",
+  "vat",
+  "pct",
+  "commentary",
+  "status",
+  "commentAdmin",
+  "amount",
+];
 
 const USER_MUST_BE_AUTHENTICATED = "user must be authenticated";
 const UNAUTHORIZED_ACTION = "unauthorized action";
@@ -18,8 +29,22 @@ const UNAUTHORIZED_ACTION = "unauthorized action";
 const SEED_DATE = "2021-11-22";
 
 const SEED_USERS = [
-  { key: "uoaRkMFrV67MKweoga5T3j", name: "employee", email: "employee@test.tld", type: "Employee", password: "employee", status: "connected" },
-  { key: "29hUAGWbj3F9eaW4D7PvE1", name: "admin", email: "admin@test.tld", type: "Admin", password: "admin", status: "connected" },
+  {
+    key: "uoaRkMFrV67MKweoga5T3j",
+    name: "employee",
+    email: "employee@test.tld",
+    type: "Employee",
+    password: "employee",
+    status: "connected",
+  },
+  {
+    key: "29hUAGWbj3F9eaW4D7PvE1",
+    name: "admin",
+    email: "admin@test.tld",
+    type: "Admin",
+    password: "admin",
+    status: "connected",
+  },
 ];
 
 const SEED_BILLS = [
@@ -136,7 +161,9 @@ const fail = async message => {
 const newKey = () => `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 12)}`;
 
 const pickBillAttributes = source =>
-  Object.fromEntries(BILL_FIELDS.filter(field => source[field] !== undefined).map(field => [field, source[field]]));
+  Object.fromEntries(
+    BILL_FIELDS.filter(field => source[field] !== undefined).map(field => [field, source[field]]),
+  );
 
 const toFileUrl = filePath => {
   if (!filePath) return null;
@@ -172,7 +199,8 @@ const bills = {
     const db = loadDb();
     const user = currentUser(db);
     if (!user) return fail(USER_MUST_BE_AUTHENTICATED);
-    const visible = user.type === "Admin" ? db.bills : db.bills.filter(bill => bill.email === user.email);
+    const visible =
+      user.type === "Admin" ? db.bills : db.bills.filter(bill => bill.email === user.email);
     return respond(visible.map(toBillDTO));
   },
   async select({ selector }) {
@@ -188,7 +216,8 @@ const bills = {
     const file = data.get("file");
     const hasPicture = file instanceof Blob && PICTURE_TYPES.includes(file.type);
     let filePath = null;
-    if (hasPicture) filePath = file.size <= MAX_FILE_BYTES ? await readAsDataUrl(file) : DEMO_RECEIPT;
+    if (hasPicture)
+      filePath = file.size <= MAX_FILE_BYTES ? await readAsDataUrl(file) : DEMO_RECEIPT;
     const bill = {
       key: newKey(),
       ...pickBillAttributes(Object.fromEntries(data.entries())),
@@ -247,7 +276,9 @@ export default class DemoStore {
   login = async data => {
     const { email, password } = JSON.parse(data);
     const user = loadDb().users.find(item => item.email === email && item.password === password);
-    return user ? respond({ jwt: `${DEMO_TOKEN_PREFIX}${user.email}` }) : fail("Cannot authenticate user");
+    return user
+      ? respond({ jwt: `${DEMO_TOKEN_PREFIX}${user.email}` })
+      : fail("Cannot authenticate user");
   };
 
   bill = bid => bills.select({ selector: bid });

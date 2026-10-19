@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 
 const saltRounds = 10;
 
-const hash = (value) =>
+const hash = value =>
   new Promise((resolve, reject) => {
     bcrypt.hash(value, saltRounds, (error, hashValue) => {
       if (error) reject(error);

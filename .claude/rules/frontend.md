@@ -1,9 +1,9 @@
 ---
 paths:
-  - 'src/**/*'
-  - 'index.html'
-  - 'jest.config.cjs'
-  - 'setup-jest.cjs'
+  - "src/**/*"
+  - "index.html"
+  - "jest.config.cjs"
+  - "setup-jest.cjs"
 ---
 
 # Frontend

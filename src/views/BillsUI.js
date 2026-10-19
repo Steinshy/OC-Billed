@@ -3,7 +3,7 @@ import ErrorPage from "./ErrorPage.js";
 import LoadingPage from "./LoadingPage.js";
 import VerticalLayout from "./VerticalLayout.js";
 
-const row = (bill) => {
+const row = bill => {
   return `
     <tr>
       <td>${bill.type}</td>
@@ -16,8 +16,8 @@ const row = (bill) => {
   `;
 };
 
-const rows = (data) => {
-  return data && data.length ? data.map((bill) => row(bill)).join("") : "";
+const rows = data => {
+  return data && data.length ? data.map(bill => row(bill)).join("") : "";
 };
 
 export default ({ data: bills, loading, error }) => {
@@ -45,12 +45,12 @@ export default ({ data: bills, loading, error }) => {
   }
   // Bug 1 - Bills : Corriger l'ordre des notes de frais
   const sortedBills = bills
-  ? [...bills].sort((a, b) => {
-      const dateA = new Date(a.date);
-      const dateB = new Date(b.date);
-      return dateB - dateA;
-    })
-  : bills;
+    ? [...bills].sort((a, b) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateB - dateA;
+      })
+    : bills;
 
   return `
     <div class="layout">

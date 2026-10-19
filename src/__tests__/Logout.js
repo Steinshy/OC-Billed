@@ -9,7 +9,7 @@ import DashboardUI from "../views/DashboardUI.js";
 describe("Given I am connected", () => {
   describe("When I click on disconnect button", () => {
     test("Then, I should be sent to login page", () => {
-      const onNavigate = jest.fn((pathname) => {
+      const onNavigate = jest.fn(pathname => {
         document.body.innerHTML = ROUTES({ pathname });
       });
       const mockLocalStorage = {

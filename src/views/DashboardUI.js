@@ -7,7 +7,7 @@ import LoadingPage from "./LoadingPage.js";
 import VerticalLayout from "./VerticalLayout.js";
 
 export default ({ data, loading, error }) => {
-  if (loading)  return LoadingPage();
+  if (loading) return LoadingPage();
   if (error) return ErrorPage(error);
 
   return `

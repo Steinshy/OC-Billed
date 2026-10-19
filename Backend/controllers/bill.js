@@ -46,7 +46,9 @@ const create = async (req, res) => {
       fileName: hasPicture ? file.originalname : null,
       filePath: hasPicture ? file.path : null,
     });
-    return res.status(201).json({ ...bill.toJSON(), fileUrl: hasPicture ? getFileURL(bill.filePath) : null });
+    return res
+      .status(201)
+      .json({ ...bill.toJSON(), fileUrl: hasPicture ? getFileURL(bill.filePath) : null });
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }

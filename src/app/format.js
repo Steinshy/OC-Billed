@@ -1,4 +1,4 @@
-export const formatDate = (dateStr) => {
+export const formatDate = dateStr => {
   const date = new Date(dateStr);
   const year = new Intl.DateTimeFormat("fr", { year: "numeric" }).format(date);
   const month = new Intl.DateTimeFormat("fr", { month: "short" }).format(date);
@@ -7,7 +7,7 @@ export const formatDate = (dateStr) => {
   return `${parseInt(day)} ${monthFormatted.substring(0, 3)}. ${year.substring(2, 4)}`;
 };
 
-export const formatStatus = (status) => {
+export const formatStatus = status => {
   switch (status) {
     case "pending":
       return "En attente";

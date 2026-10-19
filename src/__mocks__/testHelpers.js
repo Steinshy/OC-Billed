@@ -4,10 +4,7 @@ import { localStorageMock } from "./localStorage.js";
 import { ROUTER, DEFAULT_USER } from "./testConstants.js";
 
 export function setupTestEnvironment(options = {}) {
-  const {
-    user = DEFAULT_USER,
-    withIcons = true,
-  } = options;
+  const { user = DEFAULT_USER, withIcons = true } = options;
 
   document.body.innerHTML = "";
   const root = document.createElement("div");

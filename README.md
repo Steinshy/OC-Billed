@@ -55,15 +55,15 @@ API reference: [Backend/README.md](./Backend/README.md).
 
 ## Scripts
 
-| Command             | Purpose                                              |
-| ------------------- | ---------------------------------------------------- |
-| `pnpm dev`          | Backend + frontend                                   |
-| `pnpm dev:frontend` | Frontend only (live-server)                          |
-| `pnpm dev:backend`  | Backend only (migrations, then API on :5678)         |
-| `pnpm seed`         | Migrations + demo data                               |
-| `pnpm test`         | Frontend tests with coverage, then backend tests     |
-| `pnpm lint`         | ESLint + Stylelint + Prettier check                  |
-| `pnpm fix`          | Auto-fix ESLint, Stylelint and Prettier issues       |
+| Command             | Purpose                                          |
+| ------------------- | ------------------------------------------------ |
+| `pnpm dev`          | Backend + frontend                               |
+| `pnpm dev:frontend` | Frontend only (live-server)                      |
+| `pnpm dev:backend`  | Backend only (migrations, then API on :5678)     |
+| `pnpm seed`         | Migrations + demo data                           |
+| `pnpm test`         | Frontend tests with coverage, then backend tests |
+| `pnpm lint`         | ESLint + Stylelint + Prettier check              |
+| `pnpm fix`          | Auto-fix ESLint, Stylelint and Prettier issues   |
 
 ## Deployment
 

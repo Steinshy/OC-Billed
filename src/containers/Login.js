@@ -7,25 +7,25 @@ export default class Login {
     this.localStorage = localStorage;
     this.onNavigate = onNavigate;
     this.store = store;
-    const formEmployee = this.document.querySelector("form[data-testid=\"form-employee\"]");
+    const formEmployee = this.document.querySelector('form[data-testid="form-employee"]');
     formEmployee.addEventListener("submit", this.handleSubmitEmployee);
-    const formAdmin = this.document.querySelector("form[data-testid=\"form-admin\"]");
+    const formAdmin = this.document.querySelector('form[data-testid="form-admin"]');
     formAdmin.addEventListener("submit", this.handleSubmitAdmin);
   }
   handleSubmitEmployee = event => {
     event.preventDefault();
     const user = {
       type: "Employee",
-      email: event.target.querySelector("input[data-testid=\"employee-email-input\"]").value,
-      password: event.target.querySelector("input[data-testid=\"employee-password-input\"]").value,
+      email: event.target.querySelector('input[data-testid="employee-email-input"]').value,
+      password: event.target.querySelector('input[data-testid="employee-password-input"]').value,
       status: "connected",
     };
     this.localStorage.setItem("user", JSON.stringify(user));
     this.localStorage.removeItem("jwt");
     this.login(user).then(() => {
-        this.onNavigate(ROUTES_PATH["Bills"]);
-        this.document.body.classList.remove("login-page");
-      });
+      this.onNavigate(ROUTES_PATH["Bills"]);
+      this.document.body.classList.remove("login-page");
+    });
   };
 
   // Bug 2 - Login : Corriger le handler de submit administrateur
@@ -41,9 +41,9 @@ export default class Login {
     this.localStorage.setItem("user", JSON.stringify(user));
     this.localStorage.removeItem("jwt");
     this.login(user).then(() => {
-        this.onNavigate(ROUTES_PATH["Dashboard"]);
-        this.document.body.classList.remove("login-page");
-      });
+      this.onNavigate(ROUTES_PATH["Dashboard"]);
+      this.document.body.classList.remove("login-page");
+    });
   };
 
   /* istanbul ignore next */
@@ -63,8 +63,16 @@ export default class Login {
   /* istanbul ignore next */
   createUser = user => {
     if (this.store) {
-      return this.store.users()
-        .create({ data: JSON.stringify({ type: user.type, name: user.email.split("@")[0], email: user.email, password: user.password }) })
+      return this.store
+        .users()
+        .create({
+          data: JSON.stringify({
+            type: user.type,
+            name: user.email.split("@")[0],
+            email: user.email,
+            password: user.password,
+          }),
+        })
         .then(() => {
           console.log(`User with ${user.email} is created`);
           return this.login(user);

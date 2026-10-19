@@ -25,7 +25,9 @@ export default class Bills {
     const imgWidth = Math.floor(modalElement.width() * 0.5);
     modalElement
       .find(".modal-body")
-      .html(`<div class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`);
+      .html(
+        `<div class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`,
+      );
     modalElement.attr("aria-hidden", "false");
     modalElement.modal("show");
   };

@@ -1,9 +1,9 @@
 ---
 paths:
-  - 'Dockerfile'
-  - '.dockerignore'
-  - '.github/**/*'
-  - 'pnpm-workspace.yaml'
+  - "Dockerfile"
+  - ".dockerignore"
+  - ".github/**/*"
+  - "pnpm-workspace.yaml"
 ---
 
 # Deployment

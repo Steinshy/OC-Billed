@@ -34,32 +34,37 @@ export default async () => {
     } else if (pathname === ROUTES_PATH["Bills"]) {
       rootDiv.innerHTML = ROUTES({ pathname, loading: true });
       const { divIcon1, divIcon2 } = layoutIcons();
-        divIcon1.classList.add(ACTIVE_ICON_CLASS);
-        divIcon2.classList.remove(ACTIVE_ICON_CLASS);
+      divIcon1.classList.add(ACTIVE_ICON_CLASS);
+      divIcon2.classList.remove(ACTIVE_ICON_CLASS);
       const bills = new Bills({ document, onNavigate, store, localStorage });
-      bills.getBills().then(data => {
-        rootDiv.innerHTML = BillsUI({ data });
-        const { divIcon1, divIcon2 } = layoutIcons();
+      bills
+        .getBills()
+        .then(data => {
+          rootDiv.innerHTML = BillsUI({ data });
+          const { divIcon1, divIcon2 } = layoutIcons();
           divIcon1.classList.add(ACTIVE_ICON_CLASS);
           divIcon2.classList.remove(ACTIVE_ICON_CLASS);
-        new Bills({ document, onNavigate, store, localStorage });
-      }).catch(error => rootDiv.innerHTML = ROUTES({ pathname, error }));
+          new Bills({ document, onNavigate, store, localStorage });
+        })
+        .catch(error => (rootDiv.innerHTML = ROUTES({ pathname, error })));
     } else if (pathname === ROUTES_PATH["NewBill"]) {
       rootDiv.innerHTML = ROUTES({ pathname, loading: true });
       const { divIcon1, divIcon2 } = layoutIcons();
-        divIcon1.classList.remove(ACTIVE_ICON_CLASS);
-        divIcon2.classList.add(ACTIVE_ICON_CLASS);
+      divIcon1.classList.remove(ACTIVE_ICON_CLASS);
+      divIcon2.classList.add(ACTIVE_ICON_CLASS);
       new NewBill({ document, onNavigate, store, localStorage });
-
     } else if (pathname === ROUTES_PATH["Dashboard"]) {
       rootDiv.innerHTML = ROUTES({ pathname, loading: true });
 
       const bills = new Dashboard({ document, onNavigate, store, bills: [], localStorage });
 
-      bills.getBillsAllUsers().then(bills => {
-        rootDiv.innerHTML = DashboardUI({ data: { bills } });
-        new Dashboard({ document, onNavigate, store, bills, localStorage });
-      }).catch(error => rootDiv.innerHTML = ROUTES({ pathname, error }));
+      bills
+        .getBillsAllUsers()
+        .then(bills => {
+          rootDiv.innerHTML = DashboardUI({ data: { bills } });
+          new Dashboard({ document, onNavigate, store, bills, localStorage });
+        })
+        .catch(error => (rootDiv.innerHTML = ROUTES({ pathname, error })));
     }
   };
 
@@ -79,33 +84,38 @@ export default async () => {
     if (window.location.hash === ROUTES_PATH["Bills"]) {
       rootDiv.innerHTML = ROUTES({ pathname: window.location.hash, loading: true });
       const { divIcon1, divIcon2 } = layoutIcons();
-        divIcon1.classList.add(ACTIVE_ICON_CLASS);
-        divIcon2.classList.remove(ACTIVE_ICON_CLASS);
+      divIcon1.classList.add(ACTIVE_ICON_CLASS);
+      divIcon2.classList.remove(ACTIVE_ICON_CLASS);
       const bills = new Bills({ document, onNavigate, store, localStorage });
 
-      bills.getBills().then(data => {
-        rootDiv.innerHTML = BillsUI({ data });
-        const { divIcon1, divIcon2 } = layoutIcons();
+      bills
+        .getBills()
+        .then(data => {
+          rootDiv.innerHTML = BillsUI({ data });
+          const { divIcon1, divIcon2 } = layoutIcons();
           divIcon1.classList.add(ACTIVE_ICON_CLASS);
           divIcon2.classList.remove(ACTIVE_ICON_CLASS);
-        new Bills({ document, onNavigate, store, localStorage });
-      })
-      .catch(error => rootDiv.innerHTML = ROUTES({ pathname: window.location.hash, error }));
-    }
-
-    else if (window.location.hash === ROUTES_PATH["NewBill"]) {
+          new Bills({ document, onNavigate, store, localStorage });
+        })
+        .catch(error => (rootDiv.innerHTML = ROUTES({ pathname: window.location.hash, error })));
+    } else if (window.location.hash === ROUTES_PATH["NewBill"]) {
       rootDiv.innerHTML = ROUTES({ pathname: window.location.hash, loading: true });
       const { divIcon1, divIcon2 } = layoutIcons();
-        divIcon1.classList.remove(ACTIVE_ICON_CLASS);
-        divIcon2.classList.add(ACTIVE_ICON_CLASS);
+      divIcon1.classList.remove(ACTIVE_ICON_CLASS);
+      divIcon2.classList.add(ACTIVE_ICON_CLASS);
       new NewBill({ document, onNavigate, store, localStorage });
     } else if (window.location.hash === ROUTES_PATH["Dashboard"]) {
       rootDiv.innerHTML = ROUTES({ pathname: window.location.hash, loading: true });
       const bills = new Dashboard({ document, onNavigate, store, bills: [], localStorage });
-      bills.getBillsAllUsers()
-        .then(bills => {rootDiv.innerHTML = DashboardUI({ data: { bills } });
-          new Dashboard({ document, onNavigate, store, bills, localStorage });})
-        .catch(error => {rootDiv.innerHTML = ROUTES({ pathname: window.location.hash, error });});
+      bills
+        .getBillsAllUsers()
+        .then(bills => {
+          rootDiv.innerHTML = DashboardUI({ data: { bills } });
+          new Dashboard({ document, onNavigate, store, bills, localStorage });
+        })
+        .catch(error => {
+          rootDiv.innerHTML = ROUTES({ pathname: window.location.hash, error });
+        });
     }
   }
 

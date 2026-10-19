@@ -4,7 +4,7 @@
 }
 
 .dashboard-right-container {
-  border: 2px solid #F3F5FA;
+  border: 2px solid #f3f5fa;
   border-radius: 10px;
   box-sizing: border-box;
   left: 530px;
@@ -51,7 +51,7 @@
 }
 
 .bill-card {
-  background: #0D5AE5;
+  background: #0d5ae5;
   border-radius: 8px;
   color: #fff;
   cursor: pointer;
@@ -96,7 +96,7 @@
   opacity: 0.6;
 }
 
-.centered-svg-container{
+.centered-svg-container {
   display: flex;
   height: 100vh;
   place-content: center;
@@ -111,7 +111,7 @@
   left: 50%;
   position: absolute;
   top: 40%;
-  transform: translate(-50%,-40%);
+  transform: translate(-50%, -40%);
 }
 
 .arrow-icon {

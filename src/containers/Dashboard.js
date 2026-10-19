@@ -16,14 +16,14 @@ export const shouldIncludeBill = (bill, userEmail, isAdmin) => {
 
 export const filteredBills = (data, status) => {
   return data && data.length
-    ? data.filter((bill) => {
+    ? data.filter(bill => {
         let selectCondition;
 
         // in jest environment
         if (typeof jest !== "undefined") {
           selectCondition = bill.status === status;
         } else {
-        /* istanbul ignore next */
+          /* istanbul ignore next */
           // in prod environment
           try {
             // Check if localStorage is available
@@ -56,13 +56,15 @@ export const filteredBills = (data, status) => {
     : [];
 };
 
-export const card = (bill) => {
+export const card = bill => {
   const firstAndLastNames = bill.email.split("@")[0];
   const firstName = firstAndLastNames.includes(".") ? firstAndLastNames.split(".")[0] : "";
-  const lastName = firstAndLastNames.includes(".") ? firstAndLastNames.split(".")[1] : firstAndLastNames;
+  const lastName = firstAndLastNames.includes(".")
+    ? firstAndLastNames.split(".")[1]
+    : firstAndLastNames;
 
   return `
-    <div class='bill-card' id='open-bill${bill.id}' data-testid='open-bill${ bill.id}'>
+    <div class='bill-card' id='open-bill${bill.id}' data-testid='open-bill${bill.id}'>
       <div class='bill-card-name-container'>
         <div class='bill-card-name'> ${firstName} ${lastName} </div>
         <span class='bill-card-grey'> ... </span>
@@ -79,11 +81,11 @@ export const card = (bill) => {
   `;
 };
 
-export const cards = (bills) => {
-  return bills && bills.length ? bills.map((bill) => card(bill)).join("") : "";
+export const cards = bills => {
+  return bills && bills.length ? bills.map(bill => card(bill)).join("") : "";
 };
 
-export const getStatus = (index) => {
+export const getStatus = index => {
   switch (index) {
     case 1:
       return "pending";
@@ -103,21 +105,20 @@ export default class {
     this.preservedSectionIndex = preservedSectionIndex;
 
     $(document).on("click", "#status-bills-header1", () => this.handleShowTickets(1));
-    $(document).on("click", "#arrow-icon1", (event) => {
+    $(document).on("click", "#arrow-icon1", event => {
       event.stopPropagation();
       this.handleShowTickets(1);
     });
     $(document).on("click", "#status-bills-header2", () => this.handleShowTickets(2));
-    $(document).on("click", "#arrow-icon2", (event) => {
+    $(document).on("click", "#arrow-icon2", event => {
       event.stopPropagation();
       this.handleShowTickets(2);
     });
     $(document).on("click", "#status-bills-header3", () => this.handleShowTickets(3));
-    $(document).on("click", "#arrow-icon3", (event) => {
+    $(document).on("click", "#arrow-icon3", event => {
       event.stopPropagation();
       this.handleShowTickets(3);
     });
-
 
     $(document).on("click", '[id^="open-bill"]', event => {
       const billId = event.currentTarget.id.replace("open-bill", "");
@@ -139,10 +140,11 @@ export default class {
   }
 
   handleShowTickets(event, bills, index) {
-    const actualIndex = typeof event === "number" ? event : (typeof bills === "number" ? bills : index);
+    const actualIndex =
+      typeof event === "number" ? event : typeof bills === "number" ? bills : index;
     const sectionIsOpen = this.index !== undefined && this.index !== actualIndex;
 
-    const openTicketsSection = (index) => {
+    const openTicketsSection = index => {
       this.index = index;
       this.preservedSectionIndex = index;
       this.isSectionOpen = true;
@@ -174,8 +176,11 @@ export default class {
     if (validateFileUrl(billUrl)) return;
     const modalElement = $("#modaleFileAdmin1");
     const imgWidth = Math.floor(modalElement.width() * 0.8);
-    modalElement.find(".modal-body")
-      .html(`<div class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill"/></div>`);
+    modalElement
+      .find(".modal-body")
+      .html(
+        `<div class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill"/></div>`,
+      );
     if (typeof modalElement.modal === "function") {
       modalElement.attr("aria-hidden", "false");
       modalElement.modal("show");
@@ -240,7 +245,7 @@ export default class {
       commentAdmin: $("#commentary2").val(),
     };
     await this.updateBill(newBill);
-    const updatedBills = this.bills.map(b => b.id === bill.id ? newBill : b);
+    const updatedBills = this.bills.map(b => (b.id === bill.id ? newBill : b));
     this.bills = updatedBills;
     this.onNavigate(ROUTES_PATH["Dashboard"]);
   };
@@ -261,18 +266,26 @@ export default class {
       commentAdmin: $("#commentary2").val(),
     };
     await this.updateBill(newBill);
-    const updatedBills = this.bills.map(b => b.id === bill.id ? newBill : b);
+    const updatedBills = this.bills.map(b => (b.id === bill.id ? newBill : b));
     this.bills = updatedBills;
     this.onNavigate(ROUTES_PATH["Dashboard"]);
   };
 
-
-  getBillsAllUsers = () => this.store ? this.store.bills().list()
-    .then(snapshot => snapshot.map(doc => ({ id: doc.id, ...doc, date: doc.date, status: doc.status })))
-    .catch(error => { throw error; }) : Promise.resolve([]);
+  getBillsAllUsers = () =>
+    this.store
+      ? this.store
+          .bills()
+          .list()
+          .then(snapshot =>
+            snapshot.map(doc => ({ id: doc.id, ...doc, date: doc.date, status: doc.status })),
+          )
+          .catch(error => {
+            throw error;
+          })
+      : Promise.resolve([]);
 
   /* istanbul ignore next */
-  updateBill = async (bill) => {
+  updateBill = async bill => {
     if (!this.store) return;
     return await this.store.bills().update({ data: JSON.stringify(bill), selector: bill.id });
   };

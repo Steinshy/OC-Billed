@@ -79,7 +79,9 @@ describe("Given the in-browser demo store", () => {
       expect(bill.filePath).toMatch(/^data:image\/png;base64,/);
       expect(bill.fileUrl).toBe(bill.filePath);
 
-      await store.bills().update({ data: JSON.stringify({ name: "Taxi", amount: 30 }), selector: bill.key });
+      await store
+        .bills()
+        .update({ data: JSON.stringify({ name: "Taxi", amount: 30 }), selector: bill.key });
       const bills = await new DemoStore().bills().list();
       expect(bills).toHaveLength(4);
       expect(bills.find(item => item.id === bill.key)).toMatchObject({ name: "Taxi", amount: 30 });
@@ -90,7 +92,11 @@ describe("Given the in-browser demo store", () => {
     test("Then it is rejected like the API", async () => {
       await settle(loginAs(store, EMPLOYEE_EMAIL, "employee"));
       await expect(
-        settle(store.bills().update({ data: JSON.stringify({ name: "x" }), selector: "xAntdtPjo8zA42m5WhWcXR" })),
+        settle(
+          store
+            .bills()
+            .update({ data: JSON.stringify({ name: "x" }), selector: "xAntdtPjo8zA42m5WhWcXR" }),
+        ),
       ).rejects.toThrow("unauthorized action");
     });
   });

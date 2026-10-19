@@ -21,7 +21,7 @@ export const modal = () => `
   </div>
   `;
 
-export default (formattedBill) => {
+export default formattedBill => {
   return `
     <div class="container dashboard-form" data-testid="dashboard-form">
       <div class="row">
@@ -94,13 +94,13 @@ export default (formattedBill) => {
               </div>
             `
             : formattedBill.status === "accepted" || formattedBill.status === "refused"
-            ? `
+              ? `
               <div class="col-sm">
                 <label for="commentary-admin" class="bold-label">Votre commentaire</label>
                 <div class="input-field">${formattedBill.commentAdmin}</div>
               </div>
             `
-            : ""
+              : ""
         }
       </div>
       <div class="row">

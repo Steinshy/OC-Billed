@@ -115,7 +115,9 @@ describe("Given I am connected as an employee", () => {
     describe("When there is an API error", () => {
       test("Then it should not redirect and log error", async () => {
         const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-        const errorStore = makeBillsStore(jest.fn(() => Promise.reject(new Error("Update failed"))));
+        const errorStore = makeBillsStore(
+          jest.fn(() => Promise.reject(new Error("Update failed"))),
+        );
 
         const onNavigate = jest.fn();
         const newBillInstance = makeSubmittableNewBill(errorStore, onNavigate);

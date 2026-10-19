@@ -71,7 +71,12 @@ describe("Given I am connected and I am on some page of the app", () => {
     });
 
     test("Then, it should render Bills page with error", () => {
-      const html = ROUTES({ pathname: ROUTES_PATH["Bills"], data: [], loading: false, error: "some error" });
+      const html = ROUTES({
+        pathname: ROUTES_PATH["Bills"],
+        data: [],
+        loading: false,
+        error: "some error",
+      });
       document.body.innerHTML = html;
       expect(screen.getByText("Erreur")).toBeTruthy();
     });
@@ -300,7 +305,7 @@ describe("Given I am on the login page", () => {
       const root = document.getElementById(ROOT_ID);
 
       const originalGetItem = window.localStorage.getItem.bind(window.localStorage);
-      window.localStorage.getItem = jest.fn((key) => {
+      window.localStorage.getItem = jest.fn(key => {
         if (key === "user") return null;
         return originalGetItem(key);
       });
@@ -321,7 +326,7 @@ describe("Given I am on the login page", () => {
       setupTestEnvironment({ user: null });
 
       const originalGetItem = window.localStorage.getItem.bind(window.localStorage);
-      window.localStorage.getItem = jest.fn((key) => {
+      window.localStorage.getItem = jest.fn(key => {
         if (key === "user") return null;
         return originalGetItem(key);
       });
@@ -342,7 +347,7 @@ describe("Given I am on the login page", () => {
       mockWindowLocation(ROUTES_PATH["Bills"], "");
 
       const originalGetItem = window.localStorage.getItem.bind(window.localStorage);
-      window.localStorage.getItem = jest.fn((key) => {
+      window.localStorage.getItem = jest.fn(key => {
         if (key === "user")
           return JSON.stringify({ email: "employee@example.com", type: "Employee" });
         return originalGetItem(key);
@@ -436,5 +441,4 @@ describe("Given I am on the login page", () => {
       expect(Login).not.toHaveBeenCalled();
     });
   });
-
 });

@@ -84,10 +84,7 @@ describe("Given I am using the API Store", () => {
 
       const result = await Store.bills().list();
 
-      expect(global.fetch).toHaveBeenCalledWith(
-        `${HTTP_LOCALHOST_PORT}/bills`,
-        expect.any(Object),
-      );
+      expect(global.fetch).toHaveBeenCalledWith(`${HTTP_LOCALHOST_PORT}/bills`, expect.any(Object));
 
       const fetchCall = global.fetch.mock.calls[0];
       expect(fetchCall[1].method).toBe("GET");
@@ -129,10 +126,7 @@ describe("Given I am using the API Store", () => {
       const billData = JSON.stringify(newBill);
       const result = await Store.bills().create({ data: billData });
 
-      expect(global.fetch).toHaveBeenCalledWith(
-        `${HTTP_LOCALHOST_PORT}/bills`,
-        expect.any(Object),
-      );
+      expect(global.fetch).toHaveBeenCalledWith(`${HTTP_LOCALHOST_PORT}/bills`, expect.any(Object));
 
       const fetchCall = global.fetch.mock.calls[0];
       expect(fetchCall[1].method).toBe("POST");
@@ -265,10 +259,7 @@ describe("Given I am using the API Store", () => {
       const userData = JSON.stringify(newUser);
       const result = await Store.users().create({ data: userData });
 
-      expect(global.fetch).toHaveBeenCalledWith(
-        `${HTTP_LOCALHOST_PORT}/users`,
-        expect.any(Object),
-      );
+      expect(global.fetch).toHaveBeenCalledWith(`${HTTP_LOCALHOST_PORT}/users`, expect.any(Object));
 
       const fetchCall = global.fetch.mock.calls[0];
       expect(fetchCall[1].method).toBe("POST");

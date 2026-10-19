@@ -16,7 +16,7 @@
 }
 
 .blue-border {
-  border: 2px solid #0D5AE5 !important;
+  border: 2px solid #0d5ae5 !important;
   border-radius: 5px;
   box-sizing: border-box;
   opacity: 0.5;
@@ -38,7 +38,7 @@ label {
 }
 
 #btn-send-bill {
-  background-color: #0E5AE5;
+  background-color: #0e5ae5;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -48,18 +48,22 @@ label {
   width: 100px;
 }
 
-textarea, input, select {
-  color: #0E5AE5 !important;
+textarea,
+input,
+select {
+  color: #0e5ae5 !important;
   opacity: 0.7 !important;
 }
 
-textarea:focus, input:focus, select:focus {
-  color: #0E5AE5 !important;
+textarea:focus,
+input:focus,
+select:focus {
+  color: #0e5ae5 !important;
   opacity: 1 !important;
 }
 
 *[placeholder] {
-  color: #0E5AE5 !important;
+  color: #0e5ae5 !important;
 }
 
 .file-error-message {

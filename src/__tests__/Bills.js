@@ -34,8 +34,7 @@ describe("Given I am connected as an employee", () => {
 
     test("Then bills should be ordered from earliest to latest", () => {
       document.body.innerHTML = BillsUI({ data: bills });
-      const dates = screen.getAllByText(/\d{4}-\d{2}-\d{2}/)
-        .map((a) => a.innerHTML);
+      const dates = screen.getAllByText(/\d{4}-\d{2}-\d{2}/).map(a => a.innerHTML);
       const antiChrono = (a, b) => (a < b ? 1 : -1);
       const datesSorted = [...dates].sort(antiChrono);
       expect(dates).toEqual(datesSorted);
@@ -46,22 +45,24 @@ describe("Given I am connected as an employee", () => {
         const onNavigate = jest.fn();
         const mockStore = {
           bills: jest.fn(() => ({
-            list: jest.fn(() => Promise.resolve([
-              {
-                id: "1",
-                status: "pending",
-                date: "2004-04-04",
-                amount: 100,
-                type: "Transports",
-              },
-              {
-                id: "2",
-                status: "accepted",
-                date: "2003-03-03",
-                amount: 200,
-                type: "Restaurants",
-              },
-            ])),
+            list: jest.fn(() =>
+              Promise.resolve([
+                {
+                  id: "1",
+                  status: "pending",
+                  date: "2004-04-04",
+                  amount: 100,
+                  type: "Transports",
+                },
+                {
+                  id: "2",
+                  status: "accepted",
+                  date: "2003-03-03",
+                  amount: 200,
+                  type: "Restaurants",
+                },
+              ]),
+            ),
           })),
         };
 
@@ -88,15 +89,17 @@ describe("Given I am connected as an employee", () => {
 
         const mockStore = {
           bills: jest.fn(() => ({
-            list: jest.fn(() => Promise.resolve([
-              {
-                id: "1",
-                status: "pending",
-                date: "invalid-date",
-                amount: 100,
-                type: "Transports",
-              },
-            ])),
+            list: jest.fn(() =>
+              Promise.resolve([
+                {
+                  id: "1",
+                  status: "pending",
+                  date: "invalid-date",
+                  amount: 100,
+                  type: "Transports",
+                },
+              ]),
+            ),
           })),
         };
 
@@ -241,7 +244,7 @@ describe("Given I am connected as an employee", () => {
       const onNavigate = jest.fn();
       const invalidUrls = [null, "null", undefined];
 
-      invalidUrls.forEach((invalidUrl) => {
+      invalidUrls.forEach(invalidUrl => {
         const billsWithInvalidUrl = [
           {
             ...bills[0],
@@ -295,7 +298,10 @@ describe("Given I am connected as an employee", () => {
 describe("Given I am connected as an Employee - API Integration", () => {
   describe("When I navigate to Bills page", () => {
     test("Then it should fetch bills from API and display them", async () => {
-      localStorage.setItem("user", JSON.stringify({ type: "Employee", email: "employee@test.tld" }));
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ type: "Employee", email: "employee@test.tld" }),
+      );
       const root = document.createElement("div");
       root.setAttribute("id", "root");
       document.body.append(root);
@@ -315,7 +321,10 @@ describe("Given I am connected as an Employee - API Integration", () => {
         Object.defineProperty(window, "localStorage", {
           value: localStorageMock,
         });
-        window.localStorage.setItem("user", JSON.stringify({ type: "Employee", email: "employee@test.tld" }));
+        window.localStorage.setItem(
+          "user",
+          JSON.stringify({ type: "Employee", email: "employee@test.tld" }),
+        );
         const root = document.createElement("div");
         root.setAttribute("id", "root");
         document.body.appendChild(root);

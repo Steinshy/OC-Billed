@@ -19,13 +19,7 @@ const testGlobals = {
 
 export default [
   {
-    ignores: [
-      "**/node_modules/",
-      "coverage/",
-      "deliverables/",
-      "Backend/public/",
-      "**/*.min.js",
-    ],
+    ignores: ["**/node_modules/", "coverage/", "deliverables/", "Backend/public/", "**/*.min.js"],
   },
   js.configs.recommended,
   {

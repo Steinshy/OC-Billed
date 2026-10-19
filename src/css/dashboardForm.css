@@ -1,4 +1,4 @@
-.dashboard-form label{
+.dashboard-form label {
   margin-top: 20px;
 }
 
@@ -6,7 +6,7 @@
   align-items: center;
   background: #f9f9f9;
   border-radius: 5px;
-  color: #0D5AE5;
+  color: #0d5ae5;
   display: flex;
   font-size: 16px;
   font-style: normal;
@@ -15,15 +15,15 @@
   padding: 20px;
 }
 
-.input-flex{
-  display:flex;
+.input-flex {
+  display: flex;
   justify-content: space-between;
 }
 
-.textarea-field{
+.textarea-field {
   background: #f9f9f9;
   border-radius: 5px;
-  color: #0D5AE5;
+  color: #0d5ae5;
   font-size: 16px;
   font-style: normal;
   font-weight: normal;
@@ -43,8 +43,8 @@
 }
 
 .file-flex {
-  background: #0D5AE5;
-  border: 2px solid #0D5AE5;
+  background: #0d5ae5;
+  border: 2px solid #0d5ae5;
   border-radius: 5px;
   box-sizing: border-box;
   color: #fff;
@@ -65,8 +65,8 @@
   width: 300px;
 }
 
-.buttons-flex button{
-  background-color: #0D5AE5;
+.buttons-flex button {
+  background-color: #0d5ae5;
   width: 100px !important;
 }
 

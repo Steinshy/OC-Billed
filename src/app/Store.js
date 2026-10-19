@@ -1,7 +1,7 @@
 import { USE_DEMO } from "./config.js";
 import DemoStore, { DEMO_TOKEN_PREFIX } from "./DemoStore.js";
 
-const jsonOrThrowIfError = async (response) => {
+const jsonOrThrowIfError = async response => {
   if (!response.ok) throw new Error((await response.json()).message);
   return response.json();
 };
@@ -11,9 +11,7 @@ class Api {
     this.baseUrl = baseUrl;
   }
   async get({ url, headers }) {
-    return jsonOrThrowIfError(
-      await fetch(`${this.baseUrl}${url}`, { headers, method: "GET" }),
-    );
+    return jsonOrThrowIfError(await fetch(`${this.baseUrl}${url}`, { headers, method: "GET" }));
   }
   async post({ url, data, headers }) {
     return jsonOrThrowIfError(
@@ -25,9 +23,7 @@ class Api {
     );
   }
   async delete({ url, headers }) {
-    return jsonOrThrowIfError(
-      await fetch(`${this.baseUrl}${url}`, { headers, method: "DELETE" }),
-    );
+    return jsonOrThrowIfError(await fetch(`${this.baseUrl}${url}`, { headers, method: "DELETE" }));
   }
   async patch({ url, data, headers }) {
     return jsonOrThrowIfError(
@@ -40,7 +36,7 @@ class Api {
   }
 }
 
-const getHeaders = (headers) => {
+const getHeaders = headers => {
   const headersObject = {};
   if (!headers.noContentType) headersObject["Content-Type"] = "application/json";
   const jwt = localStorage.getItem("jwt");
@@ -92,18 +88,16 @@ class Store {
     this.api = new Api({ baseUrl: "http://localhost:5678" });
   }
 
-  user = (uid) =>
-    new ApiEntity({ key: "users", api: this.api }).select({ selector: uid });
+  user = uid => new ApiEntity({ key: "users", api: this.api }).select({ selector: uid });
   users = () => new ApiEntity({ key: "users", api: this.api });
-  login = (data) =>
+  login = data =>
     this.api.post({
       url: "/auth/login",
       data,
       headers: getHeaders({ noAuthorization: true }),
     });
 
-  bill = (bid) =>
-    new ApiEntity({ key: "bills", api: this.api }).select({ selector: bid });
+  bill = bid => new ApiEntity({ key: "bills", api: this.api }).select({ selector: bid });
   bills = () => new ApiEntity({ key: "bills", api: this.api });
 }
 

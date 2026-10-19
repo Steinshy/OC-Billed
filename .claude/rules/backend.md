@@ -1,6 +1,6 @@
 ---
 paths:
-  - 'Backend/**/*'
+  - "Backend/**/*"
 ---
 
 # Backend

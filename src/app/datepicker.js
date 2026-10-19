@@ -5,15 +5,7 @@ const HOUR = MINUTE * 60;
 const DAY = HOUR * 24;
 const WEEK = DAY * 7;
 
-const _weekdays = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
-];
+const _weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const weekdays_short = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const months = [
   "January",
@@ -46,9 +38,7 @@ const months_short = [
 
 // PROTOTYPES
 Date.prototype.getWeekNumber = function () {
-  const date = new Date(
-    Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()),
-  );
+  const date = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
   const dayNum = date.getUTCDay() || 7;
   date.setUTCDate(date.getUTCDate() + 4 - dayNum);
   const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
@@ -73,7 +63,7 @@ class Datepicker {
     window.onresize = () => {
       if (self.display_state) show(true);
     }; // to update screen position
-    document.addEventListener("click", (event) => {
+    document.addEventListener("click", event => {
       if (
         event.target == document.getElementById("datepicker") &&
         !document.getElementById(DATEPICKER_FRAME_ID)
@@ -100,7 +90,7 @@ class Datepicker {
       return button;
     };
 
-    const canNavigatePrevious = (viewType) => {
+    const canNavigatePrevious = viewType => {
       if (viewType === "day") {
         return (
           self.firstdate == undefined ||
@@ -108,13 +98,10 @@ class Datepicker {
           self.date.getFullYear() > self.firstdate.getFullYear()
         );
       }
-      return (
-        self.firstdate == undefined ||
-        self.date.getFullYear() > self.firstdate.getFullYear()
-      );
+      return self.firstdate == undefined || self.date.getFullYear() > self.firstdate.getFullYear();
     };
 
-    const canNavigateNext = (viewType) => {
+    const canNavigateNext = viewType => {
       if (viewType === "day") {
         return (
           self.lastdate == undefined ||
@@ -122,30 +109,27 @@ class Datepicker {
           self.date.getFullYear() < self.lastdate.getFullYear()
         );
       }
-      return (
-        self.lastdate == undefined ||
-        self.date.getFullYear() < self.lastdate.getFullYear()
-      );
+      return self.lastdate == undefined || self.date.getFullYear() < self.lastdate.getFullYear();
     };
 
-    const isDateInRange = (day) => {
+    const isDateInRange = day => {
       const inFirstRange =
         self.firstdate == undefined
           ? true
           : day.getMonth() == self.firstdate.getMonth()
-          ? day.getFullYear() == self.firstdate.getFullYear()
-            ? day.getDate() >= self.firstdate.getDate()
-            : true
-          : true;
+            ? day.getFullYear() == self.firstdate.getFullYear()
+              ? day.getDate() >= self.firstdate.getDate()
+              : true
+            : true;
 
       const inLastRange =
         self.lastdate == undefined
           ? true
           : day.getMonth() == self.lastdate.getMonth()
-          ? day.getFullYear() == self.lastdate.getFullYear()
-            ? day.getDate() <= self.lastdate.getDate()
-            : true
-          : true;
+            ? day.getFullYear() == self.lastdate.getFullYear()
+              ? day.getDate() <= self.lastdate.getDate()
+              : true
+            : true;
 
       return inFirstRange && inLastRange;
     };
@@ -178,11 +162,7 @@ class Datepicker {
         row.append(cell);
       }
 
-      const first_day_in_month = new Date(
-        self.date.getFullYear(),
-        self.date.getMonth(),
-        1,
-      );
+      const first_day_in_month = new Date(self.date.getFullYear(), self.date.getMonth(), 1);
       let index = 1 - (first_day_in_month.getDay() || 7);
       for (let rowIndex = 0; rowIndex < 6; rowIndex++) {
         const tr = document.createElement("tr");
@@ -207,8 +187,7 @@ class Datepicker {
           } else {
             td.className = "disabled";
           }
-          td.className +=
-            day.toDateString() == new Date().toDateString() ? " today" : "";
+          td.className += day.toDateString() == new Date().toDateString() ? " today" : "";
 
           index++;
         }
@@ -287,8 +266,8 @@ class Datepicker {
         const rect = self.host.getBoundingClientRect();
         const centerX = (rect.left + rect.right) / 2;
         const topY = rect.bottom - rect.top + document.documentElement.scrollTop;
-        self.frame.style.setProperty("top", `${topY + 20  }px`);
-        self.frame.style.setProperty("left", `${centerX - 152  }px`);
+        self.frame.style.setProperty("top", `${topY + 20}px`);
+        self.frame.style.setProperty("left", `${centerX - 152}px`);
 
         document.body.append(self.frame);
       } else if (!isVisible) document.getElementById(DATEPICKER_FRAME_ID).remove();
@@ -307,7 +286,7 @@ class Datepicker {
     this.format =
       settings.format ||
       this.format ||
-      ((date) => {
+      (date => {
         return date;
       });
 
@@ -347,8 +326,7 @@ class Datepicker {
   selectInitialDate(date) {
     if (this.firstdate && this.lastdate) {
       const inRange =
-        date.getTime() >= this.firstdate.getTime() &&
-        date.getTime() <= this.lastdate.getTime();
+        date.getTime() >= this.firstdate.getTime() && date.getTime() <= this.lastdate.getTime();
       return inRange ? date : this.firstdate;
     }
 

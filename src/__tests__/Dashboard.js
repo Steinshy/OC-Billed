@@ -6,22 +6,29 @@ import { DASHBOARD, STATUS, TEST_EMAILS } from "../__mocks__/testConstants.js";
 import router from "../app/Router.js";
 import { ROUTES, ROUTES_PATH } from "../constants/routes.js";
 import USERS_TEST from "../constants/usersTest.js";
-import Dashboard, { filteredBills, cards, shouldIncludeBill, card, getStatus } from "../containers/Dashboard.js";
+import Dashboard, {
+  filteredBills,
+  cards,
+  shouldIncludeBill,
+  card,
+  getStatus,
+} from "../containers/Dashboard.js";
 import { bills } from "../fixtures/bills.js";
 import DashboardUI from "../views/DashboardUI.js";
 
 jest.mock("../app/Store.js", () => mockStore);
 
-const { BILL_47QAXB_TEST_ID, FORM_TEST_ID: DASHBOARD_FORM_TEST_ID, MODAL_FILE_ADMIN_ID, ICON_EYE_D_SELECTOR } = DASHBOARD;
+const {
+  BILL_47QAXB_TEST_ID,
+  FORM_TEST_ID: DASHBOARD_FORM_TEST_ID,
+  MODAL_FILE_ADMIN_ID,
+  ICON_EYE_D_SELECTOR,
+} = DASHBOARD;
 const { PENDING: STATUS_PENDING, ACCEPTED: STATUS_ACCEPTED, REFUSED: STATUS_REFUSED } = STATUS;
 const { EMPLOYEE: EMPLOYEE_EMAIL, OTHER: OTHER_EMAIL } = TEST_EMAILS;
 
 function setupDashboard(options = {}) {
-  const {
-    bills: testBills = bills,
-    store = mockStore,
-    preservedSectionIndex = null,
-  } = options;
+  const { bills: testBills = bills, store = mockStore, preservedSectionIndex = null } = options;
 
   Object.defineProperty(window, "localStorage", {
     value: localStorageMock,
@@ -29,7 +36,7 @@ function setupDashboard(options = {}) {
   window.localStorage.setItem("user", JSON.stringify({ type: "Admin" }));
   document.body.innerHTML = DashboardUI({ data: { bills: testBills } });
 
-  const onNavigate = jest.fn((pathname) => {
+  const onNavigate = jest.fn(pathname => {
     document.body.innerHTML = ROUTES({ pathname });
   });
 
@@ -50,7 +57,7 @@ async function setupBillForm(dashboard) {
   await waitFor(() => screen.getByTestId(BILL_47QAXB_TEST_ID));
   dashboard.handleEditTicket(null, bills[0], bills);
   await waitFor(() => screen.getByTestId(DASHBOARD_FORM_TEST_ID));
-};
+}
 
 describe("Utility Functions", () => {
   describe("getStatus", () => {
@@ -148,7 +155,7 @@ describe("Utility Functions", () => {
         expect(shouldIncludeBill(testUserBill, "admin@test.com", true)).toBe(false);
         expect(shouldIncludeBill(realUserBill, "admin@test.com", true)).toBe(true);
 
-        USERS_TEST.forEach((testEmail) => {
+        USERS_TEST.forEach(testEmail => {
           const bill = { id: "1", email: testEmail };
           expect(shouldIncludeBill(bill, "admin@test.com", true)).toBe(false);
         });
@@ -226,7 +233,7 @@ describe("Given I am connected as an Admin - Click Handlers", () => {
   });
 
   describe("Status Headers", () => {
-    [1, 2, 3].forEach((index) => {
+    [1, 2, 3].forEach(index => {
       test(`Then clicking on status-bills-header${index} should call handleShowTickets with ${index}`, async () => {
         const handleShowTicketsSpy = jest.spyOn(dashboard, "handleShowTickets");
         const header = document.querySelector(`#status-bills-header${index}`);
@@ -241,7 +248,7 @@ describe("Given I am connected as an Admin - Click Handlers", () => {
   });
 
   describe("Arrow Icons", () => {
-    [1, 2, 3].forEach((index) => {
+    [1, 2, 3].forEach(index => {
       test(`Then clicking on arrow-icon${index} should call handleShowTickets with ${index} and stop propagation`, async () => {
         const handleShowTicketsSpy = jest.spyOn(dashboard, "handleShowTickets");
         const arrowIcon = document.querySelector(`#arrow-icon${index}`);
@@ -302,7 +309,7 @@ describe("Given I am connected as an Admin - Constructor Event Handlers", () => 
       window.localStorage.setItem("user", JSON.stringify({ type: "Admin" }));
       document.body.innerHTML = DashboardUI({ data: { bills } });
 
-      const onNavigate = jest.fn((pathname) => {
+      const onNavigate = jest.fn(pathname => {
         document.body.innerHTML = ROUTES({ pathname });
       });
 
@@ -324,7 +331,10 @@ describe("Given I am connected as an Admin - Constructor Event Handlers", () => 
 
     test("Then Dashboard should not call handleShowTickets if headerElement does not exist", () => {
       const dashboardWithPreserved = setupDashboard({ preservedSectionIndex: 99 });
-      const handleShowTicketsSpy = jest.spyOn(dashboardWithPreserved.dashboard, "handleShowTickets");
+      const handleShowTicketsSpy = jest.spyOn(
+        dashboardWithPreserved.dashboard,
+        "handleShowTickets",
+      );
 
       jest.advanceTimersByTime(100);
       expect(handleShowTicketsSpy).not.toHaveBeenCalled();
@@ -342,7 +352,10 @@ describe("Given I am connected as an Admin - Constructor Event Handlers", () => 
 
     test("Then Dashboard should not restore preservedSectionIndex when bills array is empty", () => {
       const dashboardWithPreserved = setupDashboard({ bills: [], preservedSectionIndex: 1 });
-      const handleShowTicketsSpy = jest.spyOn(dashboardWithPreserved.dashboard, "handleShowTickets");
+      const handleShowTicketsSpy = jest.spyOn(
+        dashboardWithPreserved.dashboard,
+        "handleShowTickets",
+      );
 
       jest.advanceTimersByTime(100);
       expect(handleShowTicketsSpy).not.toHaveBeenCalled();
@@ -707,7 +720,7 @@ describe("Given I am connected as an Employee", () => {
         { id: "3", email: USERS_TEST[0], status: STATUS_PENDING },
       ];
 
-      const filtered = employeeBills.filter((bill) => {
+      const filtered = employeeBills.filter(bill => {
         return shouldIncludeBill(bill, EMPLOYEE_EMAIL, false);
       });
 
@@ -727,7 +740,10 @@ describe("Given I am connected as an Employee", () => {
       Object.defineProperty(window, "localStorage", {
         value: localStorageMock,
       });
-      window.localStorage.setItem("user", JSON.stringify({ type: "Employee", email: EMPLOYEE_EMAIL }));
+      window.localStorage.setItem(
+        "user",
+        JSON.stringify({ type: "Employee", email: EMPLOYEE_EMAIL }),
+      );
       document.body.innerHTML = DashboardUI({ data: { bills } });
 
       const onNavigate = jest.fn();
@@ -793,7 +809,7 @@ describe("Given I am connected as an Admin - API Integration", () => {
           };
         });
         window.onNavigate(ROUTES_PATH.Dashboard);
-        await new Promise((resolve) => setTimeout(resolve, 0));
+        await new Promise(resolve => setTimeout(resolve, 0));
         const message = await screen.getByText(/Erreur 404/);
         expect(message).toBeTruthy();
       });
@@ -808,7 +824,7 @@ describe("Given I am connected as an Admin - API Integration", () => {
         });
 
         window.onNavigate(ROUTES_PATH.Dashboard);
-        await new Promise((resolve) => setTimeout(resolve, 0));
+        await new Promise(resolve => setTimeout(resolve, 0));
         const message = await screen.getByText(/Erreur 500/);
         expect(message).toBeTruthy();
       });
