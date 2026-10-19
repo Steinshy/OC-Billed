@@ -1,10 +1,4 @@
-# Whitelist: the image only serves the frontend runtime files (no tests, mocks or fixtures).
+# Whitelist: the image only serves the frontend runtime (tests live outside src/).
 *
 !index.html
-!src/app
-!src/assets/images
-!src/assets/svg
-!src/constants
-!src/containers
-!src/css
-!src/views
+!src
