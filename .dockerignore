@@ -1,8 +1,10 @@
-node_modules
-dist
-.git
-.github
-Backend
-deliverables
-*.pdf
-*.md
+# Whitelist: the image only serves the frontend runtime files (no tests, mocks or fixtures).
+*
+!index.html
+!src/app
+!src/assets/images
+!src/assets/svg
+!src/constants
+!src/containers
+!src/css
+!src/views
