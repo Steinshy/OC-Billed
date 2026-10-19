@@ -1,4 +1,5 @@
 const request = require("supertest");
+
 const app = require("../app");
 const jwt = require("../services/jwt");
 
@@ -120,7 +121,11 @@ describe("Test the root path", () => {
       .set("Accept", "multipart/form-data")
       .field("name", "bill-name")
       .attach("file", "tests/fixture-cat.jpg")
-      .expect(201);
+      .expect(201)
+      .then(response => {
+        expect(response.body.fileName).toBe("fixture-cat.jpg");
+        expect(response.body.fileUrl).toBe(`http://localhost:5678/${response.body.filePath}`);
+      });
   });
 
   test("It should create a bill with non picture file type and not save file", () => {
@@ -135,6 +140,7 @@ describe("Test the root path", () => {
           name: "bill-name",
           fileName: null,
           filePath: null,
+          fileUrl: null,
         });
       });
   });

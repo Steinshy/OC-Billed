@@ -1,3 +1,6 @@
+import { USE_DEMO } from "./config.js";
+import DemoStore, { DEMO_TOKEN_PREFIX } from "./DemoStore.js";
+
 const jsonOrThrowIfError = async (response) => {
   if (!response.ok) throw new Error((await response.json()).message);
   return response.json();
@@ -104,4 +107,13 @@ class Store {
   bills = () => new ApiEntity({ key: "bills", api: this.api });
 }
 
-export default new Store();
+// On localhost the real API and the demo store (?demo) share localStorage: a session
+// from the other store is meaningless here, so drop it and start from the login page.
+const jwt = localStorage.getItem("jwt");
+if (jwt && jwt.startsWith(DEMO_TOKEN_PREFIX) !== USE_DEMO) {
+  localStorage.removeItem("jwt");
+  localStorage.removeItem("user");
+  window.history.replaceState(null, "", window.location.pathname);
+}
+
+export default USE_DEMO ? new DemoStore() : new Store();

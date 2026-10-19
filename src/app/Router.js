@@ -3,9 +3,9 @@ import Bills from "../containers/Bills.js";
 import Dashboard from "../containers/Dashboard.js";
 import Login from "../containers/Login.js";
 import NewBill from "../containers/NewBill.js";
-
 import BillsUI from "../views/BillsUI.js";
 import DashboardUI from "../views/DashboardUI.js";
+
 import store from "./Store.js";
 
 const ACTIVE_ICON_CLASS = "active-icon";
@@ -21,8 +21,12 @@ export default async () => {
   const rootDiv = document.getElementById("root");
   rootDiv.innerHTML = ROUTES({ pathname: window.location.pathname });
 
+  // Directory the app is served from: "/" locally, "/<repo>/" on GitHub Pages.
+  const basePath = window.location.pathname.replace(/[^/]*$/, "");
+
   window.onNavigate = pathname => {
-    window.history.pushState({}, pathname, window.location.origin + pathname);
+    const url = pathname === ROUTES_PATH["Login"] ? basePath : `${basePath}${pathname}`;
+    window.history.pushState({}, pathname, window.location.origin + url);
     if (pathname === ROUTES_PATH["Login"]) {
       rootDiv.innerHTML = ROUTES({ pathname });
       document.body.classList.add("login-page");
@@ -62,13 +66,13 @@ export default async () => {
   window.onpopstate = () => {
     const userItem = localStorage.getItem("user");
     const user = userItem ? JSON.parse(userItem) : null;
-    if (window.location.pathname === "/" && !user) {
+    if (window.location.pathname === basePath && !user) {
       document.body.classList.add("login-page");
       rootDiv.innerHTML = ROUTES({ pathname: window.location.pathname });
-    } else if (user) onNavigate(window.location.pathname);
+    } else if (user) onNavigate(window.location.hash || ROUTES_PATH["Login"]);
   };
 
-  if (window.location.pathname === "/" && window.location.hash === "") {
+  if (window.location.pathname === basePath && window.location.hash === "") {
     new Login({ document, localStorage, onNavigate, store });
     document.body.classList.add("login-page");
   } else if (window.location.hash !== "") {

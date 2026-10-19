@@ -1,4 +1,5 @@
 import { ROUTES_PATH } from "../constants/routes.js";
+
 import Logout from "./Logout.js";
 
 const ALLOWED_EXTENSIONS = ["jpg", "jpeg", "png"];
@@ -84,7 +85,7 @@ export default class NewBill {
       .then(bill => {
         this.billId = bill.key;
         this.filePath = bill.filePath;
-        this.fileUrl = `${this.store.api.baseUrl}/${bill.filePath}`;
+        this.fileUrl = bill.fileUrl;
         this.fileName = fileName;
       })
       .catch(error => console.error(error));
