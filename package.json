@@ -1,6 +1,6 @@
 {
   "name": "oc-billed",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
   "description": "Billed — expense report app (OpenClassrooms project). Vanilla JS SPA at the root (src/) + Express API workspace (Backend/).",
