@@ -1,4 +1,4 @@
-// Releases (GitHub Pages, Coolify) have no backend: outside local dev, Store.js serves the in-browser demo store (DemoStore.js).
+// Releases (GitHub Pages, Docker) have no backend: outside local dev, Store.js serves the in-browser demo store (DemoStore.js).
 // Locally, open the app with `?demo` to use the demo store too; the choice lasts for the tab session.
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "[::1]"]);
 const DEMO_SESSION_KEY = "billed-use-demo";

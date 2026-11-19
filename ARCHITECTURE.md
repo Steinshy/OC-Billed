@@ -56,4 +56,4 @@ index.html → src/app/App.js → src/app/Router.js → views/* (HTML strings)
 - **Quality** — one root ESLint flat config for `src/` and `Backend/` (import-x, security, sonarjs, unicorn plugins; `import-x/order` is an error), Stylelint for `src/css/`, Prettier for all formatting; `pnpm lint` runs all three.
 - **Demo switch** — `src/store/config.js` sets `USE_DEMO` at runtime: on for any host other than localhost/127.0.0.1, or locally with `?demo` (kept in sessionStorage). Releases ship the source files as-is; there is no build step.
 - **CI** — `.github/workflows/ci.yml` (Node 24): frozen install, `pnpm lint`, `pnpm test`, non-blocking `pnpm audit --prod`. `.github/workflows/deploy.yml` publishes `index.html` + `src/` to GitHub Pages on push to `main`.
-- **Coolify** — the `Dockerfile` copies `index.html` + `src/` (`.dockerignore` whitelist) into nginx (inline config, gzip, security headers, healthcheck); it is Coolify-only and not built in CI.
+- **Docker** — the `Dockerfile` copies `index.html` + `src/` (`.dockerignore` whitelist) into nginx (inline config, gzip, security headers, healthcheck); it is not built in CI.

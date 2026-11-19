@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-# Static frontend for Coolify. No bundler: the SPA ships as native ES modules.
+# Static frontend image. No bundler: the SPA ships as native ES modules.
 FROM nginx:stable-alpine
 
 COPY <<'EOF' /etc/nginx/snippets/security-headers.conf

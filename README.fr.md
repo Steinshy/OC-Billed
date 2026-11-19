@@ -70,7 +70,7 @@ Référence de l'API : [Backend/README.md](./Backend/README.md).
 Les deux cibles servent les fichiers sources tels quels (pas de bundler) et aucun backend : le store de démo s'active hors de localhost.
 
 - **GitHub Pages :** `.github/workflows/deploy.yml` publie à chaque push sur `main`.
-- **Coolify :** le `Dockerfile` sert les mêmes fichiers avec nginx.
+- **Docker :** le `Dockerfile` sert les mêmes fichiers avec nginx.
 
 ## Documentation
 

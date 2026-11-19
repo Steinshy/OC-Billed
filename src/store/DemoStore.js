@@ -1,4 +1,4 @@
-// In-browser stand-in for the Express API, used when USE_DEMO is on (GitHub Pages, Coolify).
+// In-browser stand-in for the Express API, used when USE_DEMO is on (GitHub Pages, Docker).
 // Mirrors Backend/controllers: same routes, response shapes and error messages.
 // Data starts from Backend/seed.js and lives in sessionStorage: Logout clears localStorage,
 // and the demo resets when the tab closes.
